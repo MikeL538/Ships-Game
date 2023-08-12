@@ -1,55 +1,110 @@
-var draggableElements = document.getElementsByClassName("dragable");
+// Zdefiniowanie planszy
+const board = document.getElementById("board");
+const cells = document.querySelectorAll(".numbers > td > div");
+const message = document.getElementById("message");
+const shipCount = 5; // Liczba statków
+const shipLength = 3; // Długość każdego statku
+let ships = []; // Tablica przechowująca położenie statków
+let shots = 0; // Licznik strzałów
+let hits = 0; // Licznik trafionych pól
 
-for (var i = 0; i < draggableElements.length; i++) {
-  const dragzone = document.getElementById(
-    draggableElements[i].getAttribute("data-dragzone")
-  );
-  if (dragzone) {
-    dragElement(draggableElements[i], dragzone);
+// Losowe rozmieszczenie statków na planszy
+function generateShips() {
+  ships = [];
+  for (let i = 0; i < shipCount; i++) {
+    const ship = [];
+    let startCell;
+    let direction;
+
+    // Losowy wybór kierunku (pionowy lub poziomy)
+    if (Math.random() < 0.5) {
+      // Pionowy
+      startCell = Math.floor(Math.random() * (100 - shipLength * 10));
+      direction = 10;
+    } else {
+      // Poziomy
+      startCell = Math.floor(Math.random() * (100 - shipLength));
+      direction = 1;
+    }
+
+    // Dodawanie pól statku na planszę
+    for (let j = 0; j < shipLength; j++) {
+      ship.push(startCell + j * direction);
+    }
+
+    // Sprawdzanie kolizji z istniejącymi statkami
+    let overlap = false;
+    for (const existingShip of ships) {
+      for (const cell of ship) {
+        if (existingShip.includes(cell)) {
+          overlap = true;
+          break;
+        }
+      }
+      if (overlap) break;
+    }
+
+    // Jeśli jest kolizja, powtórzenie losowania
+    if (overlap) {
+      i--;
+    } else {
+      ships.push(ship);
+    }
   }
 }
 
-function dragElement(element, dragzone) {
-  var pos1 = 0,
-    pos2 = 0,
-    pos3 = 0,
-    pos4 = 0;
+// Inicjalizacja gry
+function initGame() {
+  message.textContent = "Shoot the ships!";
 
-  if (dragzone) {
-    dragzone.onmousedown = dragMouseDown;
-  } else {
-    element.onmousedown = dragMouseDown;
-  }
+  shots = 0;
+  hits = 0;
+  generateShips();
+  cells.forEach((cell, index) => {
+    cell.classList.remove("hit", "miss");
+    cell.addEventListener("click", () => handleShot(index));
+  });
+}
 
-  function dragMouseDown(e) {
-    e = e || window.event;
-    e.preventDefault();
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    document.onmousemove = elementDrag;
-  }
+// Obsługa strzału
+function handleShot(cellIndex) {
+  shots++;
+  const cell = cells[cellIndex];
+  cell.removeEventListener("click", handleShot);
 
-  function elementDrag(e) {
-    e = e || window.event;
-    e.preventDefault();
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    const newTop = element.offsetTop - pos2;
-    const newLeft = element.offsetLeft - pos1;
-    // Dodaj warunki, aby elementy nie przesunęły się poza granice dragzone
-    if (newTop >= 0 && newTop <= dragzone.clientHeight - element.clientHeight) {
-      element.style.top = newTop + "px";
+  // Sprawdzanie trafienia
+  let hit = false;
+  for (const ship of ships) {
+    if (ship.includes(cellIndex)) {
+      hit = true;
+      ship.splice(ship.indexOf(cellIndex), 1); // Usunięcie trafionego pola z statku
+      if (ship.length === 0) {
+        // Statek zatopiony
+        hits += shipLength;
+        if (hits === shipCount * shipLength) {
+          // Wszystkie statki zatopione, koniec gry
+          message.textContent = "Victory!";
+
+          cells.forEach((cell) =>
+            cell.removeEventListener("click", handleShot)
+          );
+        } else {
+          message.textContent = "You sunk a ship!";
+        }
+      } else {
+        message.textContent = "Hit!";
+      }
+      cell.classList.add("hit");
+      break;
     }
-    if (newLeft >= 0 && newLeft <= dragzone.clientWidth - element.clientWidth) {
-      element.style.left = newLeft + "px";
-    }
   }
 
-  function closeDragElement() {
-    document.onmouseup = null;
-    document.onmousemove = null;
+  if (!hit) {
+    message.textContent = "Miss!";
+
+    cell.classList.add("miss");
   }
 }
+
+// Rozpoczęcie gry po załadowaniu strony
+window.addEventListener("load", initGame);
