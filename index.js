@@ -83,8 +83,10 @@ function handleShot(cellIndex) {
         hits += shipLength;
         if (hits === shipCount * shipLength) {
           // Wszystkie statki zatopione, koniec gry
-          message.textContent = "Victory!";
-
+          message.innerHTML = `Victory! <br> Congratulations! <br>Amount of shots: ${shots}`;
+          board.style.pointerEvents = "none";
+          window.scrollTo(0, 0);
+          window.alert("Victory! Congratulations!");
           cells.forEach((cell) =>
             cell.removeEventListener("click", handleShot)
           );

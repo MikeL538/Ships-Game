@@ -9,15 +9,15 @@
   font-weight: 700;
   margin: 5vh auto;
   margin: 5svh auto;
-  width: 1000px;
+  max-width: 1000px;
   text-align: center;
 }
 
 #board {
   display: flex;
   justify-content: center;
-  margin-top: 5vh;
-  margin-top: 5svh;
+  margin: 5vh auto;
+  margin: 5svh auto;
 }
 
 #alphabet {
@@ -103,9 +103,9 @@
 }
 
 .miss {
-  z-index: 9;
-  pointer-events: none;
   cursor: none;
+  pointer-events: none;
+  z-index: 9;
 }
 
 .miss::after {
