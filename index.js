@@ -274,7 +274,12 @@ function handleShot(cellIndex) {
         messageSunken.textContent = "You sunk a ship!";
         setTimeout(() => {
           messageSunken.textContent = "";
-        }, 2000);
+        }, 1400);
+
+        document.body.style.pointerEvents = "none";
+        setTimeout(() => {
+          document.body.style.pointerEvents = "all";
+        }, 500);
       } else {
         message.textContent = "Hit!";
       }
