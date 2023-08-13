@@ -2,6 +2,7 @@ const board = document.getElementById("board");
 const cells = document.querySelectorAll(".numbers > td > div");
 const message = document.getElementById("message");
 const messageAdditional = document.getElementById("message-additional");
+const messageSunken = document.getElementById("message-sunken");
 const oneShipCount = 4; // Liczba statków 1 kratka
 const twoShipCount = 3; // Liczba statków 2 kratki
 const threeShipCount = 2; // Liczba statków 3 kratki
@@ -17,6 +18,36 @@ let fourShips = [];
 let ships = [];
 let shots = 0; // Licznik strzałów
 let hits = 0; // Licznik trafionych pól
+
+// Funkcja sprawdzająca umiejscowienie statków i zostawienie 1 kratki wolnej
+function isValidCell(cellIndex, existingShips, shipLength, direction) {
+  // Czy komórka jest na planszy
+  if (cellIndex < 0 || cellIndex >= 100) {
+    return false;
+  }
+
+  // Sprawdzenie czy komórka jest okupowana
+  for (const existingShip of existingShips) {
+    if (existingShip.includes(cellIndex)) {
+      return false;
+    }
+  }
+
+  // Sprawdzenie kierunku
+  const adjacentCells = [];
+  for (let i = 0; i < shipLength; i++) {
+    adjacentCells.push(cellIndex + i * direction);
+  }
+  for (const existingShip of existingShips) {
+    for (const cell of adjacentCells) {
+      if (existingShip.includes(cell)) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
 
 // Losowe rozmieszczenie statków na planszy
 function generateOneShips() {
@@ -235,7 +266,15 @@ function handleShot(cellIndex) {
       ship.splice(ship.indexOf(cellIndex), 1); // Usunięcie trafionego pola z statku
       if (ship.length === 0) {
         // Statek zatopiony
-        message.textContent = "You sunk a ship!";
+        message.textContent = "Hit!";
+        setTimeout(() => {
+          message.textContent = "Shoot the ships!";
+        }, 2000);
+
+        messageSunken.textContent = "You sunk a ship!";
+        setTimeout(() => {
+          messageSunken.textContent = "";
+        }, 2000);
       } else {
         message.textContent = "Hit!";
       }

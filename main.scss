@@ -15,7 +15,15 @@
   &-additional {
     position: absolute;
     font-size: 36px;
-    right: -200px;
+    right: -33%;
+  }
+
+  &-sunken {
+    position: absolute;
+    max-width: 1000px;
+    font-size: 36px;
+    top: 40%;
+    z-index: 10;
   }
 }
 
