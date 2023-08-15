@@ -4,23 +4,23 @@ const message = document.getElementById("message");
 const messageAdditional = document.getElementById("message-additional");
 const messageSunken = document.getElementById("message-sunken");
 const oneShipCount = 4; // Liczba statków
-const twoShipCount = 3;
-const threeShipCount = 2;
-const fourShipCount = 1;
-const oneShipLength = 1; // Długość statków
-const twoShipLength = 2;
-const threeShipLength = 3;
-const fourShipLength = 4;
+const twoShipsCount = 3;
+const threeShipsCount = 2;
+const fourShipsCount = 1;
+const oneShipsLength = 1; // Długość statków
+const twoShipsLength = 2;
+const threeShipsLength = 3;
+const fourShipsLength = 4;
 let oneShips = []; // Tablica przechowująca położenie statków
 let twoShips = [];
 let threeShips = [];
 let fourShips = [];
 let allShips = [];
 
-let oneShipHit = 0; // Liczba trafień statków
-let twoShipHit = 0;
-let threeShipHit = 0;
-let fourShipHit = 0;
+let oneShipsHit = 0; // Liczba trafień statków
+let twoShipsHit = 0;
+let threeShipsHit = 0;
+let fourShipsHit = 0;
 
 let shots = 0; // Licznik strzałów
 let hits = 0; // Licznik trafionych pól
@@ -66,16 +66,16 @@ function generateOneShips() {
     // Losowy wybór kierunku (pionowy lub poziomy)
     if (Math.random() < 0.5) {
       // Pionowy
-      startCell = Math.floor(Math.random() * (100 - oneShipLength * 10));
+      startCell = Math.floor(Math.random() * (100 - oneShipsLength * 10));
       direction = 10;
     } else {
       // Poziomy
-      startCell = Math.floor(Math.random() * (100 - oneShipLength));
+      startCell = Math.floor(Math.random() * (100 - oneShipsLength));
       direction = 1;
     }
 
     // Dodawanie pól statku na planszę
-    for (let j = 0; j < oneShipLength; j++) {
+    for (let j = 0; j < oneShipsLength; j++) {
       ship.push(startCell + j * direction);
     }
 
@@ -96,7 +96,7 @@ function generateOneShips() {
       i--;
     } else {
       oneShips.push(ship);
-      oneShipHit += 1;
+      oneShipsHit += 1;
     }
     allShips.push(...oneShips);
   }
@@ -104,7 +104,7 @@ function generateOneShips() {
 
 function generateTwoShips() {
   twoShips = [];
-  for (let i = 0; i < twoShipCount; i++) {
+  for (let i = 0; i < twoShipsCount; i++) {
     const ship = [];
     let startCell;
     let direction;
@@ -112,16 +112,16 @@ function generateTwoShips() {
     // Losowy wybór kierunku (pionowy lub poziomy)
     if (Math.random() < 0.5) {
       // Pionowy
-      startCell = Math.floor(Math.random() * (100 - twoShipLength * 10));
+      startCell = Math.floor(Math.random() * (100 - twoShipsLength * 10));
       direction = 10;
     } else {
       // Poziomy
-      startCell = Math.floor(Math.random() * (100 - twoShipLength));
+      startCell = Math.floor(Math.random() * (100 - twoShipsLength));
       direction = 1;
     }
 
     // Dodawanie pól statku na planszę
-    for (let j = 0; j < twoShipLength; j++) {
+    for (let j = 0; j < twoShipsLength; j++) {
       ship.push(startCell + j * direction);
     }
 
@@ -142,7 +142,8 @@ function generateTwoShips() {
       i--;
     } else {
       twoShips.push(ship);
-      twoShipHit += 1;
+      twoShipsHit += 1;
+      twoShipsHitParse = twoShipsHit;
     }
     allShips.push(...twoShips);
   }
@@ -150,7 +151,7 @@ function generateTwoShips() {
 
 function generateThreeShips() {
   threeShips = [];
-  for (let i = 0; i < threeShipCount; i++) {
+  for (let i = 0; i < threeShipsCount; i++) {
     const ship = [];
     let startCell;
     let direction;
@@ -158,16 +159,16 @@ function generateThreeShips() {
     // Losowy wybór kierunku (pionowy lub poziomy)
     if (Math.random() < 0.5) {
       // Pionowy
-      startCell = Math.floor(Math.random() * (100 - threeShipLength * 10));
+      startCell = Math.floor(Math.random() * (100 - threeShipsLength * 10));
       direction = 10;
     } else {
       // Poziomy
-      startCell = Math.floor(Math.random() * (100 - threeShipLength));
+      startCell = Math.floor(Math.random() * (100 - threeShipsLength));
       direction = 1;
     }
 
     // Dodawanie pól statku na planszę
-    for (let j = 0; j < threeShipLength; j++) {
+    for (let j = 0; j < threeShipsLength; j++) {
       ship.push(startCell + j * direction);
     }
 
@@ -188,7 +189,8 @@ function generateThreeShips() {
       i--;
     } else {
       threeShips.push(ship);
-      threeShipHit += 1;
+      threeShipsHit += 1;
+      threeShipsHitParse = threeShipsHit;
     }
     allShips.push(...threeShips);
   }
@@ -196,7 +198,7 @@ function generateThreeShips() {
 
 function generateFourShips() {
   fourShips = [];
-  for (let i = 0; i < fourShipCount; i++) {
+  for (let i = 0; i < fourShipsCount; i++) {
     const ship = [];
     let startCell;
     let direction;
@@ -204,16 +206,16 @@ function generateFourShips() {
     // Losowy wybór kierunku (pionowy lub poziomy)
     if (Math.random() < 0.5) {
       // Pionowy
-      startCell = Math.floor(Math.random() * (100 - fourShipLength * 10));
+      startCell = Math.floor(Math.random() * (100 - fourShipsLength * 10));
       direction = 10;
     } else {
       // Poziomy
-      startCell = Math.floor(Math.random() * (100 - fourShipLength));
+      startCell = Math.floor(Math.random() * (100 - fourShipsLength));
       direction = 1;
     }
 
     // Dodawanie pól statku na planszę
-    for (let j = 0; j < fourShipLength; j++) {
+    for (let j = 0; j < fourShipsLength; j++) {
       ship.push(startCell + j * direction);
     }
 
@@ -234,7 +236,8 @@ function generateFourShips() {
       i--;
     } else {
       fourShips.push(ship);
-      fourShipHit += 1;
+      fourShipsHit += 1;
+      fourShipsHitParse = fourShipsHit;
     }
     allShips.push(...fourShips);
   }
@@ -261,8 +264,25 @@ function handleShot(cellIndex) {
       hits += 1;
 
       if (oneShips.includes(ship)) {
-        oneShipHit -= 1;
+        oneShipsHit -= 1;
+        console.log("One Ships: " + oneShipsHit);
       }
+
+      if (twoShips.includes(ship)) {
+        twoShipsHit -= 0.49;
+        console.log("Two Ships: " + twoShipsHit);
+      }
+
+      if (threeShips.includes(ship)) {
+        threeShipsHit -= 0.24999999 + 0.00000002;
+        console.log("Three Ships: " + threeShipsHit);
+      }
+
+      if (fourShips.includes(ship)) {
+        fourShipsHit -= 0.13;
+        console.log("Four ships: " + fourShipsHit);
+      }
+
       ship.splice(ship.indexOf(cellIndex), 1); // Usunięcie trafionego pola z statku
 
       if (ship.length === 0) {
@@ -290,12 +310,14 @@ function handleShot(cellIndex) {
     message.textContent = "Miss!";
     cell.classList.add("miss");
   }
-  messageAdditional.innerHTML = `Shots: ${shots} <br> Sunken: ${hits}/20 <br> 
-  One square ships: ${oneShipHit} `;
-  // <br />
-  // Two squares ships: ${twoShipHit}<br />
-  // Three squares ships: ${threeShipHit} <br />
-  // Four squares ship: ${fourShipHit}
+
+  // Aktualizacja tabeli pozostałych statków
+  messageAdditional.innerHTML = `Shots: ${shots} <br> 
+  Sunken: ${hits}/20 <br> 
+  One square ships: ${oneShipsHit}   <br />
+  Two squares ships: ${Math.round(twoShipsHit)}<br />
+  Three squares ships: ${Math.round(threeShipsHit)} <br />
+  Four squares ship: ${Math.round(fourShipsHit)}`;
 
   if (hits === 20) {
     // Wszystkie statki zatopione, koniec gry
@@ -326,16 +348,10 @@ function initGame() {
     cell.addEventListener("click", () => handleShot(index));
   });
   messageAdditional.innerHTML = `Shots: ${shots} <br> Sunken: ${hits}/20 <br> 
-  One square ships: ${oneShipHit}`;
-
-  //  <br />
-  // Two squares ships: ${twoShipHit}<br />
-  // Three squares ships: ${threeShipHit} <br />
-  // Four squares ship: ${fourShipHit}
-
-  console.log(twoShips);
-  console.log(threeShips);
-  console.log(fourShips);
+  One square ships: ${oneShipsHit}   <br />
+  Two squares ships: ${twoShipsHit}<br />
+  Three squares ships: ${threeShipsHit} <br />
+  Four squares ship: ${fourShipsHit}`;
 }
 
 // Rozpoczęcie gry po załadowaniu strony
