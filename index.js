@@ -3,14 +3,14 @@ const cells = document.querySelectorAll(".numbers > td > div");
 const message = document.getElementById("message");
 const messageAdditional = document.getElementById("message-additional");
 const messageSunken = document.getElementById("message-sunken");
-const oneShipCount = 4; // Liczba statków 1 kratka
-const twoShipCount = 3; // Liczba statków 2 kratki
-const threeShipCount = 2; // Liczba statków 3 kratki
-const fourShipCount = 1; // Liczba statków 4 kratki
-const oneShipLength = 1; // Długość statku 1 kratka
-const twoShipLength = 2; // Długość statku 2 kratki
-const threeShipLength = 3; // Długość statku 3 kratki
-const fourShipLength = 4; // Długość statku 4 kratki
+const oneShipCount = 4; // Liczba statków
+const twoShipCount = 3;
+const threeShipCount = 2;
+const fourShipCount = 1;
+const oneShipLength = 1; // Długość statków
+const twoShipLength = 2;
+const threeShipLength = 3;
+const fourShipLength = 4;
 let oneShips = []; // Tablica przechowująca położenie statków
 let twoShips = [];
 let threeShips = [];
@@ -230,20 +230,6 @@ function generateFourShips() {
   }
 }
 
-// Inicjalizacja gry
-function initGame() {
-  message.textContent = "Shoot the ships!";
-
-  shots = 0;
-  hits = 0;
-  ships = []; // Clear the ships array before generating new ships
-  generateShips();
-  cells.forEach((cell, index) => {
-    cell.classList.remove("hit", "miss");
-    cell.addEventListener("click", () => handleShot(index));
-  });
-}
-
 function generateShips() {
   generateOneShips();
   generateTwoShips();
@@ -302,6 +288,20 @@ function handleShot(cellIndex) {
     window.alert("Victory! Congratulations!");
     cells.forEach((cell) => cell.removeEventListener("click", handleShot));
   }
+}
+
+// Inicjalizacja gry
+function initGame() {
+  message.textContent = "Shoot the ships!";
+
+  shots = 0;
+  hits = 0;
+  ships = []; // Clear the ships array before generating new ships
+  generateShips();
+  cells.forEach((cell, index) => {
+    cell.classList.remove("hit", "miss");
+    cell.addEventListener("click", () => handleShot(index));
+  });
 }
 
 // Rozpoczęcie gry po załadowaniu strony

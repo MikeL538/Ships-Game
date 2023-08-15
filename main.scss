@@ -67,7 +67,7 @@
   border: 1px solid;
   border-top: none;
   display: flex;
-  background-color: rgb(107, 107, 225);
+  background-color: rgb(10, 109, 254);
 
   &-color {
     background-color: #00c073;
@@ -90,7 +90,7 @@
       position: relative;
 
       &:hover {
-        background-color: rgb(73, 73, 154);
+        background-color: rgb(3, 80, 196);
         cursor: pointer;
       }
     }
@@ -112,10 +112,10 @@
 }
 
 .hit::after {
+  background: url(./images/ship.jpg);
+  background-size: 60px 59px;
   content: "";
-  background: #000000;
-  border: 1px solid;
-  height: 59px;
+  height: 60px;
   position: absolute;
   width: 59px;
 }
@@ -127,10 +127,11 @@
 }
 
 .miss::after {
-  background: #ff0000;
-  border: 1px solid;
+  background: url(./images/miss.jpg);
+  background-size: 60px 59px;
+
   content: "";
-  height: 59px;
+  height: 60px;
   position: absolute;
   width: 59px;
 }
