@@ -12,13 +12,18 @@
     <link rel="preload" as="image" href="./images/miss.jpg" />
   </head>
   <body>
-    <div id="message"></div>
     <div id="board">
+      <div id="message"></div>
       <div id="message-additional">
         Shots: 0 <br />
-        Sunken: 0/20
+        Sunken: 0/20 <br />
+        One square ships: 4 <br />
+        Two squares ships: 3 <br />
+        Three squares ships: 2 <br />
+        Four squares ship: 1
       </div>
       <div id="message-sunken"></div>
+
       <table id="table">
         <tr id="alphabet">
           <td>&nbsp;</td>
@@ -375,6 +380,7 @@
         </tr>
       </table>
     </div>
+
     <script src="index.js"></script>
   </body>
 </html>

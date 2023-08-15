@@ -15,7 +15,13 @@ let oneShips = []; // Tablica przechowująca położenie statków
 let twoShips = [];
 let threeShips = [];
 let fourShips = [];
-let ships = [];
+let allShips = [];
+
+let oneShipHit = 0; // Liczba trafień statków
+let twoShipHit = 0;
+let threeShipHit = 0;
+let fourShipHit = 0;
+
 let shots = 0; // Licznik strzałów
 let hits = 0; // Licznik trafionych pól
 
@@ -75,7 +81,7 @@ function generateOneShips() {
 
     // Sprawdzanie kolizji z istniejącymi statkami
     let overlap = false;
-    for (const existingShip of ships) {
+    for (const existingShip of allShips) {
       for (const cell of ship) {
         if (existingShip.includes(cell)) {
           overlap = true;
@@ -90,8 +96,9 @@ function generateOneShips() {
       i--;
     } else {
       oneShips.push(ship);
+      oneShipHit += 1;
     }
-    ships.push(...oneShips);
+    allShips.push(...oneShips);
   }
 }
 
@@ -120,7 +127,7 @@ function generateTwoShips() {
 
     // Sprawdzanie kolizji z istniejącymi statkami
     let overlap = false;
-    for (const existingShip of ships) {
+    for (const existingShip of allShips) {
       for (const cell of ship) {
         if (existingShip.includes(cell)) {
           overlap = true;
@@ -135,8 +142,9 @@ function generateTwoShips() {
       i--;
     } else {
       twoShips.push(ship);
+      twoShipHit += 1;
     }
-    ships.push(...twoShips);
+    allShips.push(...twoShips);
   }
 }
 
@@ -165,7 +173,7 @@ function generateThreeShips() {
 
     // Sprawdzanie kolizji z istniejącymi statkami
     let overlap = false;
-    for (const existingShip of ships) {
+    for (const existingShip of allShips) {
       for (const cell of ship) {
         if (existingShip.includes(cell)) {
           overlap = true;
@@ -180,8 +188,9 @@ function generateThreeShips() {
       i--;
     } else {
       threeShips.push(ship);
+      threeShipHit += 1;
     }
-    ships.push(...threeShips);
+    allShips.push(...threeShips);
   }
 }
 
@@ -210,7 +219,7 @@ function generateFourShips() {
 
     // Sprawdzanie kolizji z istniejącymi statkami
     let overlap = false;
-    for (const existingShip of ships) {
+    for (const existingShip of allShips) {
       for (const cell of ship) {
         if (existingShip.includes(cell)) {
           overlap = true;
@@ -225,8 +234,9 @@ function generateFourShips() {
       i--;
     } else {
       fourShips.push(ship);
+      fourShipHit += 1;
     }
-    ships.push(...fourShips);
+    allShips.push(...fourShips);
   }
 }
 
@@ -245,17 +255,19 @@ function handleShot(cellIndex) {
 
   // Sprawdzanie trafienia
   let hit = false;
-  for (const ship of ships) {
+  for (const ship of allShips) {
     if (ship.includes(cellIndex)) {
       hit = true;
       hits += 1;
+
+      if (oneShips.includes(ship)) {
+        oneShipHit -= 1;
+      }
       ship.splice(ship.indexOf(cellIndex), 1); // Usunięcie trafionego pola z statku
+
       if (ship.length === 0) {
         // Statek zatopiony
         message.textContent = "Hit!";
-        setTimeout(() => {
-          message.textContent = "Shoot the ships!";
-        }, 2000);
 
         messageSunken.textContent = "You sunk a ship!";
         setTimeout(() => {
@@ -278,11 +290,22 @@ function handleShot(cellIndex) {
     message.textContent = "Miss!";
     cell.classList.add("miss");
   }
-  messageAdditional.innerHTML = `Shots: ${shots} <br> Sunken: ${hits}/20`;
+  messageAdditional.innerHTML = `Shots: ${shots} <br> Sunken: ${hits}/20 <br> 
+  One square ships: ${oneShipHit} `;
+  // <br />
+  // Two squares ships: ${twoShipHit}<br />
+  // Three squares ships: ${threeShipHit} <br />
+  // Four squares ship: ${fourShipHit}
 
   if (hits === 20) {
     // Wszystkie statki zatopione, koniec gry
-    message.innerHTML = `Victory! <br> Congratulations! <br>Amount of shots: ${shots}`;
+    message.innerHTML = `Victory! <br> Congratulations! <br> <br>Amount of shots: ${shots}`;
+    message.style.top = "50%";
+    message.style.left = "50%";
+    message.style.transform = "translate(-50%, -50%)";
+    message.style.zIndex = "11";
+    message.style.color = "rgb(205, 252, 94)";
+    message.style.fontSize = "48px";
     board.style.pointerEvents = "none";
     window.scrollTo(0, 0);
     window.alert("Victory! Congratulations!");
@@ -296,12 +319,23 @@ function initGame() {
 
   shots = 0;
   hits = 0;
-  ships = []; // Clear the ships array before generating new ships
+  allShips = []; // Clear the ships array before generating new ships
   generateShips();
   cells.forEach((cell, index) => {
     cell.classList.remove("hit", "miss");
     cell.addEventListener("click", () => handleShot(index));
   });
+  messageAdditional.innerHTML = `Shots: ${shots} <br> Sunken: ${hits}/20 <br> 
+  One square ships: ${oneShipHit}`;
+
+  //  <br />
+  // Two squares ships: ${twoShipHit}<br />
+  // Three squares ships: ${threeShipHit} <br />
+  // Four squares ship: ${fourShipHit}
+
+  console.log(twoShips);
+  console.log(threeShips);
+  console.log(fourShips);
 }
 
 // Rozpoczęcie gry po załadowaniu strony
