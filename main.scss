@@ -138,3 +138,8 @@
   position: absolute;
   width: 59px;
 }
+
+.ship {
+  color: none;
+  // Mark cells next to ships to prevent ship next to ship game.
+}

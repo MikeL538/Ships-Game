@@ -83,7 +83,10 @@ function generateOneShips() {
     let overlap = false;
     for (const existingShip of allShips) {
       for (const cell of ship) {
-        if (existingShip.includes(cell)) {
+        if (
+          existingShip.includes(cell) ||
+          cells[cell].classList.contains("ship")
+        ) {
           overlap = true;
           break;
         }
@@ -97,7 +100,25 @@ function generateOneShips() {
     } else {
       oneShips.push(ship);
       oneShipsHit += 1;
+
+      for (const cell of ship) {
+        // Komórki poniżej i powyżej
+        if (cell + 10 < 100) {
+          cells[cell + 10].classList.add("ship");
+        }
+        if (cell - 10 >= 0) {
+          cells[cell - 10].classList.add("ship");
+        }
+        // Komórki po lewej i prawej
+        if (cell % 10 !== 0) {
+          cells[cell - 1].classList.add("ship");
+        }
+        if ((cell + 1) % 10 !== 0) {
+          cells[cell + 1].classList.add("ship");
+        }
+      }
     }
+
     allShips.push(...oneShips);
   }
 }
@@ -129,7 +150,10 @@ function generateTwoShips() {
     let overlap = false;
     for (const existingShip of allShips) {
       for (const cell of ship) {
-        if (existingShip.includes(cell)) {
+        if (
+          existingShip.includes(cell) ||
+          cells[cell].classList.contains("ship")
+        ) {
           overlap = true;
           break;
         }
@@ -143,7 +167,23 @@ function generateTwoShips() {
     } else {
       twoShips.push(ship);
       twoShipsHit += 1;
-      twoShipsHitParse = twoShipsHit;
+
+      for (const cell of ship) {
+        // Komórki poniżej i powyżej
+        if (cell + 10 < 100) {
+          cells[cell + 10].classList.add("ship");
+        }
+        if (cell - 10 >= 0) {
+          cells[cell - 10].classList.add("ship");
+        }
+        // Komórki po lewej i prawej
+        if (cell % 10 !== 0) {
+          cells[cell - 1].classList.add("ship");
+        }
+        if ((cell + 1) % 10 !== 0) {
+          cells[cell + 1].classList.add("ship");
+        }
+      }
     }
     allShips.push(...twoShips);
   }
@@ -176,7 +216,10 @@ function generateThreeShips() {
     let overlap = false;
     for (const existingShip of allShips) {
       for (const cell of ship) {
-        if (existingShip.includes(cell)) {
+        if (
+          existingShip.includes(cell) ||
+          cells[cell].classList.contains("ship")
+        ) {
           overlap = true;
           break;
         }
@@ -190,7 +233,23 @@ function generateThreeShips() {
     } else {
       threeShips.push(ship);
       threeShipsHit += 1;
-      threeShipsHitParse = threeShipsHit;
+
+      for (const cell of ship) {
+        // Komórki poniżej i powyżej
+        if (cell + 10 < 100) {
+          cells[cell + 10].classList.add("ship");
+        }
+        if (cell - 10 >= 0) {
+          cells[cell - 10].classList.add("ship");
+        }
+        // Komórki po lewej i prawej
+        if (cell % 10 !== 0) {
+          cells[cell - 1].classList.add("ship");
+        }
+        if ((cell + 1) % 10 !== 0) {
+          cells[cell + 1].classList.add("ship");
+        }
+      }
     }
     allShips.push(...threeShips);
   }
@@ -223,7 +282,10 @@ function generateFourShips() {
     let overlap = false;
     for (const existingShip of allShips) {
       for (const cell of ship) {
-        if (existingShip.includes(cell)) {
+        if (
+          existingShip.includes(cell) ||
+          cells[cell].classList.contains("ship")
+        ) {
           overlap = true;
           break;
         }
@@ -237,7 +299,23 @@ function generateFourShips() {
     } else {
       fourShips.push(ship);
       fourShipsHit += 1;
-      fourShipsHitParse = fourShipsHit;
+
+      for (const cell of ship) {
+        // Komórki poniżej i powyżej
+        if (cell + 10 < 100) {
+          cells[cell + 10].classList.add("ship");
+        }
+        if (cell - 10 >= 0) {
+          cells[cell - 10].classList.add("ship");
+        }
+        // Komórki po lewej i prawej
+        if (cell % 10 !== 0) {
+          cells[cell - 1].classList.add("ship");
+        }
+        if ((cell + 1) % 10 !== 0) {
+          cells[cell + 1].classList.add("ship");
+        }
+      }
     }
     allShips.push(...fourShips);
   }
@@ -266,26 +344,21 @@ function handleShot(cellIndex) {
       // Licznik zatopionych statków
       if (oneShips.includes(ship)) {
         oneShipsHit -= 1;
-        console.log("1ship " + oneShipsHit);
       }
 
       if (twoShips.includes(ship)) {
         twoShipsHit -= 0.49;
-        console.log("2ship " + twoShipsHit);
       }
 
       if (threeShips.includes(ship)) {
-        console.log((threeShipsHit -= 0.25));
-
+        threeShipsHit -= 0.25;
         if (threeShipsHit === 0.5) {
           threeShipsHit -= 0.5;
         }
-        console.log("3ship " + threeShipsHit);
       }
 
       if (fourShips.includes(ship)) {
         fourShipsHit -= 0.13;
-        console.log("4ship " + fourShipsHit);
       }
 
       ship.splice(ship.indexOf(cellIndex), 1); // Usunięcie trafionego pola z statku
