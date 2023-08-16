@@ -21,19 +21,13 @@
   top: 20%;
   width: 350px;
 }
-#message-ships {
-  position: absolute;
-  font-size: 20px;
-  right: -43%;
-  top: 35%;
-}
 #message-sunken {
   color: purple;
   font-size: 42px;
   font-weight: 700;
   max-width: 1000px;
   position: absolute;
-  top: 40%;
+  top: 50%;
   z-index: 10;
 }
 

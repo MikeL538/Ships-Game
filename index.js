@@ -2,7 +2,7 @@ const board = document.getElementById("board");
 const cells = document.querySelectorAll(".numbers > td > div");
 const message = document.getElementById("message");
 const messageAdditional = document.getElementById("message-additional");
-const messageSunken = document.getElementById("message-sunken");
+const messageSunken = document.getElementById("message-sunken"); // Ship sunken
 const oneShipCount = 4; // Liczba statków
 const twoShipsCount = 3;
 const threeShipsCount = 2;
@@ -263,24 +263,29 @@ function handleShot(cellIndex) {
       hit = true;
       hits += 1;
 
+      // Licznik zatopionych statków
       if (oneShips.includes(ship)) {
         oneShipsHit -= 1;
-        console.log("One Ships: " + oneShipsHit);
+        console.log("1ship " + oneShipsHit);
       }
 
       if (twoShips.includes(ship)) {
         twoShipsHit -= 0.49;
-        console.log("Two Ships: " + twoShipsHit);
+        console.log("2ship " + twoShipsHit);
       }
 
       if (threeShips.includes(ship)) {
-        threeShipsHit -= 0.24999999 + 0.00000002;
-        console.log("Three Ships: " + threeShipsHit);
+        console.log((threeShipsHit -= 0.25));
+
+        if (threeShipsHit === 0.5) {
+          threeShipsHit -= 0.5;
+        }
+        console.log("3ship " + threeShipsHit);
       }
 
       if (fourShips.includes(ship)) {
         fourShipsHit -= 0.13;
-        console.log("Four ships: " + fourShipsHit);
+        console.log("4ship " + fourShipsHit);
       }
 
       ship.splice(ship.indexOf(cellIndex), 1); // Usunięcie trafionego pola z statku
@@ -313,7 +318,9 @@ function handleShot(cellIndex) {
 
   // Aktualizacja tabeli pozostałych statków
   messageAdditional.innerHTML = `Shots: ${shots} <br> 
-  Sunken: ${hits}/20 <br> 
+  Sunken: ${hits}/20 <br>  <br> 
+
+  Remaining Ships: <br>
   One square ships: ${oneShipsHit}   <br />
   Two squares ships: ${Math.round(twoShipsHit)}<br />
   Three squares ships: ${Math.round(threeShipsHit)} <br />
@@ -328,6 +335,7 @@ function handleShot(cellIndex) {
     message.style.zIndex = "11";
     message.style.color = "rgb(205, 252, 94)";
     message.style.fontSize = "48px";
+    message.style.textAlign = "center";
     board.style.pointerEvents = "none";
     window.scrollTo(0, 0);
     window.alert("Victory! Congratulations!");
@@ -347,7 +355,10 @@ function initGame() {
     cell.classList.remove("hit", "miss");
     cell.addEventListener("click", () => handleShot(index));
   });
-  messageAdditional.innerHTML = `Shots: ${shots} <br> Sunken: ${hits}/20 <br> 
+  messageAdditional.innerHTML = `Shots: ${shots} <br> 
+  Sunken: ${hits}/20 <br> <br> 
+
+  Remaining Ships: <br>
   One square ships: ${oneShipsHit}   <br />
   Two squares ships: ${twoShipsHit}<br />
   Three squares ships: ${threeShipsHit} <br />
