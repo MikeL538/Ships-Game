@@ -40,10 +40,27 @@ function isValidCell(cellIndex, existingShips, shipLength, direction) {
   }
 
   // Sprawdzenie kierunku
-  const adjacentCells = [];
+  const shipCells = [];
   for (let i = 0; i < shipLength; i++) {
-    adjacentCells.push(cellIndex + i * direction);
+    shipCells.push(cellIndex + i * direction);
   }
+
+  // Sprawdzenie kolizji z istniejącymi statkami
+  for (const existingShip of existingShips) {
+    for (const cell of shipCells) {
+      if (existingShip.includes(cell)) {
+        return false;
+      }
+    }
+  }
+
+  // Sprawdzenie kolizji z komórkami sąsiednimi innych statków
+  const adjacentCells = [];
+  for (const cell of shipCells) {
+    const neighbors = [cell - 10, cell + 10, cell - 1, cell + 1];
+    adjacentCells.push(...neighbors.filter((n) => n >= 0 && n < 100));
+  }
+
   for (const existingShip of existingShips) {
     for (const cell of adjacentCells) {
       if (existingShip.includes(cell)) {
@@ -141,6 +158,19 @@ function generateTwoShips() {
       direction = 1;
     }
 
+    // Sprawdzanie czy statek zmieści się przy krawędzi
+    while (!isValidCell(startCell, allShips, twoShipsLength, direction)) {
+      if (Math.random() < 0.5) {
+        // Vertical
+        startCell = Math.floor(Math.random() * (100 - twoShipsLength * 10));
+        direction = 10;
+      } else {
+        // Horizontal
+        startCell = Math.floor(Math.random() * (100 - twoShipsLength));
+        direction = 1;
+      }
+    }
+
     // Dodawanie pól statku na planszę
     for (let j = 0; j < twoShipsLength; j++) {
       ship.push(startCell + j * direction);
@@ -207,6 +237,19 @@ function generateThreeShips() {
       direction = 1;
     }
 
+    // Sprawdzanie czy statek zmieści się przy krawędzi
+    while (!isValidCell(startCell, allShips, threeShipsLength, direction)) {
+      if (Math.random() < 0.5) {
+        // Vertical
+        startCell = Math.floor(Math.random() * (100 - threeShipsLength * 10));
+        direction = 10;
+      } else {
+        // Horizontal
+        startCell = Math.floor(Math.random() * (100 - threeShipsLength));
+        direction = 1;
+      }
+    }
+
     // Dodawanie pól statku na planszę
     for (let j = 0; j < threeShipsLength; j++) {
       ship.push(startCell + j * direction);
@@ -271,6 +314,19 @@ function generateFourShips() {
       // Poziomy
       startCell = Math.floor(Math.random() * (100 - fourShipsLength));
       direction = 1;
+    }
+
+    // Sprawdzanie czy statek zmieści się przy krawędzi
+    while (!isValidCell(startCell, allShips, fourShipsLength, direction)) {
+      if (Math.random() < 0.5) {
+        // Vertical
+        startCell = Math.floor(Math.random() * (100 - fourShipsLength * 10));
+        direction = 10;
+      } else {
+        // Horizontal
+        startCell = Math.floor(Math.random() * (100 - fourShipsLength));
+        direction = 1;
+      }
     }
 
     // Dodawanie pól statku na planszę
@@ -348,6 +404,7 @@ function handleShot(cellIndex) {
 
       if (twoShips.includes(ship)) {
         twoShipsHit -= 0.49;
+        console.log("2ships: " + twoShipsHit);
       }
 
       if (threeShips.includes(ship)) {
@@ -355,10 +412,12 @@ function handleShot(cellIndex) {
         if (threeShipsHit === 0.5) {
           threeShipsHit -= 0.5;
         }
+        console.log("3ships: " + threeShipsHit);
       }
 
       if (fourShips.includes(ship)) {
         fourShipsHit -= 0.13;
+        console.log("4ships: " + fourShipsHit);
       }
 
       ship.splice(ship.indexOf(cellIndex), 1); // Usunięcie trafionego pola z statku
