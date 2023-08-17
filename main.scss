@@ -4,31 +4,47 @@
   padding: 0;
 }
 
-#message {
-  position: absolute;
+.ship {
+  color: none;
+  // Mark cells next to ships to prevent ship next to ship game.
+}
+
+.message-container {
   font-size: 32px;
   font-weight: 700;
-  right: -49.5%;
-  top: 10%;
-  width: 295px;
+  margin: 120px 15px;
   text-align: left;
+  width: 310px;
+  z-index: 100;
 
-  &-additional {
-    position: absolute;
+  &__additional {
     font-size: 30px;
-    right: -57.5%;
-    top: 20%;
-    width: 350px;
+    font-weight: 400;
   }
 
-  &-sunken {
-    color: purple;
-    font-size: 42px;
+  &__sunken-pop-up {
+    background-color: rgb(10, 109, 254);
+    color: gold;
+    font-size: 36px;
     font-weight: 700;
-    max-width: 1000px;
+    left: 23%;
+    top: 3%;
+    position: absolute;
+
+    width: 260px;
+    z-index: 10;
+  }
+
+  &--victory {
     position: absolute;
     top: 50%;
-    z-index: 10;
+    left: 50%;
+    transform: translate(-80%, -120%);
+    color: rgb(205, 252, 94);
+    font-size: 48px;
+    text-align: center;
+    width: 450px;
+    z-index: 11;
   }
 }
 
@@ -37,8 +53,8 @@
   justify-content: center;
   margin: 5vh 15%;
   margin: 5svh 15%;
-  width: max-content;
   position: relative;
+  width: max-content;
 }
 
 #alphabet {
@@ -67,10 +83,10 @@
 }
 
 .numbers {
+  background-color: rgb(10, 109, 254);
   border: 1px solid;
   border-top: none;
   display: flex;
-  background-color: rgb(10, 109, 254);
 
   &-color {
     background-color: #00c073;
@@ -83,14 +99,13 @@
     font-size: 36px;
     height: 60px;
     justify-content: center;
-
     width: 60px;
 
     > div {
-      height: 60px;
-      width: 60px;
       background: none;
+      height: 60px;
       position: relative;
+      width: 60px;
 
       &:hover {
         background-color: rgb(3, 80, 196);
@@ -109,37 +124,82 @@
 // Hit/Miss
 
 .hit {
-  z-index: 9;
-  pointer-events: none;
   cursor: none;
-}
+  pointer-events: none;
+  z-index: 9;
 
-.hit::after {
-  background: url(./images/ship.jpg);
-  background-size: 60px 59px;
-  content: "";
-  height: 60px;
-  position: absolute;
-  width: 59px;
+  &::after {
+    background: url(./images/ship.jpg) center/60px 59px;
+    content: "";
+    height: 60px;
+    position: absolute;
+    width: 59px;
+  }
 }
 
 .miss {
   cursor: none;
   pointer-events: none;
   z-index: 9;
+
+  &::after {
+    background: url(./images/miss.jpg) center/60px 59px;
+    content: "";
+    height: 60px;
+    position: absolute;
+    width: 59px;
+  }
 }
 
-.miss::after {
-  background: url(./images/miss.jpg);
-  background-size: 60px 59px;
-
-  content: "";
-  height: 60px;
+.main-menu {
+  align-items: center;
+  background-color: #000;
+  border: 1px solid;
+  display: flex;
+  height: 400px;
+  justify-content: center;
+  left: 36%;
   position: absolute;
-  width: 59px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: 1.2s;
+  width: 400px;
+  z-index: 100;
+
+  &__container {
+    align-items: center;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 250px;
+
+    > button {
+      cursor: pointer;
+      font-size: 20px;
+      height: 40px;
+      margin: 10px 0;
+      width: 120px;
+    }
+  }
 }
 
-.ship {
-  color: none;
-  // Mark cells next to ships to prevent ship next to ship game.
+.main-menu--hide {
+  transform: translate(-50%, -1000%);
+  transition: 5s;
+}
+
+.new-game--victory {
+  cursor: pointer;
+  display: none;
+  font-size: 20px;
+  height: 40px;
+  margin: 10px 0;
+  position: absolute;
+  left: 40%;
+  width: 120px;
+}
+
+.show {
+  display: block;
 }

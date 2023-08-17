@@ -13,9 +13,13 @@
   </head>
   <body>
     <div id="board">
-      <div id="message"></div>
-      <div id="message-additional"></div>
-      <div id="message-sunken"></div>
+      <div class="main-menu">
+        <div class="main-menu__container">
+          <button class="new-game" type="button">New Game</button>
+          <button class="reset-game" type="button">Reset Game</button>
+        </div>
+      </div>
+
       <table id="table">
         <tr id="alphabet">
           <td>&nbsp;</td>
@@ -371,8 +375,15 @@
           </td>
         </tr>
       </table>
-    </div>
 
+      <div class="message-container__sunken-pop-up"></div>
+
+      <div class="message-container">
+        <div class="message-container__main"></div>
+        <button type="button" class="new-game--victory">New Game</button>
+        <div class="message-container__additional"></div>
+      </div>
+    </div>
     <script src="index.js"></script>
   </body>
 </html>

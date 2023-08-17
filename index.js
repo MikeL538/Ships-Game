@@ -1,8 +1,16 @@
+const mainMenu = document.querySelector(".main-menu");
+const newGameButton = document.querySelector(".new-game");
+const resetGameButton = document.querySelector(".reset-game");
+const newGameButtonVictory = document.querySelector(".new-game--victory");
+/////////////////////////////////////////
 const board = document.getElementById("board");
-const cells = document.querySelectorAll(".numbers > td > div");
-const message = document.getElementById("message");
-const messageAdditional = document.getElementById("message-additional");
-const messageSunken = document.getElementById("message-sunken"); // Ship sunken
+const table = document.querySelector("#table");
+const cells = document.querySelectorAll(".numbers td div");
+const msgContainer = document.querySelector(".message-container");
+const msgMain = document.querySelector(".message-container__main"); // Hit/Miss/Victory
+const msgAdditional = document.querySelector(".message-container__additional"); // Pozostałe statki
+const msgSunken = document.querySelector(".message-container__sunken-pop-up"); // Statek zatopiony info
+/////////////////////////////////////////
 const oneShipCount = 4; // Liczba statków
 const twoShipsCount = 3;
 const threeShipsCount = 2;
@@ -11,69 +19,26 @@ const oneShipsLength = 1; // Długość statków
 const twoShipsLength = 2;
 const threeShipsLength = 3;
 const fourShipsLength = 4;
+/////////////////////////////////////////
 let oneShips = []; // Tablica przechowująca położenie statków
 let twoShips = [];
 let threeShips = [];
 let fourShips = [];
 let allShips = [];
-
+/////////////////////////////////////////
 let oneShipsHit = 0; // Liczba trafień statków
 let twoShipsHit = 0;
 let threeShipsHit = 0;
 let fourShipsHit = 0;
-
-let shots = 0; // Licznik strzałów
-let hits = 0; // Licznik trafionych pól
-
-// Funkcja sprawdzająca umiejscowienie statków i zostawienie 1 kratki wolnej
-function isValidCell(cellIndex, existingShips, shipLength, direction) {
-  // Czy komórka jest na planszy
-  if (cellIndex < 0 || cellIndex >= 100) {
-    return false;
-  }
-
-  // Sprawdzenie czy komórka jest okupowana
-  for (const existingShip of existingShips) {
-    if (existingShip.includes(cellIndex)) {
-      return false;
-    }
-  }
-
-  // Sprawdzenie kierunku
-  const shipCells = [];
-  for (let i = 0; i < shipLength; i++) {
-    shipCells.push(cellIndex + i * direction);
-  }
-
-  // Sprawdzenie kolizji z istniejącymi statkami
-  for (const existingShip of existingShips) {
-    for (const cell of shipCells) {
-      if (existingShip.includes(cell)) {
-        return false;
-      }
-    }
-  }
-
-  // Sprawdzenie kolizji z komórkami sąsiednimi innych statków
-  const adjacentCells = [];
-  for (const cell of shipCells) {
-    const neighbors = [cell - 10, cell + 10, cell - 1, cell + 1];
-    adjacentCells.push(...neighbors.filter((n) => n >= 0 && n < 100));
-  }
-
-  for (const existingShip of existingShips) {
-    for (const cell of adjacentCells) {
-      if (existingShip.includes(cell)) {
-        return false;
-      }
-    }
-  }
-
-  return true;
-}
+/////////////////////////////////////////
+let shots = 0; // Licznik ogólnych strzałów
+let hits = 0; // Licznik trafionych pól statków
 
 // Losowe rozmieszczenie statków na planszy
-function generateOneShips() {
+function generateAllShips() {
+  /////////////////////////////
+  //Tworzenie statku 1 kratka//
+  /////////////////////////////
   oneShips = [];
   for (let i = 0; i < oneShipCount; i++) {
     const ship = [];
@@ -138,9 +103,10 @@ function generateOneShips() {
 
     allShips.push(...oneShips);
   }
-}
 
-function generateTwoShips() {
+  /////////////////////////////
+  //Tworzenie statku 2 kratki//
+  /////////////////////////////
   twoShips = [];
   for (let i = 0; i < twoShipsCount; i++) {
     const ship = [];
@@ -156,19 +122,6 @@ function generateTwoShips() {
       // Poziomy
       startCell = Math.floor(Math.random() * (100 - twoShipsLength));
       direction = 1;
-    }
-
-    // Sprawdzanie czy statek zmieści się przy krawędzi
-    while (!isValidCell(startCell, allShips, twoShipsLength, direction)) {
-      if (Math.random() < 0.5) {
-        // Vertical
-        startCell = Math.floor(Math.random() * (100 - twoShipsLength * 10));
-        direction = 10;
-      } else {
-        // Horizontal
-        startCell = Math.floor(Math.random() * (100 - twoShipsLength));
-        direction = 1;
-      }
     }
 
     // Dodawanie pól statku na planszę
@@ -217,9 +170,11 @@ function generateTwoShips() {
     }
     allShips.push(...twoShips);
   }
-}
 
-function generateThreeShips() {
+  /////////////////////////////
+  //Tworzenie statku 3 kratki//
+  /////////////////////////////
+
   threeShips = [];
   for (let i = 0; i < threeShipsCount; i++) {
     const ship = [];
@@ -235,19 +190,6 @@ function generateThreeShips() {
       // Poziomy
       startCell = Math.floor(Math.random() * (100 - threeShipsLength));
       direction = 1;
-    }
-
-    // Sprawdzanie czy statek zmieści się przy krawędzi
-    while (!isValidCell(startCell, allShips, threeShipsLength, direction)) {
-      if (Math.random() < 0.5) {
-        // Vertical
-        startCell = Math.floor(Math.random() * (100 - threeShipsLength * 10));
-        direction = 10;
-      } else {
-        // Horizontal
-        startCell = Math.floor(Math.random() * (100 - threeShipsLength));
-        direction = 1;
-      }
     }
 
     // Dodawanie pól statku na planszę
@@ -296,9 +238,11 @@ function generateThreeShips() {
     }
     allShips.push(...threeShips);
   }
-}
 
-function generateFourShips() {
+  /////////////////////////////
+  //Tworzenie statku 4 kratki//
+  /////////////////////////////
+
   fourShips = [];
   for (let i = 0; i < fourShipsCount; i++) {
     const ship = [];
@@ -314,19 +258,6 @@ function generateFourShips() {
       // Poziomy
       startCell = Math.floor(Math.random() * (100 - fourShipsLength));
       direction = 1;
-    }
-
-    // Sprawdzanie czy statek zmieści się przy krawędzi
-    while (!isValidCell(startCell, allShips, fourShipsLength, direction)) {
-      if (Math.random() < 0.5) {
-        // Vertical
-        startCell = Math.floor(Math.random() * (100 - fourShipsLength * 10));
-        direction = 10;
-      } else {
-        // Horizontal
-        startCell = Math.floor(Math.random() * (100 - fourShipsLength));
-        direction = 1;
-      }
     }
 
     // Dodawanie pól statku na planszę
@@ -377,13 +308,6 @@ function generateFourShips() {
   }
 }
 
-function generateShips() {
-  generateOneShips();
-  generateTwoShips();
-  generateThreeShips();
-  generateFourShips();
-}
-
 // Obsługa strzału
 function handleShot(cellIndex) {
   shots++;
@@ -404,7 +328,6 @@ function handleShot(cellIndex) {
 
       if (twoShips.includes(ship)) {
         twoShipsHit -= 0.49;
-        console.log("2ships: " + twoShipsHit);
       }
 
       if (threeShips.includes(ship)) {
@@ -412,31 +335,29 @@ function handleShot(cellIndex) {
         if (threeShipsHit === 0.5) {
           threeShipsHit -= 0.5;
         }
-        console.log("3ships: " + threeShipsHit);
       }
 
       if (fourShips.includes(ship)) {
         fourShipsHit -= 0.13;
-        console.log("4ships: " + fourShipsHit);
       }
 
       ship.splice(ship.indexOf(cellIndex), 1); // Usunięcie trafionego pola z statku
 
       if (ship.length === 0) {
         // Statek zatopiony
-        message.textContent = "Hit!";
+        msgMain.textContent = "Hit!";
 
-        messageSunken.textContent = "You sunk a ship!";
+        msgSunken.textContent = "You sunk a ship!";
         setTimeout(() => {
-          messageSunken.textContent = "";
-        }, 1400);
+          msgSunken.textContent = "";
+        }, 1000);
 
-        document.body.style.pointerEvents = "none";
+        table.style.pointerEvents = "none";
         setTimeout(() => {
-          document.body.style.pointerEvents = "all";
-        }, 500);
+          table.style.pointerEvents = "all";
+        }, 600);
       } else {
-        message.textContent = "Hit!";
+        msgMain.textContent = "Hit!";
       }
       cell.classList.add("hit");
       break;
@@ -444,12 +365,12 @@ function handleShot(cellIndex) {
   }
 
   if (!hit) {
-    message.textContent = "Miss!";
+    msgMain.textContent = "Miss!";
     cell.classList.add("miss");
   }
 
   // Aktualizacja tabeli pozostałych statków
-  messageAdditional.innerHTML = `Shots: ${shots} <br> 
+  msgAdditional.innerHTML = `Shots: ${shots} <br> 
   Sunken: ${hits}/20 <br>  <br> 
 
   Remaining Ships: <br>
@@ -460,15 +381,14 @@ function handleShot(cellIndex) {
 
   if (hits === 20) {
     // Wszystkie statki zatopione, koniec gry
-    message.innerHTML = `Victory! <br> Congratulations! <br> <br>Amount of shots: ${shots}`;
-    message.style.top = "50%";
-    message.style.left = "50%";
-    message.style.transform = "translate(-50%, -50%)";
-    message.style.zIndex = "11";
-    message.style.color = "rgb(205, 252, 94)";
-    message.style.fontSize = "48px";
-    message.style.textAlign = "center";
-    board.style.pointerEvents = "none";
+    table.style.pointerEvents = "none";
+    msgMain.innerHTML = `Victory! <br> 
+    Congratulations! <br> <br>
+    Amount of shots: ${shots} <br>`;
+
+    newGameButtonVictory.classList.add("show");
+    msgMain.classList.add("message-container--victory");
+    newGameButtonVictory.classList.add("message-container--victory");
     window.scrollTo(0, 0);
     window.alert("Victory! Congratulations!");
     cells.forEach((cell) => cell.removeEventListener("click", handleShot));
@@ -477,17 +397,36 @@ function handleShot(cellIndex) {
 
 // Inicjalizacja gry
 function initGame() {
-  message.textContent = "Shoot the ships!";
+  msgMain.textContent = "Shoot the ships!";
+  oneShips = []; // Tablica przechowująca położenie statków
+  twoShips = [];
+  threeShips = [];
+  fourShips = [];
+  allShips = [];
 
-  shots = 0;
-  hits = 0;
-  allShips = []; // Clear the ships array before generating new ships
-  generateShips();
+  oneShipsHit = 0; // Liczba trafień statków
+  twoShipsHit = 0;
+  threeShipsHit = 0;
+  fourShipsHit = 0;
+
+  shots = 0; // Licznik strzałów
+  hits = 0; // Licznik trafionych pól
+
+  msgMain.classList.remove("message-container--victory");
+  newGameButtonVictory.classList.remove("show");
+
+  // // Usunięcie klas "hit", "miss" oraz "ship" z komórek
+  // cells.forEach((cell) => {
+  //   cell.classList.remove("hit", "miss", "ship");
+  // });
+
   cells.forEach((cell, index) => {
-    cell.classList.remove("hit", "miss");
     cell.addEventListener("click", () => handleShot(index));
   });
-  messageAdditional.innerHTML = `Shots: ${shots} <br> 
+
+  generateAllShips();
+
+  msgAdditional.innerHTML = `Shots: ${shots} <br> 
   Sunken: ${hits}/20 <br> <br> 
 
   Remaining Ships: <br>
@@ -495,7 +434,378 @@ function initGame() {
   Two squares ships: ${twoShipsHit}<br />
   Three squares ships: ${threeShipsHit} <br />
   Four squares ship: ${fourShipsHit}`;
+
+  table.style.pointerEvents = "all";
 }
 
-// Rozpoczęcie gry po załadowaniu strony
-window.addEventListener("load", initGame);
+newGameButton.addEventListener("click", () => {
+  if (mainMenu.classList.contains("main-menu--hide")) {
+    mainMenu.style.display = "flex";
+  } else
+    setTimeout(() => {
+      mainMenu.style.display = "none";
+    }, 4000);
+  mainMenu.classList.toggle("main-menu--hide");
+  initGame();
+});
+
+newGameButtonVictory.addEventListener("click", () => {
+  initGame();
+});
+
+// function newTable() {
+//   table.innerHTML = `
+//   <tr id="alphabet">
+//     <td>&nbsp;</td>
+//     <td>A</td>
+//     <td>B</td>
+//     <td>C</td>
+//     <td>D</td>
+//     <td>E</td>
+//     <td>F</td>
+//     <td>G</td>
+//     <td>H</td>
+//     <td>I</td>
+//     <td>J</td>
+//   </tr>
+
+//   <tr class="numbers">
+//     <td class="numbers-color">1</td>
+//     <td>
+//       <div id="1a"></div>
+//     </td>
+//     <td>
+//       <div id="1b"></div>
+//     </td>
+//     <td>
+//       <div id="1c"></div>
+//     </td>
+//     <td>
+//       <div id="1d"></div>
+//     </td>
+//     <td>
+//       <div id="1e"></div>
+//     </td>
+//     <td>
+//       <div id="1f"></div>
+//     </td>
+//     <td>
+//       <div id="1g"></div>
+//     </td>
+//     <td>
+//       <div id="1h"></div>
+//     </td>
+//     <td>
+//       <div id="1i"></div>
+//     </td>
+//     <td>
+//       <div id="1j"></div>
+//     </td>
+//   </tr>
+
+//   <tr class="numbers">
+//     <td class="numbers-color">2</td>
+//     <td>
+//       <div id="2a"></div>
+//     </td>
+//     <td>
+//       <div id="2b"></div>
+//     </td>
+//     <td>
+//       <div id="2c"></div>
+//     </td>
+//     <td>
+//       <div id="2d"></div>
+//     </td>
+//     <td>
+//       <div id="2e"></div>
+//     </td>
+//     <td>
+//       <div id="2f"></div>
+//     </td>
+//     <td>
+//       <div id="2g"></div>
+//     </td>
+//     <td>
+//       <div id="2h"></div>
+//     </td>
+//     <td>
+//       <div id="2i"></div>
+//     </td>
+//     <td>
+//       <div id="2j"></div>
+//     </td>
+//   </tr>
+
+//   <tr class="numbers">
+//     <td class="numbers-color">3</td>
+//     <td>
+//       <div id="3a"></div>
+//     </td>
+//     <td>
+//       <div id="3b"></div>
+//     </td>
+//     <td>
+//       <div id="3c"></div>
+//     </td>
+//     <td>
+//       <div id="3d"></div>
+//     </td>
+//     <td>
+//       <div id="3e"></div>
+//     </td>
+//     <td>
+//       <div id="3f"></div>
+//     </td>
+//     <td>
+//       <div id="3g"></div>
+//     </td>
+//     <td>
+//       <div id="3h"></div>
+//     </td>
+//     <td>
+//       <div id="3i"></div>
+//     </td>
+//     <td>
+//       <div id="3j"></div>
+//     </td>
+//   </tr>
+
+//   <tr class="numbers">
+//     <td class="numbers-color">4</td>
+//     <td>
+//       <div id="4a"></div>
+//     </td>
+//     <td>
+//       <div id="4b"></div>
+//     </td>
+//     <td>
+//       <div id="4c"></div>
+//     </td>
+//     <td>
+//       <div id="4d"></div>
+//     </td>
+//     <td>
+//       <div id="4e"></div>
+//     </td>
+//     <td>
+//       <div id="4f"></div>
+//     </td>
+//     <td>
+//       <div id="4g"></div>
+//     </td>
+//     <td>
+//       <div id="4h"></div>
+//     </td>
+//     <td>
+//       <div id="4i"></div>
+//     </td>
+//     <td>
+//       <div id="4j"></div>
+//     </td>
+//   </tr>
+
+//   <tr class="numbers">
+//     <td class="numbers-color">5</td>
+//     <td>
+//       <div id="5a"></div>
+//     </td>
+//     <td>
+//       <div id="5b"></div>
+//     </td>
+//     <td>
+//       <div id="5c"></div>
+//     </td>
+//     <td>
+//       <div id="5d"></div>
+//     </td>
+//     <td>
+//       <div id="5e"></div>
+//     </td>
+//     <td>
+//       <div id="5f"></div>
+//     </td>
+//     <td>
+//       <div id="5g"></div>
+//     </td>
+//     <td>
+//       <div id="5h"></div>
+//     </td>
+//     <td>
+//       <div id="5i"></div>
+//     </td>
+//     <td>
+//       <div id="5j"></div>
+//     </td>
+//   </tr>
+
+//   <tr class="numbers">
+//     <td class="numbers-color">6</td>
+//     <td>
+//       <div id="6a"></div>
+//     </td>
+//     <td>
+//       <div id="6b"></div>
+//     </td>
+//     <td>
+//       <div id="6c"></div>
+//     </td>
+//     <td>
+//       <div id="6d"></div>
+//     </td>
+//     <td>
+//       <div id="6e"></div>
+//     </td>
+//     <td>
+//       <div id="6f"></div>
+//     </td>
+//     <td>
+//       <div id="6g"></div>
+//     </td>
+//     <td>
+//       <div id="6h"></div>
+//     </td>
+//     <td>
+//       <div id="6i"></div>
+//     </td>
+//     <td>
+//       <div id="6j"></div>
+//     </td>
+//   </tr>
+
+//   <tr class="numbers">
+//     <td class="numbers-color">7</td>
+//     <td>
+//       <div id="7a"></div>
+//     </td>
+//     <td>
+//       <div id="7b"></div>
+//     </td>
+//     <td>
+//       <div id="7c"></div>
+//     </td>
+//     <td>
+//       <div id="7d"></div>
+//     </td>
+//     <td>
+//       <div id="7e"></div>
+//     </td>
+//     <td>
+//       <div id="7f"></div>
+//     </td>
+//     <td>
+//       <div id="7g"></div>
+//     </td>
+//     <td>
+//       <div id="7h"></div>
+//     </td>
+//     <td>
+//       <div id="7i"></div>
+//     </td>
+//     <td>
+//       <div id="7j"></div>
+//     </td>
+//   </tr>
+
+//   <tr class="numbers">
+//     <td class="numbers-color">8</td>
+//     <td>
+//       <div id="8a"></div>
+//     </td>
+//     <td>
+//       <div id="8b"></div>
+//     </td>
+//     <td>
+//       <div id="8c"></div>
+//     </td>
+//     <td>
+//       <div id="8d"></div>
+//     </td>
+//     <td>
+//       <div id="8e"></div>
+//     </td>
+//     <td>
+//       <div id="8f"></div>
+//     </td>
+//     <td>
+//       <div id="8g"></div>
+//     </td>
+//     <td>
+//       <div id="8h"></div>
+//     </td>
+//     <td>
+//       <div id="8i"></div>
+//     </td>
+//     <td>
+//       <div id="8j"></div>
+//     </td>
+//   </tr>
+
+//   <tr class="numbers">
+//     <td class="numbers-color">9</td>
+//     <td>
+//       <div id="9a"></div>
+//     </td>
+//     <td>
+//       <div id="9b"></div>
+//     </td>
+//     <td>
+//       <div id="9c"></div>
+//     </td>
+//     <td>
+//       <div id="9d"></div>
+//     </td>
+//     <td>
+//       <div id="9e"></div>
+//     </td>
+//     <td>
+//       <div id="9f"></div>
+//     </td>
+//     <td>
+//       <div id="9g"></div>
+//     </td>
+//     <td>
+//       <div id="9h"></div>
+//     </td>
+//     <td>
+//       <div id="9i"></div>
+//     </td>
+//     <td>
+//       <div id="9j"></div>
+//     </td>
+//   </tr>
+
+//   <tr class="numbers">
+//     <td class="numbers-color">0</td>
+//     <td>
+//       <div id="0a"></div>
+//     </td>
+//     <td>
+//       <div id="0b"></div>
+//     </td>
+//     <td>
+//       <div id="0c"></div>
+//     </td>
+//     <td>
+//       <div id="0d"></div>
+//     </td>
+//     <td>
+//       <div id="0e"></div>
+//     </td>
+//     <td>
+//       <div id="0f"></div>
+//     </td>
+//     <td>
+//       <div id="0g"></div>
+//     </td>
+//     <td>
+//       <div id="0h"></div>
+//     </td>
+//     <td>
+//       <div id="0i"></div>
+//     </td>
+//     <td>
+//       <div id="0j"></div>
+//     </td>
+//   </tr>`;
+// }

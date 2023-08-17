@@ -1,0 +1,69 @@
+To do:
+- Remove ship,miss,hit classes from cells after restart;
+- Main menu styling;
+- Local Ranking;
+- Local Ranking styling;
+
+Deleted Code:
+
+Po let'ach: 
+// Funkcja sprawdzająca umiejscowienie statków i zostawienie 1 kratki wolnej
+function isValidCell(cellIndex, existingShips, shipLength, direction) {
+  // Czy komórka jest na planszy
+  if (cellIndex < 0 || cellIndex >= 100) {
+    return false;
+  }
+
+  // Sprawdzenie czy komórka jest okupowana
+  for (const existingShip of existingShips) {
+    if (existingShip.includes(cellIndex)) {
+      return false;
+    }
+  }
+
+  // Sprawdzenie kierunku
+  const shipCells = [];
+  for (let i = 0; i < shipLength; i++) {
+    shipCells.push(cellIndex + i * direction);
+  }
+
+  // Sprawdzenie kolizji z istniejącymi statkami
+  for (const existingShip of existingShips) {
+    for (const cell of shipCells) {
+      if (existingShip.includes(cell)) {
+        return false;
+      }
+    }
+  }
+
+  // Sprawdzenie kolizji z komórkami sąsiednimi innych statków
+  const adjacentCells = [];
+  for (const cell of shipCells) {
+    const neighbors = [cell - 10, cell + 10, cell - 1, cell + 1];
+    adjacentCells.push(...neighbors.filter((n) => n >= 0 && n < 100));
+  }
+
+  for (const existingShip of existingShips) {
+    for (const cell of adjacentCells) {
+      if (existingShip.includes(cell)) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+  (generateOneShips/two/three/four, między 'losowy wybór kierunku (pionowy lub poziomy)' a 'Dodawanie pól statku na planszę')
+    // Sprawdzanie czy statek zmieści się przy krawędzi
+    while (!isValidCell(startCell, allShips, fourShipsLength, direction)) {
+      if (Math.random() < 0.5) {
+        // Vertical
+        startCell = Math.floor(Math.random() * (100 - fourShipsLength * 10));
+        direction = 10;
+      } else {
+        // Horizontal
+        startCell = Math.floor(Math.random() * (100 - fourShipsLength));
+        direction = 1;
+      }
+    }
