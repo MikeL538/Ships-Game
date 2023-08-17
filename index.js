@@ -378,7 +378,7 @@ function handleShot(cellIndex) {
   Three squares ships: ${Math.round(threeShipsHit)}<br />
   Four squares ship: ${Math.round(fourShipsHit)}`;
 
-  if (hits === 1) {
+  if (hits === 20) {
     // Wszystkie statki zatopione, koniec gry
     table.style.pointerEvents = "none";
     msgMain.innerHTML = `Victory!<br /> 
