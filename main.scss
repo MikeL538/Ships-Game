@@ -10,16 +10,26 @@
 }
 
 .message-container {
+  display: flex;
+  flex-direction: column;
   font-size: 32px;
   font-weight: 700;
-  margin: 120px 15px;
+  margin: 0 15px;
   text-align: left;
-  width: 310px;
+  width: 270px;
   z-index: 100;
+  height: 610px;
 
   &__additional {
     font-size: 30px;
     font-weight: 400;
+  }
+
+  &__timer {
+    font-size: 12px;
+    font-weight: 400;
+    margin: 0 auto;
+    margin-top: auto;
   }
 
   &__sunken-pop-up {
@@ -28,29 +38,76 @@
     font-size: 36px;
     font-weight: 700;
     left: 23%;
-    top: 50%;
     position: absolute;
-
+    top: 40%;
     width: 260px;
     z-index: 10;
   }
 
-  &--victory {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-80%, -120%);
+  &__victory {
     color: rgb(205, 252, 94);
-    font-size: 48px;
+    font-size: 36px;
+    left: 56%;
+    position: absolute;
     text-align: center;
-    width: 450px;
+    top: 70%;
+    transform: translate(-80%, -120%);
+    width: 600px;
     z-index: 11;
+
+    &-button {
+      position: absolute;
+      right: 54%;
+      top: 65%;
+      width: 150px;
+      font-size: 24px;
+      height: 70px;
+    }
+  }
+
+  &__main-menu {
+    background-image: linear-gradient(
+      305deg,
+      rgba(89, 131, 252, 1) 10%,
+      rgba(41, 53, 86, 1) 100%
+    );
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    height: 30px;
+    isolation: isolate;
+    margin-bottom: 62px;
+    overflow: hidden;
+    position: relative;
+    width: 120px;
+
+    &::after {
+      background-image: linear-gradient(
+        330deg,
+        rgba(4, 28, 100, 1) 0%,
+        rgba(124, 157, 249, 1) 99%
+      );
+      content: "";
+      inset: 0;
+      position: absolute;
+      scale: 0 1;
+      transform-origin: left;
+      transition: scale 0.8s;
+      z-index: -1;
+    }
+
+    &:hover::after,
+    &:focus-visible::after {
+      transform-origin: right;
+      scale: 1 1;
+    }
   }
 }
 
 #board {
   display: flex;
-  justify-content: center;
+  align-items: baseline;
   margin: 5vh 15%;
   margin: 5svh 15%;
   position: relative;
@@ -58,48 +115,69 @@
 }
 
 #alphabet {
-  border: 1px solid;
   display: flex;
 
   > td {
     align-items: center;
     background-color: #00c073;
-    border-right: 1px solid;
+    border: 1px solid;
+    border-right: none;
     display: flex;
     font-size: 36px;
     height: 60px;
     justify-content: center;
-    padding: 0 8px;
     width: 60px;
 
-    &:first-of-type {
+    &:first-child {
       background: none;
+      border: none;
+      border-bottom: 1px solid;
+      width: 60px;
     }
 
     &:last-child {
-      border: none;
+      border-right: 1px solid;
+      width: 60.5px;
     }
   }
 }
 
 .numbers {
-  background-color: rgb(10, 109, 254);
-  border: 1px solid;
-  border-top: none;
+  background: rgb(69, 114, 240);
+  border-left: 1px solid;
   display: flex;
 
   &-color {
     background-color: #00c073;
   }
 
+  animation: gradient 40s ease infinite;
+  background: {
+    image: linear-gradient(
+      60deg,
+      rgb(69, 114, 240) 0%,
+      rgb(21, 44, 116) 44%,
+      rgb(69, 114, 240) 50%,
+      rgb(24, 52, 135) 80%,
+      rgb(69, 114, 240) 90%
+    );
+    position: center;
+    size: 500% 500%;
+  }
+
   > td {
     align-items: center;
+    border-bottom: 1px solid;
     border-right: 1px solid;
     display: flex;
     font-size: 36px;
-    height: 60px;
+    height: 60.2px;
     justify-content: center;
     width: 60px;
+
+    &:last-child {
+      border-right: 1px solid;
+    }
 
     > div {
       background: none;
@@ -110,28 +188,27 @@
       &:hover {
         background-color: rgb(3, 80, 196);
         cursor: pointer;
+        height: 59px;
       }
-    }
-
-    &:last-child,
-    > div:last-child {
-      border-bottom: none;
-      border-right: none;
     }
   }
 }
 
-// Hit/Miss
-
+// Hit/Miss //
 .hit {
   cursor: none;
   pointer-events: none;
   z-index: 9;
 
   &::after {
-    background: url(./images/ship.jpg) center/60px 59px;
+    background: {
+      image: url(./images/ship.jpg);
+      position: -1px 0.3px;
+      size: 59px 59px;
+      repeat: no-repeat;
+    }
     content: "";
-    height: 60px;
+    height: 55px;
     position: absolute;
     width: 59px;
   }
@@ -143,7 +220,12 @@
   z-index: 9;
 
   &::after {
-    background: url(./images/miss.jpg) center/60px 59px;
+    background: {
+      image: url(./images/miss.jpg);
+      position: -1px 0.3px;
+      size: 60px 59px;
+      repeat: no-repeat;
+    }
     content: "";
     height: 60px;
     position: absolute;
@@ -153,8 +235,11 @@
 
 .main-menu {
   align-items: center;
-  background-color: #000;
-  border: 1px solid;
+  background: url("./images/icons.svg#main-menu-background") center 50px/800px
+    400px no-repeat rgb(221, 252, 150);
+  border: 12px solid #000;
+  border-top: 32px solid #000;
+  border-bottom: 32px solid #000;
   display: flex;
   height: 400px;
   justify-content: center;
@@ -162,13 +247,12 @@
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  transition: 1.2s;
+  transition: 1s;
   width: 400px;
   z-index: 100;
 
   &__container {
     align-items: center;
-    border: 1px solid;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -186,7 +270,7 @@
 
 .main-menu--hide {
   transform: translate(-50%, -1000%);
-  transition: 5s;
+  transition: 3s;
 }
 
 .new-game--victory {
@@ -202,4 +286,20 @@
 
 .show {
   display: block;
+}
+
+.hide {
+  display: none;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
 }

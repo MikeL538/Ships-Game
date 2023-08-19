@@ -1,17 +1,25 @@
 const mainMenu = document.querySelector(".main-menu");
-const newGameButton = document.querySelector(".new-game");
-const resetGameButton = document.querySelector(".reset-game");
-const newGameButtonVictory = document.querySelector(".new-game--victory");
+const newGameButton = document.getElementById("main-menu__new-game");
+const ContinueGameButton = document.getElementById("main-menu__continue");
+const restartGameButton = document.querySelector("#main-menu__restart");
+const newGameButtonVictory = document.querySelector(
+  ".message-container__victory-button"
+);
+const backtoMainMenuButton = document.querySelector(
+  ".message-container__main-menu"
+);
 /////////////////////////////////////////
 const board = document.getElementById("board");
-const table = document.querySelector("#table");
+const table = document.getElementById("table");
 const cells = document.querySelectorAll(".numbers td div");
 const msgContainer = document.querySelector(".message-container");
 const msgMain = document.querySelector(".message-container__main"); // Hit/Miss/Victory
 const msgAdditional = document.querySelector(".message-container__additional"); // Pozostałe statki
+const msgTimer = document.querySelector(".message-container__timer");
 const msgSunken = document.querySelector(".message-container__sunken-pop-up"); // Statek zatopiony info
 /////////////////////////////////////////
-const oneShipCount = 4; // Liczba statków
+// Liczba statków
+const oneShipCount = 4;
 const twoShipsCount = 3;
 const threeShipsCount = 2;
 const fourShipsCount = 1;
@@ -20,20 +28,24 @@ const twoShipsLength = 2;
 const threeShipsLength = 3;
 const fourShipsLength = 4;
 /////////////////////////////////////////
-let oneShips = []; // Tablica przechowująca położenie statków
+// Tablica przechowująca położenie statków
+let oneShips = [];
 let twoShips = [];
 let threeShips = [];
 let fourShips = [];
 let allShips = [];
 /////////////////////////////////////////
-let oneShipsHit = 0; // Liczba trafień statków
+// Liczba trafień statków
+let oneShipsHit = 0;
 let twoShipsHit = 0;
 let threeShipsHit = 0;
 let fourShipsHit = 0;
 /////////////////////////////////////////
 let shots = 0; // Licznik ogólnych strzałów
 let hits = 0; // Licznik trafionych pól statków
-
+let timeSeconds = 0; // Mierzenie czasu rozgrywki sekundy
+let timeMinutes = 0; // Mierzenie czasu rozgrywki minuty
+let timerInterval;
 // Losowe rozmieszczenie statków na planszy
 function generateAllShips() {
   /////////////////////////////
@@ -174,7 +186,6 @@ function generateAllShips() {
   /////////////////////////////
   //Tworzenie statku 3 kratki//
   /////////////////////////////
-
   threeShips = [];
   for (let i = 0; i < threeShipsCount; i++) {
     ship = [];
@@ -242,7 +253,6 @@ function generateAllShips() {
   /////////////////////////////
   //Tworzenie statku 4 kratki//
   /////////////////////////////
-
   fourShips = [];
   for (let i = 0; i < fourShipsCount; i++) {
     const ship = [];
@@ -380,28 +390,37 @@ function handleShot(cellIndex) {
 
   if (hits === 20) {
     // Wszystkie statki zatopione, koniec gry
+    backtoMainMenuButton.style.pointerEvents = "none";
     table.style.pointerEvents = "none";
     msgMain.innerHTML = `Victory!<br /> 
     Congratulations!<br /><br />
-    Amount of shots: ${shots}<br />`;
-
+    Amount of shots: ${shots}<br /><br />
+    Your time: ${timeMinutes} minutes and ${timeSeconds} seconds`;
+    clearInterval(timerInterval);
     newGameButtonVictory.classList.add("show");
-    msgMain.classList.add("message-container--victory");
-    newGameButtonVictory.classList.add("message-container--victory");
+    msgMain.classList.add("message-container__victory");
+    newGameButtonVictory.style.display = "block";
     window.scrollTo(0, 0);
     cells.forEach((cell) => cell.removeEventListener("click", handleShot));
   }
 }
 
-function handleShotStart() {
+function firstStart() {
   cells.forEach((cell, index) => {
-    cell.classList.remove("hit", "miss", "ship");
     cell.addEventListener("click", () => handleShot(index));
   });
+  setTimeout(() => {
+    newGameButton.remove();
+    ContinueGameButton.style.display = "block";
+    restartGameButton.style.display = "block";
+  }, 400);
 }
 
 // Inicjalizacja gry
 function initGame() {
+  timeSeconds = 0;
+  timeMinutes = 0;
+
   msgMain.textContent = "Shoot the ships!";
   oneShips = []; // Tablica przechowująca położenie statków
   twoShips = [];
@@ -417,7 +436,7 @@ function initGame() {
   shots = 0; // Licznik strzałów
   hits = 0; // Licznik trafionych pól
 
-  msgMain.classList.remove("message-container--victory");
+  msgMain.classList.remove("message-container__victory");
   newGameButtonVictory.classList.remove("show");
 
   cells.forEach((cell) => {
@@ -425,7 +444,7 @@ function initGame() {
   });
 
   generateAllShips();
-
+  startTimer();
   msgAdditional.innerHTML = `Shots: ${shots}<br /> 
   Sunken: ${hits}/20<br /><br /> 
 
@@ -435,21 +454,81 @@ function initGame() {
   Three squares ships: ${threeShipsHit}<br />
   Four squares ship: ${fourShipsHit}`;
 
+  msgTimer.innerHTML = "Time: 00:00";
   table.style.pointerEvents = "all";
 }
 
+function timerMessage() {
+  const formattedSeconds = timeSeconds.toString().padStart(2, "0");
+  const formattedMinutes = timeMinutes.toString().padStart(2, "0");
+  msgTimer.innerHTML = `<br /><br />Time: ${formattedMinutes}:${formattedSeconds}`;
+}
+
+function startTimer() {
+  timerInterval = setInterval(() => {
+    timeSeconds++;
+
+    if (timeSeconds === 60) {
+      timeSeconds = 0;
+      timeMinutes++;
+    }
+
+    timerMessage(); // Wywołanie funkcji timerMessage() co sekundę
+  }, 1000);
+}
+
 newGameButton.addEventListener("click", () => {
+  newGameButton.style.pointerEvents = "none";
+  backtoMainMenuButton.classList.remove("hide");
+
   if (mainMenu.classList.contains("main-menu--hide")) {
     mainMenu.style.display = "flex";
-  } else
-    setTimeout(() => {
-      mainMenu.style.display = "none";
-    }, 4000);
+  }
   mainMenu.classList.toggle("main-menu--hide");
-  handleShotStart();
+
+  firstStart();
   initGame();
 });
 
+backtoMainMenuButton.addEventListener("click", () => {
+  table.style.pointerEvents = "none";
+  backtoMainMenuButton.style.pointerEvents = "none";
+  clearInterval(timerInterval);
+
+  if (mainMenu.classList.contains("main-menu--hide")) {
+    mainMenu.style.display = "flex";
+  }
+  mainMenu.classList.toggle("main-menu--hide");
+});
+
+ContinueGameButton.addEventListener("click", () => {
+  backtoMainMenuButton.style.pointerEvents = "all";
+  table.style.pointerEvents = "all";
+  startTimer();
+  if (mainMenu.classList.contains("main-menu--hide")) {
+    mainMenu.style.display = "flex";
+  }
+  mainMenu.classList.toggle("main-menu--hide");
+});
+
+restartGameButton.addEventListener("click", () => {
+  backtoMainMenuButton.style.pointerEvents = "all";
+  initGame();
+  if (mainMenu.classList.contains("main-menu--hide")) {
+    mainMenu.style.display = "flex";
+  }
+  mainMenu.classList.toggle("main-menu--hide");
+});
+
 newGameButtonVictory.addEventListener("click", () => {
+  newGameButtonVictory.style.display = "none";
+  backtoMainMenuButton.style.pointerEvents = "all";
   initGame();
 });
+
+window.onload = function onPageLoad() {
+  table.style.pointerEvents = "none";
+  ContinueGameButton.style.display = "none";
+  restartGameButton.style.display = "none";
+  newGameButtonVictory.style.display = "none";
+};

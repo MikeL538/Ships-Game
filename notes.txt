@@ -1,8 +1,9 @@
 To do:
-- Remove ship,miss,hit classes from cells after restart;
-- Main menu styling;
 - Local Ranking;
 - Local Ranking styling;
+- Easy (3misses in a row show ship location);
+- Normal (No changes);
+- Hardcore (40 shots and lose);
 
 Deleted Code:
 

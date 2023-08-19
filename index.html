@@ -15,14 +15,17 @@
     <div id="board">
       <div class="main-menu">
         <div class="main-menu__container">
-          <button class="new-game" type="button">New Game</button>
-          <button class="reset-game" type="button">Reset Game</button>
+          <button id="main-menu__new-game" type="button">New Game</button>
+          <button id="main-menu__continue" type="button">Continue</button>
+          <button id="main-menu__restart" type="button">Restart</button>
+          <button id="main-menu__options" type="button">Options</button>
+          <button id="main-menu__ranking" type="button">Ranking</button>
         </div>
       </div>
 
       <table id="table">
         <tr id="alphabet">
-          <td>&nbsp;</td>
+          <td></td>
           <td>A</td>
           <td>B</td>
           <td>C</td>
@@ -376,14 +379,18 @@
         </tr>
       </table>
 
-      <div class="message-container__sunken-pop-up"></div>
-
       <div class="message-container">
+        <button class="message-container__main-menu hide">Main Menu</button>
         <div class="message-container__main"></div>
-        <button type="button" class="new-game--victory">New Game</button>
+        <button type="button" class="message-container__victory-button">
+          New Game
+        </button>
         <div class="message-container__additional"></div>
+        <div class="message-container__timer"></div>
+        <div class="message-container__sunken-pop-up"></div>
       </div>
     </div>
+
     <script src="index.js"></script>
   </body>
 </html>
