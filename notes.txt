@@ -56,6 +56,10 @@ function isValidCell(cellIndex, existingShips, shipLength, direction) {
 }
 
   (generateOneShips/two/three/four, między 'losowy wybór kierunku (pionowy lub poziomy)' a 'Dodawanie pól statku na planszę')
+
+
+
+  
     // Sprawdzanie czy statek zmieści się przy krawędzi
     while (!isValidCell(startCell, allShips, fourShipsLength, direction)) {
       if (Math.random() < 0.5) {
@@ -68,3 +72,34 @@ function isValidCell(cellIndex, existingShips, shipLength, direction) {
         direction = 1;
       }
     }
+
+locked-cell gora dol i boki
+for (const cell of ship) {
+  // Komórki poniżej i powyżej
+        if (cell + 10 < 100) {
+          cells[cell + 10].classList.add("locked-cell");
+        }
+        if (cell - 10 >= 0) {
+          cells[cell - 10].classList.add("locked-cell");
+        }
+        // Komórki po lewej i prawej
+        if (cell % 10 !== 0) {
+          cells[cell - 1].classList.add("locked-cell");
+        }
+        if ((cell + 1) % 10 !== 0) {
+          cells[cell + 1].classList.add("locked-cell");
+        }
+        // Komórki na ukos
+        if (cell - 11 >= 0 && cell % 10 !== 0) {
+          cells[cell - 11].classList.add("locked-cell");
+        }
+        if (cell - 9 >= 0 && (cell + 1) % 10 !== 0) {
+          cells[cell - 9].classList.add("locked-cell");
+        }
+        if (cell + 11 < 100 && (cell + 1) % 10 !== 0) {
+          cells[cell + 11].classList.add("locked-cell");
+        }
+        if (cell + 9 < 100 && cell % 10 !== 0) {
+          cells[cell + 9].classList.add("locked-cell");
+        }
+      }

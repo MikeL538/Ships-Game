@@ -21,25 +21,34 @@
           <button id="main-menu__options" type="button">Options</button>
           <button id="main-menu__ranking" type="button">Ranking</button>
         </div>
+        <div class="main-menu__options-menu hide-element-options">
+          <span
+            >Waves are:
+            <button id="main-menu__options-menu__waves">On</button></span
+          >
+          <button id="main-menu__options-menu__close-button">
+            Close Options
+          </button>
+        </div>
       </div>
 
       <table id="table">
         <tr id="alphabet">
           <td></td>
-          <td>A</td>
-          <td>B</td>
-          <td>C</td>
-          <td>D</td>
-          <td>E</td>
-          <td>F</td>
-          <td>G</td>
-          <td>H</td>
-          <td>I</td>
-          <td>J</td>
+          <td class="coordinates-waves coordinates">A</td>
+          <td class="coordinates-waves coordinates">B</td>
+          <td class="coordinates-waves coordinates">C</td>
+          <td class="coordinates-waves coordinates">D</td>
+          <td class="coordinates-waves coordinates">E</td>
+          <td class="coordinates-waves coordinates">F</td>
+          <td class="coordinates-waves coordinates">G</td>
+          <td class="coordinates-waves coordinates">H</td>
+          <td class="coordinates-waves coordinates">I</td>
+          <td class="coordinates-waves coordinates">J</td>
         </tr>
 
-        <tr class="numbers">
-          <td class="numbers-color">1</td>
+        <tr class="numbers numbers-waves">
+          <td class="coordinates coordinates-waves">1</td>
           <td>
             <div id="1a"></div>
           </td>
@@ -72,8 +81,8 @@
           </td>
         </tr>
 
-        <tr class="numbers">
-          <td class="numbers-color">2</td>
+        <tr class="numbers numbers-waves">
+          <td class="coordinates coordinates-waves">2</td>
           <td>
             <div id="2a"></div>
           </td>
@@ -106,8 +115,8 @@
           </td>
         </tr>
 
-        <tr class="numbers">
-          <td class="numbers-color">3</td>
+        <tr class="numbers numbers-waves">
+          <td class="coordinates coordinates-waves">3</td>
           <td>
             <div id="3a"></div>
           </td>
@@ -140,8 +149,8 @@
           </td>
         </tr>
 
-        <tr class="numbers">
-          <td class="numbers-color">4</td>
+        <tr class="numbers numbers-waves">
+          <td class="coordinates coordinates-waves">4</td>
           <td>
             <div id="4a"></div>
           </td>
@@ -174,8 +183,8 @@
           </td>
         </tr>
 
-        <tr class="numbers">
-          <td class="numbers-color">5</td>
+        <tr class="numbers numbers-waves">
+          <td class="coordinates coordinates-waves">5</td>
           <td>
             <div id="5a"></div>
           </td>
@@ -208,8 +217,8 @@
           </td>
         </tr>
 
-        <tr class="numbers">
-          <td class="numbers-color">6</td>
+        <tr class="numbers numbers-waves">
+          <td class="coordinates coordinates-waves">6</td>
           <td>
             <div id="6a"></div>
           </td>
@@ -242,8 +251,8 @@
           </td>
         </tr>
 
-        <tr class="numbers">
-          <td class="numbers-color">7</td>
+        <tr class="numbers numbers-waves">
+          <td class="coordinates coordinates-waves">7</td>
           <td>
             <div id="7a"></div>
           </td>
@@ -276,8 +285,8 @@
           </td>
         </tr>
 
-        <tr class="numbers">
-          <td class="numbers-color">8</td>
+        <tr class="numbers numbers-waves">
+          <td class="coordinates coordinates-waves">8</td>
           <td>
             <div id="8a"></div>
           </td>
@@ -310,8 +319,8 @@
           </td>
         </tr>
 
-        <tr class="numbers">
-          <td class="numbers-color">9</td>
+        <tr class="numbers numbers-waves">
+          <td class="coordinates coordinates-waves">9</td>
           <td>
             <div id="9a"></div>
           </td>
@@ -344,8 +353,8 @@
           </td>
         </tr>
 
-        <tr class="numbers">
-          <td class="numbers-color">0</td>
+        <tr class="numbers numbers-waves">
+          <td class="coordinates coordinates-waves">0</td>
           <td>
             <div id="0a"></div>
           </td>
@@ -380,7 +389,9 @@
       </table>
 
       <div class="message-container">
-        <button class="message-container__main-menu hide">Main Menu</button>
+        <button class="message-container__main-menu hide hide-element">
+          Main Menu
+        </button>
         <div class="message-container__main"></div>
         <button type="button" class="message-container__victory-button">
           New Game

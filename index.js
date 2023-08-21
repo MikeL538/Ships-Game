@@ -1,12 +1,24 @@
-const mainMenu = document.querySelector(".main-menu");
-const newGameButton = document.getElementById("main-menu__new-game");
-const ContinueGameButton = document.getElementById("main-menu__continue");
-const restartGameButton = document.querySelector("#main-menu__restart");
-const newGameButtonVictory = document.querySelector(
+// Menu block
+const mainMenuBlock = document.querySelector(".main-menu");
+const mainMenuOptionsBlock = document.querySelector(".main-menu__options-menu");
+//Menu/Victory Buttons
+const buttonNewGame = document.getElementById("main-menu__new-game");
+const buttonContinueGame = document.getElementById("main-menu__continue");
+const buttonRestartGame = document.querySelector("#main-menu__restart");
+const buttonOptions = document.querySelector("#main-menu__options");
+const buttonVictoryNewGame = document.querySelector(
   ".message-container__victory-button"
 );
-const backtoMainMenuButton = document.querySelector(
+const buttonBackToMainMenu = document.querySelector(
   ".message-container__main-menu"
+);
+// Options
+const buttonWaves = document.querySelector("#main-menu__options-menu__waves");
+const numbersCoordWaveCells = document.querySelectorAll(".coordinates");
+const alphabethsCoordWaveCells = document.querySelectorAll(".coordinates");
+const boardWaveCells = document.querySelectorAll(".numbers");
+const buttonOptionsClose = document.querySelector(
+  "#main-menu__options-menu__close-button"
 );
 /////////////////////////////////////////
 const board = document.getElementById("board");
@@ -23,7 +35,8 @@ const oneShipCount = 4;
 const twoShipsCount = 3;
 const threeShipsCount = 2;
 const fourShipsCount = 1;
-const oneShipsLength = 1; // Długość statków
+// Długość statków
+const oneShipsLength = 1;
 const twoShipsLength = 2;
 const threeShipsLength = 3;
 const fourShipsLength = 4;
@@ -56,7 +69,6 @@ function generateAllShips() {
     let ship = [];
     let startCell = null;
     let direction = null;
-
     // Losowy wybór kierunku (pionowy lub poziomy)
     if (Math.random() < 0.5) {
       // Pionowy
@@ -67,19 +79,18 @@ function generateAllShips() {
       startCell = Math.floor(Math.random() * (100 - oneShipsLength));
       direction = 1;
     }
-
     // Dodawanie pól statku na planszę
     for (let j = 0; j < oneShipsLength; j++) {
       ship.push(startCell + j * direction);
     }
-
     // Sprawdzanie kolizji z istniejącymi statkami
     let overlap = false;
     for (const existingShip of allShips) {
       for (const cell of ship) {
         if (
           existingShip.includes(cell) ||
-          cells[cell].classList.contains("ship")
+          cells[cell].classList.contains("locked-cell") ||
+          cells[cell].classList.contains("locked-cell-forever")
         ) {
           overlap = true;
           break;
@@ -87,35 +98,46 @@ function generateAllShips() {
       }
       if (overlap) break;
     }
-
     // Jeśli jest kolizja, powtórzenie losowania
     if (overlap) {
       i--;
     } else {
       oneShips.push(ship);
       oneShipsHit += 1;
-
       for (const cell of ship) {
+        cells[cell].classList.add("test-ship");
         // Komórki poniżej i powyżej
         if (cell + 10 < 100) {
-          cells[cell + 10].classList.add("ship");
+          cells[cell + 10].classList.add("locked-cell");
         }
         if (cell - 10 >= 0) {
-          cells[cell - 10].classList.add("ship");
+          cells[cell - 10].classList.add("locked-cell");
         }
-        // Komórki po lewej i prawej
+        // // Komórki po lewej i prawej
         if (cell % 10 !== 0) {
-          cells[cell - 1].classList.add("ship");
+          cells[cell - 1].classList.add("locked-cell");
         }
         if ((cell + 1) % 10 !== 0) {
-          cells[cell + 1].classList.add("ship");
+          cells[cell + 1].classList.add("locked-cell");
         }
+        // // // Ukos lewo
+        // if (cell + 10 < 100) {
+        //   cells[cell + 9].classList.add("locked-cell");
+        // }
+        // if (cell - 10 >= 0) {
+        //   cells[cell - 11].classList.add("locked-cell");
+        // }
+        // // Ukos prawo
+        // if (cell - 10 >= 0) {
+        //   cells[cell - 9].classList.add("locked-cell");
+        // }
+        // if (cell + 10 < 100) {
+        //   cells[cell + 11].classList.add("locked-cell");
+        // }
       }
     }
-
     allShips.push(...oneShips);
   }
-
   /////////////////////////////
   //Tworzenie statku 2 kratki//
   /////////////////////////////
@@ -124,7 +146,6 @@ function generateAllShips() {
     ship = [];
     startCell = null;
     direction = null;
-
     // Losowy wybór kierunku (pionowy lub poziomy)
     if (Math.random() < 0.5) {
       // Pionowy
@@ -135,19 +156,18 @@ function generateAllShips() {
       startCell = Math.floor(Math.random() * (100 - twoShipsLength));
       direction = 1;
     }
-
     // Dodawanie pól statku na planszę
     for (let j = 0; j < twoShipsLength; j++) {
       ship.push(startCell + j * direction);
     }
-
     // Sprawdzanie kolizji z istniejącymi statkami
     let overlap = false;
     for (const existingShip of allShips) {
       for (const cell of ship) {
         if (
           existingShip.includes(cell) ||
-          cells[cell].classList.contains("ship")
+          cells[cell].classList.contains("locked-cell") ||
+          cells[cell].classList.contains("locked-cell-forever")
         ) {
           overlap = true;
           break;
@@ -155,34 +175,32 @@ function generateAllShips() {
       }
       if (overlap) break;
     }
-
     // Jeśli jest kolizja, powtórzenie losowania
     if (overlap) {
       i--;
     } else {
       twoShips.push(ship);
       twoShipsHit += 1;
-
       for (const cell of ship) {
         // Komórki poniżej i powyżej
+        cells[cell].classList.add("test-ship");
         if (cell + 10 < 100) {
-          cells[cell + 10].classList.add("ship");
+          cells[cell + 10].classList.add("locked-cell");
         }
         if (cell - 10 >= 0) {
-          cells[cell - 10].classList.add("ship");
+          cells[cell - 10].classList.add("locked-cell");
         }
         // Komórki po lewej i prawej
         if (cell % 10 !== 0) {
-          cells[cell - 1].classList.add("ship");
+          cells[cell - 1].classList.add("locked-cell");
         }
         if ((cell + 1) % 10 !== 0) {
-          cells[cell + 1].classList.add("ship");
+          cells[cell + 1].classList.add("locked-cell");
         }
       }
     }
     allShips.push(...twoShips);
   }
-
   /////////////////////////////
   //Tworzenie statku 3 kratki//
   /////////////////////////////
@@ -191,7 +209,6 @@ function generateAllShips() {
     ship = [];
     startCell = null;
     direction = null;
-
     // Losowy wybór kierunku (pionowy lub poziomy)
     if (Math.random() < 0.5) {
       // Pionowy
@@ -202,19 +219,18 @@ function generateAllShips() {
       startCell = Math.floor(Math.random() * (100 - threeShipsLength));
       direction = 1;
     }
-
     // Dodawanie pól statku na planszę
     for (let j = 0; j < threeShipsLength; j++) {
       ship.push(startCell + j * direction);
     }
-
     // Sprawdzanie kolizji z istniejącymi statkami
     let overlap = false;
     for (const existingShip of allShips) {
       for (const cell of ship) {
         if (
           existingShip.includes(cell) ||
-          cells[cell].classList.contains("ship")
+          cells[cell].classList.contains("locked-cell") ||
+          cells[cell].classList.contains("locked-cell-forever")
         ) {
           overlap = true;
           break;
@@ -222,43 +238,40 @@ function generateAllShips() {
       }
       if (overlap) break;
     }
-
     // Jeśli jest kolizja, powtórzenie losowania
     if (overlap) {
       i--;
     } else {
       threeShips.push(ship);
       threeShipsHit += 1;
-
       for (const cell of ship) {
         // Komórki poniżej i powyżej
+        cells[cell].classList.add("test-ship");
         if (cell + 10 < 100) {
-          cells[cell + 10].classList.add("ship");
+          cells[cell + 10].classList.add("locked-cell");
         }
         if (cell - 10 >= 0) {
-          cells[cell - 10].classList.add("ship");
+          cells[cell - 10].classList.add("locked-cell");
         }
         // Komórki po lewej i prawej
         if (cell % 10 !== 0) {
-          cells[cell - 1].classList.add("ship");
+          cells[cell - 1].classList.add("locked-cell");
         }
         if ((cell + 1) % 10 !== 0) {
-          cells[cell + 1].classList.add("ship");
+          cells[cell + 1].classList.add("locked-cell");
         }
       }
     }
     allShips.push(...threeShips);
   }
-
-  /////////////////////////////
-  //Tworzenie statku 4 kratki//
-  /////////////////////////////
+  ///////////////////////////
+  // Tworzenie statku 4 kratki//
+  ///////////////////////////
   fourShips = [];
   for (let i = 0; i < fourShipsCount; i++) {
     const ship = [];
     startCell = null;
     direction = null;
-
     // Losowy wybór kierunku (pionowy lub poziomy)
     if (Math.random() < 0.5) {
       // Pionowy
@@ -269,19 +282,18 @@ function generateAllShips() {
       startCell = Math.floor(Math.random() * (100 - fourShipsLength));
       direction = 1;
     }
-
     // Dodawanie pól statku na planszę
     for (let j = 0; j < fourShipsLength; j++) {
       ship.push(startCell + j * direction);
     }
-
     // Sprawdzanie kolizji z istniejącymi statkami
     let overlap = false;
     for (const existingShip of allShips) {
       for (const cell of ship) {
         if (
           existingShip.includes(cell) ||
-          cells[cell].classList.contains("ship")
+          cells[cell].classList.contains("locked-cell") ||
+          cells[cell].classList.contains("locked-cell-forever")
         ) {
           overlap = true;
           break;
@@ -289,28 +301,27 @@ function generateAllShips() {
       }
       if (overlap) break;
     }
-
     // Jeśli jest kolizja, powtórzenie losowania
     if (overlap) {
       i--;
     } else {
       fourShips.push(ship);
       fourShipsHit += 1;
-
       for (const cell of ship) {
         // Komórki poniżej i powyżej
+        cells[cell].classList.add("test-ship");
         if (cell + 10 < 100) {
-          cells[cell + 10].classList.add("ship");
+          cells[cell + 10].classList.add("locked-cell");
         }
         if (cell - 10 >= 0) {
-          cells[cell - 10].classList.add("ship");
+          cells[cell - 10].classList.add("locked-cell");
         }
         // Komórki po lewej i prawej
         if (cell % 10 !== 0) {
-          cells[cell - 1].classList.add("ship");
+          cells[cell - 1].classList.add("locked-cell");
         }
         if ((cell + 1) % 10 !== 0) {
-          cells[cell + 1].classList.add("ship");
+          cells[cell + 1].classList.add("locked-cell");
         }
       }
     }
@@ -390,16 +401,16 @@ function handleShot(cellIndex) {
 
   if (hits === 20) {
     // Wszystkie statki zatopione, koniec gry
-    backtoMainMenuButton.style.pointerEvents = "none";
+    buttonBackToMainMenu.style.pointerEvents = "none";
     table.style.pointerEvents = "none";
     msgMain.innerHTML = `Victory!<br /> 
     Congratulations!<br /><br />
     Amount of shots: ${shots}<br /><br />
     Your time: ${timeMinutes} minutes and ${timeSeconds} seconds`;
     clearInterval(timerInterval);
-    newGameButtonVictory.classList.add("show");
+    buttonVictoryNewGame.classList.add("show");
     msgMain.classList.add("message-container__victory");
-    newGameButtonVictory.style.display = "block";
+    buttonVictoryNewGame.style.display = "block";
     window.scrollTo(0, 0);
     cells.forEach((cell) => cell.removeEventListener("click", handleShot));
   }
@@ -408,11 +419,20 @@ function handleShot(cellIndex) {
 function firstStart() {
   cells.forEach((cell, index) => {
     cell.addEventListener("click", () => handleShot(index));
+    if (
+      cell.classList.contains(
+        "locked-cell-forever" || "locked-cell-forever--hidden"
+      )
+    ) {
+      // Dodaj nawiasy klamrowe tu
+      cell.removeEventListener("click", () => handleShot(index));
+      cell.style.pointerEvents = "none";
+    }
   });
   setTimeout(() => {
-    newGameButton.remove();
-    ContinueGameButton.style.display = "block";
-    restartGameButton.style.display = "block";
+    buttonNewGame.remove();
+    buttonContinueGame.style.display = "block";
+    buttonRestartGame.style.display = "block";
   }, 400);
 }
 
@@ -437,14 +457,14 @@ function initGame() {
   hits = 0; // Licznik trafionych pól
 
   msgMain.classList.remove("message-container__victory");
-  newGameButtonVictory.classList.remove("show");
+  buttonVictoryNewGame.classList.remove("show");
 
   cells.forEach((cell) => {
-    cell.classList.remove("hit", "miss", "ship");
+    cell.classList.remove("hit", "miss", "locked-cell", "test-ship");
   });
 
   generateAllShips();
-  startTimer();
+
   msgAdditional.innerHTML = `Shots: ${shots}<br /> 
   Sunken: ${hits}/20<br /><br /> 
 
@@ -456,6 +476,8 @@ function initGame() {
 
   msgTimer.innerHTML = "Time: 00:00";
   table.style.pointerEvents = "all";
+
+  startTimer();
 }
 
 function timerMessage() {
@@ -477,58 +499,77 @@ function startTimer() {
   }, 1000);
 }
 
-newGameButton.addEventListener("click", () => {
-  newGameButton.style.pointerEvents = "none";
-  backtoMainMenuButton.classList.remove("hide");
+buttonNewGame.addEventListener("click", () => {
+  buttonNewGame.style.pointerEvents = "none";
+  buttonBackToMainMenu.classList.remove("hide-element");
 
-  if (mainMenu.classList.contains("main-menu--hide")) {
-    mainMenu.style.display = "flex";
-  }
-  mainMenu.classList.toggle("main-menu--hide");
+  mainMenuBlock.classList.toggle("hide-element");
 
   firstStart();
   initGame();
 });
 
-backtoMainMenuButton.addEventListener("click", () => {
+buttonBackToMainMenu.addEventListener("click", () => {
   table.style.pointerEvents = "none";
-  backtoMainMenuButton.style.pointerEvents = "none";
+  buttonBackToMainMenu.style.pointerEvents = "none";
   clearInterval(timerInterval);
 
-  if (mainMenu.classList.contains("main-menu--hide")) {
-    mainMenu.style.display = "flex";
-  }
-  mainMenu.classList.toggle("main-menu--hide");
+  mainMenuBlock.classList.toggle("hide-element");
 });
 
-ContinueGameButton.addEventListener("click", () => {
-  backtoMainMenuButton.style.pointerEvents = "all";
+buttonContinueGame.addEventListener("click", () => {
+  buttonBackToMainMenu.style.pointerEvents = "all";
   table.style.pointerEvents = "all";
   startTimer();
-  if (mainMenu.classList.contains("main-menu--hide")) {
-    mainMenu.style.display = "flex";
-  }
-  mainMenu.classList.toggle("main-menu--hide");
+
+  mainMenuBlock.classList.toggle("hide-element");
 });
 
-restartGameButton.addEventListener("click", () => {
-  backtoMainMenuButton.style.pointerEvents = "all";
+buttonRestartGame.addEventListener("click", () => {
+  buttonBackToMainMenu.style.pointerEvents = "all";
   initGame();
-  if (mainMenu.classList.contains("main-menu--hide")) {
-    mainMenu.style.display = "flex";
-  }
-  mainMenu.classList.toggle("main-menu--hide");
+
+  mainMenuBlock.classList.toggle("hide-element");
 });
 
-newGameButtonVictory.addEventListener("click", () => {
-  newGameButtonVictory.style.display = "none";
-  backtoMainMenuButton.style.pointerEvents = "all";
+buttonOptions.addEventListener("click", () => {
+  mainMenuOptionsBlock.classList.toggle("hide-element-options");
+});
+
+buttonOptionsClose.addEventListener("click", () => {
+  mainMenuOptionsBlock.classList.toggle("hide-element-options");
+});
+
+buttonWaves.addEventListener("click", () => {
+  boardWaveCells.forEach((cell) => {
+    if (cell.classList.contains("coordinates")) {
+      return;
+    }
+    cell.classList.toggle("numbers-waves");
+  });
+  numbersCoordWaveCells.forEach((cell) => {
+    cell.classList.toggle("coordinates-waves");
+    cell.classList.toggle("coordinates-waves");
+    if (cell.classList.contains("coordinates-waves")) {
+      buttonWaves.innerHTML = "Off";
+    } else {
+      buttonWaves.innerHTML = "On";
+    }
+  });
+  alphabethsCoordWaveCells.forEach((cell) => {
+    cell.classList.toggle("coordinates-waves");
+  });
+});
+
+buttonVictoryNewGame.addEventListener("click", () => {
+  buttonVictoryNewGame.style.display = "none";
+  buttonBackToMainMenu.style.pointerEvents = "all";
   initGame();
 });
 
 window.onload = function onPageLoad() {
   table.style.pointerEvents = "none";
-  ContinueGameButton.style.display = "none";
-  restartGameButton.style.display = "none";
-  newGameButtonVictory.style.display = "none";
+  buttonContinueGame.style.display = "none";
+  buttonRestartGame.style.display = "none";
+  buttonVictoryNewGame.style.display = "none";
 };

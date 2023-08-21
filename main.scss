@@ -4,9 +4,48 @@
   padding: 0;
 }
 
-.ship {
-  color: none;
-  // Mark cells next to ships to prevent ship next to ship game.
+.main-menu {
+  align-items: center;
+  background: url("./images/icons.svg#main-menu-background") center 50px/800px
+    400px no-repeat rgb(221, 252, 150);
+  border: 12px solid #000;
+  border-top: 32px solid #000;
+  border-bottom: 32px solid #000;
+  display: flex;
+  height: 400px;
+  justify-content: center;
+  left: 36%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: 1s;
+  width: 400px;
+  z-index: 100;
+
+  &__container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 250px;
+
+    > button {
+      cursor: pointer;
+      font-size: 20px;
+      height: 40px;
+      margin: 10px 0;
+      width: 120px;
+    }
+  }
+
+  &__options-menu {
+    width: 300px;
+    height: 300px;
+    border: 1px solid;
+    position: absolute;
+    transition: 0.5s;
+    background: #888888;
+  }
 }
 
 .message-container {
@@ -14,11 +53,12 @@
   flex-direction: column;
   font-size: 32px;
   font-weight: 700;
+  height: 610px;
   margin: 0 15px;
   text-align: left;
+  transition: ease-in-out;
   width: 270px;
   z-index: 100;
-  height: 610px;
 
   &__additional {
     font-size: 30px;
@@ -53,7 +93,7 @@
     top: 70%;
     transform: translate(-80%, -120%);
     width: 600px;
-    z-index: 11;
+    z-index: 10;
 
     &-button {
       position: absolute;
@@ -74,6 +114,7 @@
     border-radius: 12px;
     border: none;
     cursor: pointer;
+    display: block;
     font-size: 16px;
     height: 30px;
     isolation: isolate;
@@ -119,9 +160,8 @@
 
   > td {
     align-items: center;
-    background-color: #00c073;
-    border: 1px solid;
     border-right: none;
+    border: 1px solid;
     display: flex;
     font-size: 36px;
     height: 60px;
@@ -130,8 +170,8 @@
 
     &:first-child {
       background: none;
-      border: none;
       border-bottom: 1px solid;
+      border: none;
       width: 60px;
     }
 
@@ -142,27 +182,45 @@
   }
 }
 
+.coordinates {
+  background-color: #00c073;
+
+  &-waves {
+    animation: gradient 40s ease infinite;
+    background: {
+      image: linear-gradient(
+        right,
+        #00a6c0 0%,
+        #00c073 44%,
+        #00a6c0 50%,
+        #00c073 80%,
+        #00a6c0 90%
+      );
+      position: center;
+      size: 500% 500%;
+    }
+  }
+}
+
 .numbers {
   background: rgb(69, 114, 240);
   border-left: 1px solid;
   display: flex;
 
-  &-color {
-    background-color: #00c073;
-  }
-
-  animation: gradient 40s ease infinite;
-  background: {
-    image: linear-gradient(
-      60deg,
-      rgb(69, 114, 240) 0%,
-      rgb(21, 44, 116) 44%,
-      rgb(69, 114, 240) 50%,
-      rgb(24, 52, 135) 80%,
-      rgb(69, 114, 240) 90%
-    );
-    position: center;
-    size: 500% 500%;
+  &-waves {
+    animation: gradient 40s ease infinite;
+    background: {
+      image: linear-gradient(
+        60deg,
+        rgb(69, 114, 240) 0%,
+        rgb(21, 44, 116) 44%,
+        rgb(69, 114, 240) 50%,
+        rgb(24, 52, 135) 80%,
+        rgb(69, 114, 240) 90%
+      );
+      position: center;
+      size: 500% 500%;
+    }
   }
 
   > td {
@@ -180,6 +238,9 @@
     }
 
     > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       background: none;
       height: 60px;
       position: relative;
@@ -191,6 +252,46 @@
         height: 59px;
       }
     }
+  }
+}
+
+.new-game--victory {
+  cursor: pointer;
+  display: none;
+  font-size: 20px;
+  height: 40px;
+  margin: 10px 0;
+  position: absolute;
+  left: 40%;
+  width: 120px;
+}
+
+.show {
+  display: block;
+}
+
+.hide-element {
+  transform: translate(-50%, -1000%);
+  opacity: 0;
+  z-index: -10;
+  pointer-events: none;
+
+  &-options {
+    opacity: 0;
+    z-index: -10;
+    pointer-events: none;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
   }
 }
 
@@ -233,73 +334,24 @@
   }
 }
 
-.main-menu {
-  align-items: center;
-  background: url("./images/icons.svg#main-menu-background") center 50px/800px
-    400px no-repeat rgb(221, 252, 150);
-  border: 12px solid #000;
-  border-top: 32px solid #000;
-  border-bottom: 32px solid #000;
-  display: flex;
-  height: 400px;
-  justify-content: center;
-  left: 36%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  transition: 1s;
-  width: 400px;
-  z-index: 100;
+.locked-cell,
+.locked-cell-forever {
+  // background: red !important;
+  // z-index: 1;
 
-  &__container {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 250px;
+  color: none;
 
-    > button {
-      cursor: pointer;
-      font-size: 20px;
-      height: 40px;
-      margin: 10px 0;
-      width: 120px;
-    }
-  }
+  // Mark cells next to ships to prevent ship next to ship game.
 }
 
-.main-menu--hide {
-  transform: translate(-50%, -1000%);
-  transition: 3s;
-}
-
-.new-game--victory {
-  cursor: pointer;
-  display: none;
-  font-size: 20px;
-  height: 40px;
-  margin: 10px 0;
-  position: absolute;
-  left: 40%;
-  width: 120px;
-}
-
-.show {
-  display: block;
-}
-
-.hide {
+.locked-cell-forever--hidden {
+  opacity: 0;
+  pointer-events: none;
+  z-index: -100;
   display: none;
 }
 
-@keyframes gradient {
-  0% {
-    background-position: 0 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0 50%;
-  }
-}
+// .test-ship {
+//   background: pink !important;
+//   z-index: 9999;
+// }
