@@ -1,0 +1,93 @@
+@media (max-width: "450px") {
+  #board {
+    width: 330px;
+    margin: 0 5px;
+    flex-direction: column;
+  }
+
+  .main-menu {
+    width: 300px;
+    left: 50%;
+    top: 35%;
+
+    &__options-menu {
+      width: 250px;
+    }
+  }
+
+  #alphabet {
+    > td {
+      width: 30px;
+      height: 40px;
+      font-size: 30px;
+
+      &:first-child {
+        width: 30px;
+      }
+
+      &:last-child {
+        width: 30px;
+      }
+    }
+  }
+
+  .numbers {
+    > td {
+      width: 30px;
+      height: 40px;
+      font-size: 30px;
+
+      > div {
+        width: 30px;
+        height: 40px;
+
+        &:hover {
+          background-color: rgb(3, 80, 196);
+          cursor: pointer;
+          height: 29px;
+        }
+      }
+    }
+  }
+
+  .message-container {
+    font-size: 24px;
+    margin: 0 auto;
+    text-align: center;
+    height: auto;
+
+    &__additional {
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    &__timer {
+      margin: 0;
+    }
+
+    &__main-menu {
+      margin: 20px auto;
+    }
+  }
+
+  // Hit/Miss //
+  .hit {
+    &::after {
+      background: {
+        image: url(./images/ship.jpg);
+        position: center;
+        size: 29px 39px;
+      }
+    }
+  }
+
+  .miss {
+    &::after {
+      background: {
+        image: url(./images/miss.jpg);
+        position: center;
+        size: 29px 39px;
+      }
+    }
+  }
+}
