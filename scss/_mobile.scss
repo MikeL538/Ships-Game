@@ -1,4 +1,4 @@
-@media (max-width: "450px") {
+@media (max-width: 450px) {
   #board {
     width: 330px;
     margin: 0 5px;
@@ -40,6 +40,7 @@
       > div {
         width: 30px;
         height: 40px;
+        position: relative;
 
         &:hover {
           background-color: rgb(3, 80, 196);
@@ -74,7 +75,7 @@
   .hit {
     &::after {
       background: {
-        image: url(./images/ship.jpg);
+        image: url(../images/ship.jpg);
         position: center;
         size: 29px 39px;
       }
@@ -84,7 +85,7 @@
   .miss {
     &::after {
       background: {
-        image: url(./images/miss.jpg);
+        image: url(../images/miss.jpg);
         position: center;
         size: 29px 39px;
       }

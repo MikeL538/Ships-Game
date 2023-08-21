@@ -303,7 +303,7 @@
 
   &::after {
     background: {
-      image: url(./images/ship.jpg);
+      image: url(../images/ship.jpg);
       position: -1px 0.3px;
       size: 59px 59px;
       repeat: no-repeat;
@@ -322,7 +322,7 @@
 
   &::after {
     background: {
-      image: url(./images/miss.jpg);
+      image: url(../images/miss.jpg);
       position: -1px 0.3px;
       size: 60px 59px;
       repeat: no-repeat;
