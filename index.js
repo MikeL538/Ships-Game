@@ -1,6 +1,6 @@
 // Menu block
 const mainMenuBlock = document.querySelector(".main-menu");
-const mainMenuOptionsBlock = document.querySelector(".main-menu__options-menu");
+const mainMenuOptionsBlock = document.querySelector(".main-menu-options");
 //Menu/Victory Buttons
 const buttonNewGame = document.getElementById("main-menu__new-game");
 const buttonContinueGame = document.getElementById("main-menu__continue");
@@ -13,16 +13,15 @@ const buttonBackToMainMenu = document.querySelector(
   ".message-container__main-menu"
 );
 // Options
-const buttonWaves = document.querySelector("#main-menu__options-menu__waves");
+const buttonWaves = document.querySelector(".main-menu-options__div__waves");
 const numbersCoordWaveCells = document.querySelectorAll(".coordinates");
 const alphabethsCoordWaveCells = document.querySelectorAll(".coordinates");
 const boardWaveCells = document.querySelectorAll(".numbers");
-const buttonOptionsClose = document.querySelector(
-  "#main-menu__options-menu__close-button"
-);
 const hitVolume = document.querySelector(".hit-volume");
 const missVolume = document.querySelector(".miss-volume");
-
+const buttonOptionsClose = document.querySelector(
+  "#main-menu__options-close-button"
+);
 /////////////////////////////////////////
 const board = document.getElementById("board");
 const table = document.getElementById("table");
@@ -129,9 +128,9 @@ buttonWaves.addEventListener("click", () => {
     cell.classList.toggle("coordinates-waves");
     cell.classList.toggle("coordinates-waves");
     if (cell.classList.contains("coordinates-waves")) {
-      buttonWaves.innerHTML = "Off";
-    } else {
       buttonWaves.innerHTML = "On";
+    } else {
+      buttonWaves.innerHTML = "Off";
     }
   });
   alphabethsCoordWaveCells.forEach((cell) => {

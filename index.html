@@ -21,46 +21,55 @@
           <button id="main-menu__options" type="button">Options</button>
           <button id="main-menu__ranking" type="button">Ranking</button>
         </div>
-        <div class="main-menu__options-menu hide-element-options">
-          <div class="main-menu__options-menu__div">
+        <div class="main-menu-options hide-element-options">
+          <div class="main-menu-options__div">
             <span>
-              Waves are:
-              <button id="main-menu__options-menu__waves">On</button>
+              Waves:
+              <button
+                class="main-menu-options__div__waves main-menu-options__div__buttons"
+              >
+                Off
+              </button>
             </span>
 
             <span>
               Hit sound:
               <input
-                class="main-menu__options-menu__volume hit-volume"
+                class="main-menu-options__div__volume main-menu-options__div__volume--margin hit-volume"
                 type="range"
                 min="0"
                 step="0.01"
                 max="1"
                 ;
               />
-              <span id="hit-volume-percenage"></span>
+              <span id="hit-volume-percenage">100%</span>
             </span>
 
             <span>
               Miss sound:
               <input
-                class="main-menu__options-menu__volume miss-volume"
+                class="main-menu-options__div__volume miss-volume"
                 type="range"
                 min="0"
                 step="0.01"
                 max="1"
                 ;
               />
-              <span id="miss-volume-percenage"></span>
+              <span id="miss-volume-percenage">100%</span>
             </span>
 
-            <span>
-              Empty
-              <button>On</button>
+            <span class="main-menu-options__div-difficulty">
+              <p>Difficulty:</p>
+              <button class="main-menu-options__div__buttons">Easy</button>
+              <button class="main-menu-options__div__buttons">Normal</button>
+              <button class="main-menu-options__div__buttons">Hardcore</button>
             </span>
           </div>
 
-          <button id="main-menu__options-menu__close-button">
+          <button
+            class="main-menu-options__div__buttons main-menu-options__div__buttons-close"
+            id="main-menu__options-close-button"
+          >
             Close Options
           </button>
         </div>

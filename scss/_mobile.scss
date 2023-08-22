@@ -1,7 +1,7 @@
 @media (max-width: 450px) {
   #board {
     flex-direction: column;
-    margin: 0 5px;
+    margin: 0 auto;
     width: 330px;
   }
 
@@ -22,7 +22,7 @@
   #alphabet {
     > td {
       font-size: 30px;
-      height: 38px;
+      height: 25px;
       width: 32px;
 
       &:first-child {
@@ -60,13 +60,13 @@
   }
 
   .message-container {
-    font-size: 24px;
+    font-size: 20px;
     height: auto;
     margin: 0 auto;
     text-align: center;
 
     &__additional {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 400;
     }
 
@@ -81,6 +81,8 @@
     }
 
     &__main-menu {
+      height: 20px;
+      width: 90px;
       margin: 15px auto;
     }
 
