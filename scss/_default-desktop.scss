@@ -15,11 +15,10 @@
 
 .main-menu {
   align-items: center;
-  background: url("./images/icons.svg#main-menu-background") center 50px/800px
-    400px no-repeat rgb(221, 252, 150);
-  border: 12px solid #000;
-  border-top: 32px solid #000;
-  border-bottom: 32px solid #000;
+  background: url("../images/icons.svg#main-menu-background") 0 82px/600px 400px
+    no-repeat rgb(221, 252, 150);
+  border-radius: 40px;
+  border: 20px solid rgb(160, 200, 100);
   display: flex;
   height: 400px;
   justify-content: center;
@@ -28,7 +27,7 @@
   top: 50%;
   transform: translate(-50%, -50%);
   transition: 1s;
-  width: 400px;
+  width: 450px;
   z-index: 100;
 
   &__container {
@@ -39,6 +38,8 @@
     width: 250px;
 
     > button {
+      background: rgb(0, 45, 129);
+      border-radius: 18px;
       cursor: pointer;
       font-size: 20px;
       height: 40px;
@@ -48,12 +49,49 @@
   }
 
   &__options-menu {
-    width: 300px;
-    height: 300px;
-    border: 1px solid;
+    align-items: center;
+    background: rgb(52, 88, 155);
+    border-radius: 32px;
+    border: 12px solid rgb(32, 68, 125);
+    display: flex;
+    flex-direction: column;
+    font-size: 24px;
+    height: 330px; // Test height
+    justify-content: space-between;
     position: absolute;
     transition: 0.5s;
-    background: #888888;
+    width: 360px;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      margin: 15px 0;
+      align-items: flex-start;
+      width: 290px;
+
+      &:first-of-type {
+        height: 250px;
+      }
+    }
+
+    > span > button,
+    button {
+      border-radius: 20px;
+      background: rgb(160, 200, 100);
+      color: rgb(0, 0, 0);
+      cursor: pointer;
+      font-size: 18px;
+      padding: 1.5px 8px;
+
+      &:last-child {
+        margin-bottom: 15px;
+      }
+    }
+
+    &__volume {
+      width: 100px;
+    }
   }
 }
 
@@ -182,14 +220,13 @@
   }
 
   &__sunken-pop-up {
-    background-color: rgb(10, 109, 254);
     color: gold;
     font-size: 36px;
     font-weight: 700;
     left: 23%;
     position: absolute;
     top: 40%;
-    width: 260px;
+    width: 270px;
     z-index: 10;
   }
 
@@ -205,12 +242,15 @@
     z-index: 10;
 
     &-button {
+      background-color: rgb(21, 44, 116);
+      border-radius: 10%;
+      color: rgb(205, 252, 94);
+      font-size: 24px;
+      height: 50px;
       position: absolute;
-      right: 54%;
+      left: 29%;
       top: 65%;
       width: 150px;
-      font-size: 24px;
-      height: 70px;
     }
   }
 
@@ -220,7 +260,7 @@
       rgba(89, 131, 252, 1) 10%,
       rgba(41, 53, 86, 1) 100%
     );
-    border-radius: 12px;
+    border-radius: 20px;
     border: none;
     cursor: pointer;
     display: block;

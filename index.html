@@ -22,10 +22,44 @@
           <button id="main-menu__ranking" type="button">Ranking</button>
         </div>
         <div class="main-menu__options-menu hide-element-options">
-          <span
-            >Waves are:
-            <button id="main-menu__options-menu__waves">On</button></span
-          >
+          <div class="main-menu__options-menu__div">
+            <span>
+              Waves are:
+              <button id="main-menu__options-menu__waves">On</button>
+            </span>
+
+            <span>
+              Hit sound:
+              <input
+                class="main-menu__options-menu__volume hit-volume"
+                type="range"
+                min="0"
+                step="0.01"
+                max="1"
+                ;
+              />
+              <span id="hit-volume-percenage"></span>
+            </span>
+
+            <span>
+              Miss sound:
+              <input
+                class="main-menu__options-menu__volume miss-volume"
+                type="range"
+                min="0"
+                step="0.01"
+                max="1"
+                ;
+              />
+              <span id="miss-volume-percenage"></span>
+            </span>
+
+            <span>
+              Empty
+              <button>On</button>
+            </span>
+          </div>
+
           <button id="main-menu__options-menu__close-button">
             Close Options
           </button>

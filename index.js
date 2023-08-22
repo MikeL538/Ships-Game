@@ -20,6 +20,9 @@ const boardWaveCells = document.querySelectorAll(".numbers");
 const buttonOptionsClose = document.querySelector(
   "#main-menu__options-menu__close-button"
 );
+const hitVolume = document.querySelector(".hit-volume");
+const missVolume = document.querySelector(".miss-volume");
+
 /////////////////////////////////////////
 const board = document.getElementById("board");
 const table = document.getElementById("table");
@@ -57,8 +60,165 @@ let fourShipsHit = 0;
 let shots = 0; // Licznik ogólnych strzałów
 let hits = 0; // Licznik trafionych pól statków
 let timeSeconds = 0; // Mierzenie czasu rozgrywki sekundy
-let timeMinutes = 0; // Mierzenie czasu rozgrywki minuty
+// Mierzenie czasu rozgrywki minuty
+let timeMinutes = 0;
 let timerInterval;
+//Dźwięki
+let hitSoundVolume = 1;
+let missSoundVolume = 1;
+let hitVolumePercentage = document.getElementById("hit-volume-percenage");
+let missVolumePercentage = document.getElementById("miss-volume-percenage");
+/////////////////////////////////////////
+
+window.onload = function onPageLoad() {
+  table.style.pointerEvents = "none";
+  buttonContinueGame.style.display = "none";
+  buttonRestartGame.style.display = "none";
+  buttonVictoryNewGame.style.display = "none";
+};
+
+buttonNewGame.addEventListener("click", () => {
+  buttonNewGame.style.pointerEvents = "none";
+  buttonBackToMainMenu.classList.remove("hide-element");
+
+  mainMenuBlock.classList.toggle("hide-element");
+
+  firstStart();
+  initGame();
+});
+
+buttonBackToMainMenu.addEventListener("click", () => {
+  table.style.pointerEvents = "none";
+  buttonBackToMainMenu.style.pointerEvents = "none";
+  clearInterval(timerInterval);
+
+  mainMenuBlock.classList.toggle("hide-element");
+});
+
+buttonContinueGame.addEventListener("click", () => {
+  buttonBackToMainMenu.style.pointerEvents = "all";
+  table.style.pointerEvents = "all";
+  startTimer();
+
+  mainMenuBlock.classList.toggle("hide-element");
+});
+
+buttonRestartGame.addEventListener("click", () => {
+  buttonBackToMainMenu.style.pointerEvents = "all";
+  initGame();
+
+  mainMenuBlock.classList.toggle("hide-element");
+});
+
+buttonOptions.addEventListener("click", () => {
+  mainMenuOptionsBlock.classList.toggle("hide-element-options");
+});
+
+buttonOptionsClose.addEventListener("click", () => {
+  mainMenuOptionsBlock.classList.toggle("hide-element-options");
+});
+
+buttonWaves.addEventListener("click", () => {
+  boardWaveCells.forEach((cell) => {
+    if (cell.classList.contains("coordinates")) {
+      return;
+    }
+    cell.classList.toggle("numbers-waves");
+  });
+  numbersCoordWaveCells.forEach((cell) => {
+    cell.classList.toggle("coordinates-waves");
+    cell.classList.toggle("coordinates-waves");
+    if (cell.classList.contains("coordinates-waves")) {
+      buttonWaves.innerHTML = "Off";
+    } else {
+      buttonWaves.innerHTML = "On";
+    }
+  });
+  alphabethsCoordWaveCells.forEach((cell) => {
+    cell.classList.toggle("coordinates-waves");
+  });
+});
+
+buttonVictoryNewGame.addEventListener("click", () => {
+  buttonVictoryNewGame.style.display = "none";
+  buttonBackToMainMenu.style.pointerEvents = "all";
+  initGame();
+});
+
+hitVolume.addEventListener("input", () => {
+  hitSoundVolume = parseFloat(hitVolume.value); // Konwertuj na liczbę zmiennoprzecinkową
+  hitVolumePercentage.innerHTML = `${parseInt(hitSoundVolume * 100)}%`;
+});
+
+missVolume.addEventListener("input", () => {
+  missSoundVolume = parseFloat(missVolume.value); // Konwertuj na liczbę zmiennoprzecinkową
+  missVolumePercentage.innerHTML = `${parseInt(missSoundVolume * 100)}%`;
+});
+
+// Inicjalizacja gry
+function initGame() {
+  timeSeconds = 0;
+  timeMinutes = 0;
+
+  msgMain.textContent = "Shoot the ships!";
+  oneShips = []; // Tablica przechowująca położenie statków
+  twoShips = [];
+  threeShips = [];
+  fourShips = [];
+  allShips = [];
+
+  oneShipsHit = 0; // Liczba trafień statków
+  twoShipsHit = 0;
+  threeShipsHit = 0;
+  fourShipsHit = 0;
+
+  shots = 0; // Licznik strzałów
+  hits = 0; // Licznik trafionych pól
+
+  msgMain.classList.remove("message-container__victory");
+  buttonVictoryNewGame.classList.remove("show");
+
+  cells.forEach((cell) => {
+    cell.classList.remove("hit", "miss", "locked-cell", "test-ship");
+  });
+
+  generateAllShips();
+
+  msgAdditional.innerHTML = `Shots: ${shots}<br /> 
+  Sunken: ${hits}/20<br /><br /> 
+
+  Remaining Ships:<br />
+  One square ships: ${oneShipsHit}<br />
+  Two squares ships: ${twoShipsHit}<br />
+  Three squares ships: ${threeShipsHit}<br />
+  Four squares ship: ${fourShipsHit}`;
+
+  msgTimer.innerHTML = "Time: 00:00";
+  table.style.pointerEvents = "all";
+
+  startTimer();
+}
+
+function firstStart() {
+  cells.forEach((cell, index) => {
+    cell.addEventListener("click", () => handleShot(index));
+    if (
+      cell.classList.contains(
+        "locked-cell-forever" || "locked-cell-forever--hidden"
+      )
+    ) {
+      // Dodaj nawiasy klamrowe tu
+      cell.removeEventListener("click", () => handleShot(index));
+      cell.style.pointerEvents = "none";
+    }
+  });
+  setTimeout(() => {
+    buttonNewGame.remove();
+    buttonContinueGame.style.display = "block";
+    buttonRestartGame.style.display = "block";
+  }, 400);
+}
+
 // Losowe rozmieszczenie statków na planszy
 function generateAllShips() {
   /////////////////////////////
@@ -366,25 +526,37 @@ function handleShot(cellIndex) {
       if (ship.length === 0) {
         // Statek zatopiony
         msgMain.textContent = "Hit!";
-
+        const sinking = new Audio("./sounds/sinking.mp3");
+        setTimeout(() => {
+          sinking.play();
+        }, 200);
         msgSunken.textContent = "You sunk a ship!";
         setTimeout(() => {
           msgSunken.textContent = "";
-        }, 700);
+        }, 900);
 
         table.style.pointerEvents = "none";
         setTimeout(() => {
           table.style.pointerEvents = "all";
-        }, 500);
+        }, 600);
       } else {
         msgMain.textContent = "Hit!";
       }
+
+      const hitSound = new Audio("./sounds/hit.mp3");
+      hitSound.volume = hitSoundVolume; // Ustaw głośność
+      hitSound.play();
+
       cell.classList.add("hit");
       break;
     }
   }
 
   if (!hit) {
+    const missSound = new Audio("./sounds/miss.mp3");
+    missSound.volume = missSoundVolume; // Ustaw głośność
+    missSound.play();
+
     msgMain.textContent = "Miss!";
     cell.classList.add("miss");
   }
@@ -406,7 +578,7 @@ function handleShot(cellIndex) {
     msgMain.innerHTML = `Victory!<br /> 
     Congratulations!<br /><br />
     Amount of shots: ${shots}<br /><br />
-    Your time: ${timeMinutes} minutes and ${timeSeconds} seconds`;
+    Ships sunken in:<br /> ${timeMinutes} minutes and ${timeSeconds} seconds`;
     clearInterval(timerInterval);
     buttonVictoryNewGame.classList.add("show");
     msgMain.classList.add("message-container__victory");
@@ -416,70 +588,7 @@ function handleShot(cellIndex) {
   }
 }
 
-function firstStart() {
-  cells.forEach((cell, index) => {
-    cell.addEventListener("click", () => handleShot(index));
-    if (
-      cell.classList.contains(
-        "locked-cell-forever" || "locked-cell-forever--hidden"
-      )
-    ) {
-      // Dodaj nawiasy klamrowe tu
-      cell.removeEventListener("click", () => handleShot(index));
-      cell.style.pointerEvents = "none";
-    }
-  });
-  setTimeout(() => {
-    buttonNewGame.remove();
-    buttonContinueGame.style.display = "block";
-    buttonRestartGame.style.display = "block";
-  }, 400);
-}
-
-// Inicjalizacja gry
-function initGame() {
-  timeSeconds = 0;
-  timeMinutes = 0;
-
-  msgMain.textContent = "Shoot the ships!";
-  oneShips = []; // Tablica przechowująca położenie statków
-  twoShips = [];
-  threeShips = [];
-  fourShips = [];
-  allShips = [];
-
-  oneShipsHit = 0; // Liczba trafień statków
-  twoShipsHit = 0;
-  threeShipsHit = 0;
-  fourShipsHit = 0;
-
-  shots = 0; // Licznik strzałów
-  hits = 0; // Licznik trafionych pól
-
-  msgMain.classList.remove("message-container__victory");
-  buttonVictoryNewGame.classList.remove("show");
-
-  cells.forEach((cell) => {
-    cell.classList.remove("hit", "miss", "locked-cell", "test-ship");
-  });
-
-  generateAllShips();
-
-  msgAdditional.innerHTML = `Shots: ${shots}<br /> 
-  Sunken: ${hits}/20<br /><br /> 
-
-  Remaining Ships:<br />
-  One square ships: ${oneShipsHit}<br />
-  Two squares ships: ${twoShipsHit}<br />
-  Three squares ships: ${threeShipsHit}<br />
-  Four squares ship: ${fourShipsHit}`;
-
-  msgTimer.innerHTML = "Time: 00:00";
-  table.style.pointerEvents = "all";
-
-  startTimer();
-}
-
+// Mierzenie czasu gry
 function timerMessage() {
   const formattedSeconds = timeSeconds.toString().padStart(2, "0");
   const formattedMinutes = timeMinutes.toString().padStart(2, "0");
@@ -498,78 +607,3 @@ function startTimer() {
     timerMessage(); // Wywołanie funkcji timerMessage() co sekundę
   }, 1000);
 }
-
-buttonNewGame.addEventListener("click", () => {
-  buttonNewGame.style.pointerEvents = "none";
-  buttonBackToMainMenu.classList.remove("hide-element");
-
-  mainMenuBlock.classList.toggle("hide-element");
-
-  firstStart();
-  initGame();
-});
-
-buttonBackToMainMenu.addEventListener("click", () => {
-  table.style.pointerEvents = "none";
-  buttonBackToMainMenu.style.pointerEvents = "none";
-  clearInterval(timerInterval);
-
-  mainMenuBlock.classList.toggle("hide-element");
-});
-
-buttonContinueGame.addEventListener("click", () => {
-  buttonBackToMainMenu.style.pointerEvents = "all";
-  table.style.pointerEvents = "all";
-  startTimer();
-
-  mainMenuBlock.classList.toggle("hide-element");
-});
-
-buttonRestartGame.addEventListener("click", () => {
-  buttonBackToMainMenu.style.pointerEvents = "all";
-  initGame();
-
-  mainMenuBlock.classList.toggle("hide-element");
-});
-
-buttonOptions.addEventListener("click", () => {
-  mainMenuOptionsBlock.classList.toggle("hide-element-options");
-});
-
-buttonOptionsClose.addEventListener("click", () => {
-  mainMenuOptionsBlock.classList.toggle("hide-element-options");
-});
-
-buttonWaves.addEventListener("click", () => {
-  boardWaveCells.forEach((cell) => {
-    if (cell.classList.contains("coordinates")) {
-      return;
-    }
-    cell.classList.toggle("numbers-waves");
-  });
-  numbersCoordWaveCells.forEach((cell) => {
-    cell.classList.toggle("coordinates-waves");
-    cell.classList.toggle("coordinates-waves");
-    if (cell.classList.contains("coordinates-waves")) {
-      buttonWaves.innerHTML = "Off";
-    } else {
-      buttonWaves.innerHTML = "On";
-    }
-  });
-  alphabethsCoordWaveCells.forEach((cell) => {
-    cell.classList.toggle("coordinates-waves");
-  });
-});
-
-buttonVictoryNewGame.addEventListener("click", () => {
-  buttonVictoryNewGame.style.display = "none";
-  buttonBackToMainMenu.style.pointerEvents = "all";
-  initGame();
-});
-
-window.onload = function onPageLoad() {
-  table.style.pointerEvents = "none";
-  buttonContinueGame.style.display = "none";
-  buttonRestartGame.style.display = "none";
-  buttonVictoryNewGame.style.display = "none";
-};

@@ -1,51 +1,59 @@
 @media (max-width: 450px) {
   #board {
-    width: 330px;
-    margin: 0 5px;
     flex-direction: column;
+    margin: 0 5px;
+    width: 330px;
   }
 
   .main-menu {
+    background-size: 415px 300px;
+    background-position: 0 50px;
+    height: 300px;
+    left: 52%;
+    top: 37%;
     width: 300px;
-    left: 50%;
-    top: 35%;
 
     &__options-menu {
       width: 250px;
+      height: 250px; // Test height
     }
   }
 
   #alphabet {
     > td {
-      width: 30px;
-      height: 40px;
       font-size: 30px;
+      height: 38px;
+      width: 32px;
 
       &:first-child {
-        width: 30px;
+        width: 20px;
       }
 
       &:last-child {
-        width: 30px;
+        width: 32.5px;
       }
     }
   }
 
   .numbers {
     > td {
-      width: 30px;
-      height: 40px;
       font-size: 30px;
+      height: 38px;
+      width: 32px;
+
+      &:first-of-type {
+        width: 20px;
+      }
 
       > div {
-        width: 30px;
-        height: 40px;
+        height: 38px;
         position: relative;
+        width: 32px;
 
         &:hover {
           background-color: rgb(3, 80, 196);
           cursor: pointer;
-          height: 29px;
+          height: 37px;
         }
       }
     }
@@ -53,9 +61,9 @@
 
   .message-container {
     font-size: 24px;
+    height: auto;
     margin: 0 auto;
     text-align: center;
-    height: auto;
 
     &__additional {
       font-size: 20px;
@@ -66,8 +74,30 @@
       margin: 0;
     }
 
+    &__sunken-pop-up {
+      left: 12%;
+      top: 25%;
+      font-size: 30px;
+    }
+
     &__main-menu {
-      margin: 20px auto;
+      margin: 15px auto;
+    }
+
+    &__victory {
+      left: 48%;
+      top: 55%;
+      font-size: 24px;
+      transform: translate(-45%, -150%);
+      width: 300px;
+
+      &-button {
+        width: 110px;
+        height: 35px;
+        font-size: 20px;
+        top: 43%;
+        left: 35%;
+      }
     }
   }
 
@@ -77,7 +107,7 @@
       background: {
         image: url(../images/ship.jpg);
         position: center;
-        size: 29px 39px;
+        size: 31px 37px;
       }
     }
   }
@@ -87,7 +117,7 @@
       background: {
         image: url(../images/miss.jpg);
         position: center;
-        size: 29px 39px;
+        size: 31px 37px;
       }
     }
   }
