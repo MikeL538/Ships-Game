@@ -1,8 +1,9 @@
 @media (max-width: 450px) {
   #board {
     flex-direction: column;
-    margin: 0 auto;
+    margin: 0 5px;
     width: 330px;
+    height: 665px;
   }
 
   .main-menu {
@@ -10,12 +11,23 @@
     background-position: 0 50px;
     height: 300px;
     left: 52%;
-    top: 37%;
-    width: 300px;
+    top: 30%;
+    width: 320px;
 
-    &__options-menu {
-      width: 250px;
-      height: 250px; // Test height
+    &__container {
+      width: 280px;
+      height: 260px;
+      display: flex;
+    }
+
+    &-options {
+      width: 350px;
+
+      &__div {
+        > span {
+          margin: 20px 14px;
+        }
+      }
     }
   }
 

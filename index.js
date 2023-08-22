@@ -82,6 +82,10 @@ buttonNewGame.addEventListener("click", () => {
 
   mainMenuBlock.classList.toggle("hide-element");
 
+  const hitSound = new Audio("./sounds/hit.mp3");
+  hitSound.volume = hitSoundVolume; // Ustaw głośność
+  hitSound.play();
+
   firstStart();
   initGame();
 });
@@ -99,12 +103,20 @@ buttonContinueGame.addEventListener("click", () => {
   table.style.pointerEvents = "all";
   startTimer();
 
+  const hitSound = new Audio("./sounds/hit.mp3");
+  hitSound.volume = hitSoundVolume; // Ustaw głośność
+  hitSound.play();
+
   mainMenuBlock.classList.toggle("hide-element");
 });
 
 buttonRestartGame.addEventListener("click", () => {
   buttonBackToMainMenu.style.pointerEvents = "all";
   initGame();
+
+  const missSound = new Audio("./sounds/miss.mp3");
+  missSound.volume = missSoundVolume; // Ustaw głośność
+  missSound.play();
 
   mainMenuBlock.classList.toggle("hide-element");
 });
@@ -141,6 +153,11 @@ buttonWaves.addEventListener("click", () => {
 buttonVictoryNewGame.addEventListener("click", () => {
   buttonVictoryNewGame.style.display = "none";
   buttonBackToMainMenu.style.pointerEvents = "all";
+
+  const hitSound = new Audio("./sounds/hit.mp3");
+  hitSound.volume = hitSoundVolume; // Ustaw głośność
+  hitSound.play();
+
   initGame();
 });
 

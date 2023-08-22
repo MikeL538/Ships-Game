@@ -31,8 +31,9 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-    margin: 65px auto;
-    width: 250px;
+    height: 360px;
+    justify-content: center;
+    width: 410px;
 
     > button {
       background: rgb(0, 45, 129);
@@ -52,7 +53,6 @@
     display: flex;
     flex-direction: column;
     font-size: 24px;
-    height: 330px; // Test height
     justify-content: space-between;
     left: 50%;
     position: absolute;
@@ -78,6 +78,10 @@
         margin: 0 3px;
         padding: 1.5px 6px;
         text-align: center;
+
+        &:first-child {
+          margin-left: 8px;
+        }
 
         &-close {
           margin: 10px auto;
@@ -213,7 +217,6 @@
   text-align: left;
   transition: ease-in-out;
   width: 270px;
-  z-index: 100;
 
   &__additional {
     font-size: 30px;
@@ -318,6 +321,18 @@
   display: block;
 }
 
+@keyframes gradient {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
 .hide-element {
   transform: translate(-50%, -1000%);
   opacity: 0;
@@ -328,18 +343,6 @@
     opacity: 0;
     z-index: -10;
     pointer-events: none;
-  }
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0 50%;
   }
 }
 
