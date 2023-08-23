@@ -1,3 +1,8 @@
+body {
+  background-color: rgb(0, 0, 0);
+  color: #fff;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -18,6 +23,7 @@
     no-repeat rgb(221, 252, 150);
   border-radius: 40px;
   border: 20px solid rgb(160, 200, 100);
+
   height: 400px;
   left: 36%;
   position: absolute;
@@ -25,10 +31,11 @@
   transform: translate(-50%, -50%);
   transition: 1s;
   width: 450px;
-  z-index: 100;
+  z-index: 10;
 
   &__container {
     align-items: center;
+
     display: flex;
     flex-direction: column;
     height: 360px;
@@ -38,6 +45,7 @@
     > button {
       background: rgb(0, 45, 129);
       border-radius: 18px;
+      color: #ffffff;
       cursor: pointer;
       font-size: 20px;
       height: 40px;
@@ -50,6 +58,7 @@
     background: rgb(52, 88, 155);
     border-radius: 32px;
     border: 12px solid rgb(32, 68, 125);
+    color: #fff;
     display: flex;
     flex-direction: column;
     font-size: 24px;
@@ -62,7 +71,7 @@
     width: 360px;
 
     &__div {
-      > span {
+      > div {
         display: flex;
         align-items: center;
         margin: 30px 15px;
@@ -92,6 +101,11 @@
           background-color: rgb(130, 170, 70);
           scale: 1.1;
         }
+
+        &--margin {
+          width: 50px;
+          margin-right: 40px;
+        }
       }
 
       &__volume {
@@ -112,8 +126,8 @@
 
   > td {
     align-items: center;
-    border-right: none;
     border: 1px solid;
+    border-right: none;
     display: flex;
     font-size: 36px;
     height: 60px;
@@ -129,7 +143,7 @@
 
     &:last-child {
       border-right: 1px solid;
-      width: 60.5px;
+      width: 61px;
     }
   }
 }
@@ -163,7 +177,7 @@
     animation: gradient 40s ease infinite;
     background: {
       image: linear-gradient(
-        60deg,
+        95deg,
         rgb(69, 114, 240) 0%,
         rgb(21, 44, 116) 44%,
         rgb(69, 114, 240) 50%,
@@ -238,7 +252,7 @@
     position: absolute;
     top: 40%;
     width: 270px;
-    z-index: 10;
+    z-index: 2;
   }
 
   &__victory {
@@ -256,6 +270,7 @@
       background-color: rgb(21, 44, 116);
       border-radius: 10%;
       color: rgb(205, 252, 94);
+      cursor: pointer;
       font-size: 24px;
       height: 50px;
       position: absolute;
@@ -306,17 +321,6 @@
   }
 }
 
-.new-game--victory {
-  cursor: pointer;
-  display: none;
-  font-size: 20px;
-  height: 40px;
-  margin: 10px 0;
-  position: absolute;
-  left: 40%;
-  width: 120px;
-}
-
 .show {
   display: block;
 }
@@ -350,17 +354,17 @@
 .hit {
   cursor: none;
   pointer-events: none;
-  z-index: 9;
+  z-index: 0;
 
   &::after {
     background: {
       image: url(../images/ship.jpg);
-      position: -1px 0.3px;
-      size: 59px 59px;
+      position: 0 -5px;
+      size: 60px 65px;
       repeat: no-repeat;
     }
     content: "";
-    height: 55px;
+    height: 59.5px;
     position: absolute;
     width: 59px;
   }
@@ -369,29 +373,24 @@
 .miss {
   cursor: none;
   pointer-events: none;
-  z-index: 9;
+  z-index: 0;
 
   &::after {
     background: {
       image: url(../images/miss.jpg);
-      position: -1px 0.3px;
-      size: 60px 59px;
+      position: center;
+      size: 60px 65px;
       repeat: no-repeat;
     }
     content: "";
-    height: 60px;
+    height: 59px;
     position: absolute;
     width: 59px;
   }
 }
 
-.locked-cell,
-.locked-cell-forever {
-  // background: red !important;
-  // z-index: 1;
+.locked-cell {
   color: none;
-
-  // Mark cells next to ships to prevent ship next to ship game.
 }
 
 .locked-cell-forever--hidden {

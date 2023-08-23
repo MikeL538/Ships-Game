@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Battleships</title>
-    <meta name="color-scheme" content="dark light" />
+
     <link rel="shortcut icon" href="./images/favicon.ico" />
     <link rel="stylesheet" href="./css/main.css" />
 
@@ -26,16 +26,20 @@
         </div>
         <div class="main-menu-options hide-element-options">
           <div class="main-menu-options__div">
-            <span>
+            <div>
               Waves:
               <button
-                class="main-menu-options__div__waves main-menu-options__div__buttons"
+                class="main-menu-options__div__waves main-menu-options__div__buttons main-menu-options__div__buttons--margin"
+              ></button>
+              Theme:
+              <button
+                class="main-menu-options__div__theme main-menu-options__div__buttons"
               >
-                Off
+                Light
               </button>
-            </span>
+            </div>
 
-            <span>
+            <div>
               Hit sound:
               <input
                 class="main-menu-options__div__volume main-menu-options__div__volume--margin hit-volume"
@@ -43,12 +47,13 @@
                 min="0"
                 step="0.01"
                 max="1"
+                value="0.5"
                 ;
               />
-              <span id="hit-volume-percenage">100%</span>
-            </span>
+              <span id="hit-volume-percentage"></span>
+            </div>
 
-            <span>
+            <div>
               Miss sound:
               <input
                 class="main-menu-options__div__volume miss-volume"
@@ -56,17 +61,18 @@
                 min="0"
                 step="0.01"
                 max="1"
+                value="0.5"
                 ;
               />
-              <span id="miss-volume-percenage">100%</span>
-            </span>
+              <span id="miss-volume-percentage"></span>
+            </div>
 
-            <span class="main-menu-options__div-difficulty">
+            <div class="main-menu-options__div-difficulty">
               <p>Difficulty:</p>
               <button class="main-menu-options__div__buttons">Easy</button>
               <button class="main-menu-options__div__buttons">Normal</button>
               <button class="main-menu-options__div__buttons">Hardcore</button>
-            </span>
+            </div>
           </div>
 
           <button

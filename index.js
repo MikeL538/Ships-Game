@@ -14,7 +14,9 @@ const buttonBackToMainMenu = document.querySelector(
 );
 // Options
 const buttonWaves = document.querySelector(".main-menu-options__div__waves");
-const numbersCoordWaveCells = document.querySelectorAll(".coordinates");
+const buttonTheme = document.querySelector(".main-menu-options__div__theme");
+const body = document.querySelector("body");
+const computedStyle = getComputedStyle(body);
 const alphabethsCoordWaveCells = document.querySelectorAll(".coordinates");
 const boardWaveCells = document.querySelectorAll(".numbers");
 const hitVolume = document.querySelector(".hit-volume");
@@ -63,10 +65,11 @@ let timeSeconds = 0; // Mierzenie czasu rozgrywki sekundy
 let timeMinutes = 0;
 let timerInterval;
 //Dźwięki
-let hitSoundVolume = 1;
-let missSoundVolume = 1;
-let hitVolumePercentage = document.getElementById("hit-volume-percenage");
-let missVolumePercentage = document.getElementById("miss-volume-percenage");
+let hitVolumePercentage = document.getElementById("hit-volume-percentage");
+let missVolumePercentage = document.getElementById("miss-volume-percentage");
+let hitSoundVolume = parseFloat(localStorage.getItem("hitSoundVolume")) || 0.5;
+let missSoundVolume =
+  parseFloat(localStorage.getItem("missSoundVolume")) || 0.5;
 /////////////////////////////////////////
 
 window.onload = function onPageLoad() {
@@ -74,8 +77,11 @@ window.onload = function onPageLoad() {
   buttonContinueGame.style.display = "none";
   buttonRestartGame.style.display = "none";
   buttonVictoryNewGame.style.display = "none";
+  updateSoundVolume();
 };
 
+/////////////////////////////////////////
+// Przyciski //
 buttonNewGame.addEventListener("click", () => {
   buttonNewGame.style.pointerEvents = "none";
   buttonBackToMainMenu.classList.remove("hide-element");
@@ -123,31 +129,54 @@ buttonRestartGame.addEventListener("click", () => {
 
 buttonOptions.addEventListener("click", () => {
   mainMenuOptionsBlock.classList.toggle("hide-element-options");
+  missVolumePercentage.innerHTML = `${parseInt(missSoundVolume * 100)}%`;
+  missVolume.value = missSoundVolume;
+
+  hitVolumePercentage.innerHTML = `${parseInt(hitSoundVolume * 100)}%`;
+  hitVolume.value = hitSoundVolume;
 });
 
 buttonOptionsClose.addEventListener("click", () => {
   mainMenuOptionsBlock.classList.toggle("hide-element-options");
 });
 
-buttonWaves.addEventListener("click", () => {
-  boardWaveCells.forEach((cell) => {
-    if (cell.classList.contains("coordinates")) {
-      return;
-    }
-    cell.classList.toggle("numbers-waves");
-  });
-  numbersCoordWaveCells.forEach((cell) => {
-    cell.classList.toggle("coordinates-waves");
-    cell.classList.toggle("coordinates-waves");
-    if (cell.classList.contains("coordinates-waves")) {
-      buttonWaves.innerHTML = "On";
-    } else {
-      buttonWaves.innerHTML = "Off";
-    }
-  });
-  alphabethsCoordWaveCells.forEach((cell) => {
-    cell.classList.toggle("coordinates-waves");
-  });
+buttonWaves.addEventListener("click", handleWavesButtonClick);
+
+// Funkcja do zapisywania stanu przycisku w localStorage
+function saveThemeState(themeState) {
+  localStorage.setItem("themeState", themeState);
+}
+
+// Funkcja do wczytywania stanu przycisku z localStorage
+function loadThemeState() {
+  return localStorage.getItem("themeState") || "light"; // Domyślnie ustaw "dark"
+}
+
+// Inicjalizacja stanu przycisku na podstawie localStorage
+const initialThemeState = loadThemeState();
+if (initialThemeState === "light") {
+  body.style.backgroundColor = "#fff";
+  body.style.color = "#000";
+  buttonTheme.innerHTML = "Dark";
+} else {
+  body.style.backgroundColor = "#000";
+  body.style.color = "#fff";
+  buttonTheme.innerHTML = "Light";
+}
+
+// Obsługa kliknięcia przycisku
+buttonTheme.addEventListener("click", () => {
+  if (computedStyle.backgroundColor === "rgb(0, 0, 0)") {
+    body.style.backgroundColor = "#fff";
+    body.style.color = "#000";
+    buttonTheme.innerHTML = "Dark";
+    saveThemeState("light"); // Zapisz stan w localStorage
+  } else {
+    body.style.backgroundColor = "#000";
+    body.style.color = "#fff";
+    buttonTheme.innerHTML = "Light";
+    saveThemeState("dark"); // Zapisz stan w localStorage
+  }
 });
 
 buttonVictoryNewGame.addEventListener("click", () => {
@@ -171,6 +200,7 @@ missVolume.addEventListener("input", () => {
   missVolumePercentage.innerHTML = `${parseInt(missSoundVolume * 100)}%`;
 });
 
+/////////////////////////////////////////
 // Inicjalizacja gry
 function initGame() {
   timeSeconds = 0;
@@ -622,4 +652,65 @@ function startTimer() {
 
     timerMessage(); // Wywołanie funkcji timerMessage() co sekundę
   }, 1000);
+}
+
+/////////////////////////////////////////
+// Zapisywanie fal //
+
+function saveWavesState(buttonWavesState) {
+  localStorage.setItem("wavesState", buttonWavesState ? "On" : "Off");
+}
+
+function updateWavesButton() {
+  const savedWavesState = localStorage.getItem("wavesState");
+  buttonWaves.innerHTML = savedWavesState === "Off" ? "On" : "Off";
+}
+
+function handleWavesButtonClick() {
+  let isWavesOn = false; //  Zmienna do śledzenia stanu przycisku
+
+  alphabethsCoordWaveCells.forEach((alphCell) => {
+    if (alphCell.classList.contains("coordinates-waves")) {
+      // Wyłączanie fal dla zielonych
+      alphCell.classList.remove("coordinates-waves");
+      // Wyłączanie fal dla niebieskich
+      boardWaveCells.forEach((numCells) => {
+        numCells.classList.remove("numbers-waves");
+      });
+    } else {
+      // Włączanie fal dla zielonych
+      alphCell.classList.add("coordinates-waves");
+      // Włączanie fal dla niebieskich
+      boardWaveCells.forEach((numCells) => {
+        numCells.classList.add("numbers-waves");
+      });
+      isWavesOn = true; // Ustaw stan na "On"
+    }
+  });
+
+  saveWavesState(isWavesOn); // Zapisz stan w localStorage
+  updateWavesButton(); // Zaktualizuj przycisk
+}
+
+updateWavesButton();
+
+const savedWavesState = localStorage.getItem("wavesState");
+if (savedWavesState === "Off") {
+  handleWavesButtonClick();
+}
+
+// Zapisywanie dźwięków //
+function saveVolumeSettings() {
+  localStorage.setItem("hitSoundVolume", hitSoundVolume);
+  localStorage.setItem("missSoundVolume", missSoundVolume);
+}
+
+// Funkcja do zapisywania ustawień przy zmianie głośności //
+function updateSoundVolume() {
+  hitSoundVolume = parseFloat(hitVolume.value);
+  hitVolumePercentage.innerHTML = `${parseInt(hitSoundVolume * 100)}%`;
+
+  missSoundVolume = parseFloat(missVolume.value);
+  missVolumePercentage.innerHTML = `${parseInt(missSoundVolume * 100)}%`;
+  saveVolumeSettings();
 }
