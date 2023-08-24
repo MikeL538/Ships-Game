@@ -6,6 +6,7 @@ const buttonNewGame = document.getElementById("main-menu__new-game");
 const buttonContinueGame = document.getElementById("main-menu__continue");
 const buttonRestartGame = document.querySelector("#main-menu__restart");
 const buttonOptions = document.querySelector("#main-menu__options");
+const buttonInstructions = document.getElementById("main-menu__instructions");
 const buttonVictoryNewGame = document.querySelector(
   ".message-container__victory-button"
 );
@@ -23,6 +24,20 @@ const hitVolume = document.querySelector(".hit-volume");
 const missVolume = document.querySelector(".miss-volume");
 const buttonOptionsClose = document.querySelector(
   "#main-menu__options-close-button"
+);
+// Instructions
+const instructionsBlock = document.querySelector(".main-menu-instructions");
+const instructionsInner = document.querySelector(
+  ".main-menu-instructions__inner"
+);
+const buttonBackInstructions = document.querySelector(
+  ".main-menu-instructions__buttons__back-button"
+);
+const buttonCloseInstructions = document.querySelector(
+  ".main-menu-instructions__buttons__close-button"
+);
+const buttonNextInstructions = document.querySelector(
+  ".main-menu-instructions__buttons__next-button"
 );
 /////////////////////////////////////////
 const board = document.getElementById("board");
@@ -64,12 +79,14 @@ let timeSeconds = 0; // Mierzenie czasu rozgrywki sekundy
 // Mierzenie czasu rozgrywki minuty
 let timeMinutes = 0;
 let timerInterval;
-//Dźwięki
+// Dźwięki
 let hitVolumePercentage = document.getElementById("hit-volume-percentage");
 let missVolumePercentage = document.getElementById("miss-volume-percentage");
 let hitSoundVolume = parseFloat(localStorage.getItem("hitSoundVolume")) || 0.5;
 let missSoundVolume =
   parseFloat(localStorage.getItem("missSoundVolume")) || 0.5;
+// Instrukcje
+let instructionsPage = 0;
 /////////////////////////////////////////
 
 window.onload = function onPageLoad() {
@@ -86,7 +103,7 @@ buttonNewGame.addEventListener("click", () => {
   buttonNewGame.style.pointerEvents = "none";
   buttonBackToMainMenu.classList.remove("hide-element");
 
-  mainMenuBlock.classList.toggle("hide-element");
+  mainMenuBlock.classList.toggle("hide-element-menu");
 
   const hitSound = new Audio("./sounds/hit.mp3");
   hitSound.volume = hitSoundVolume; // Ustaw głośność
@@ -101,7 +118,7 @@ buttonBackToMainMenu.addEventListener("click", () => {
   buttonBackToMainMenu.style.pointerEvents = "none";
   clearInterval(timerInterval);
 
-  mainMenuBlock.classList.toggle("hide-element");
+  mainMenuBlock.classList.toggle("hide-element-menu");
 });
 
 buttonContinueGame.addEventListener("click", () => {
@@ -113,7 +130,7 @@ buttonContinueGame.addEventListener("click", () => {
   hitSound.volume = hitSoundVolume; // Ustaw głośność
   hitSound.play();
 
-  mainMenuBlock.classList.toggle("hide-element");
+  mainMenuBlock.classList.toggle("hide-element-menu");
 });
 
 buttonRestartGame.addEventListener("click", () => {
@@ -124,11 +141,11 @@ buttonRestartGame.addEventListener("click", () => {
   missSound.volume = missSoundVolume; // Ustaw głośność
   missSound.play();
 
-  mainMenuBlock.classList.toggle("hide-element");
+  mainMenuBlock.classList.toggle("hide-element-menu");
 });
 
 buttonOptions.addEventListener("click", () => {
-  mainMenuOptionsBlock.classList.toggle("hide-element-options");
+  mainMenuOptionsBlock.classList.toggle("hide-element");
   missVolumePercentage.innerHTML = `${parseInt(missSoundVolume * 100)}%`;
   missVolume.value = missSoundVolume;
 
@@ -137,32 +154,86 @@ buttonOptions.addEventListener("click", () => {
 });
 
 buttonOptionsClose.addEventListener("click", () => {
-  mainMenuOptionsBlock.classList.toggle("hide-element-options");
+  mainMenuOptionsBlock.classList.toggle("hide-element");
+});
+
+buttonInstructions.addEventListener("click", () => {
+  instructionsBlock.classList.toggle("hide-element");
+  instructionsPage = 0;
+
+  switch (instructionsPage) {
+    case 0:
+      instructionsInner.innerHTML =
+        "<p><br />Welcome to the Battleships game! In this exciting challenge, you'll encounter four different types of ships: four single-cell ships, three two-cell ships, two three-cell ships, and one formidable four-cell ship. Your mission is to strategically sink all of these ships. <br /><br /> Click a cell on the board to shoot - it's either a hit or a miss. When you sink a ship, you'll get a pop-up notification. Keep an eye on the remaining ships next to the board.</p>";
+      buttonNextInstructions.classList.remove("hide-element");
+
+      buttonBackInstructions.classList.add("hide-element");
+      break;
+  }
+});
+
+buttonBackInstructions.addEventListener("click", handlebuttonBackInstructions);
+
+function handlebuttonBackInstructions() {
+  if (instructionsPage > 0) {
+    instructionsPage -= 1;
+  }
+  switch (instructionsPage) {
+    case 0:
+      instructionsInner.innerHTML =
+        "<p><br />Welcome to the Battleships game! In this exciting challenge, you'll encounter four different types of ships: four single-cell ships, three two-cell ships, two three-cell ships, and one formidable four-cell ship. Your mission is to strategically sink all of these ships. <br /><br /> Click a cell on the board to shoot - it's either a hit or a miss. When you sink a ship, you'll get a pop-up notification. Keep an eye on the remaining ships next to the board.</p>";
+      buttonBackInstructions.classList.add("hide-element");
+      buttonNextInstructions.classList.remove("hide-element");
+      break;
+
+    case 1:
+      instructionsInner.innerHTML =
+        "<p>In this game, longer ships may extend horizontally and wrap around the edges of the board, similar to how the Earth appears spherical. This means that when a ship is longer than the available space in a row, the remaining part of the ship will continue from the opposite side of the board.</p> <img src='./images/ships-instructions.jpg' alt='' width='280' height='150px'>";
+      buttonBackInstructions.classList.remove("hide-element");
+      buttonNextInstructions.classList.remove("hide-element");
+      break;
+
+    case 2:
+      instructionsInner.innerHTML =
+        "<div><p>Ships cannot appear in cells directly adjacent to the sides of other ships (either on the left or right) or in cells above or below them. However, ships are allowed to spawn in corner cells.</p><img src='./images/ships-instructions2.jpg' width='150px' height='170px'></div><div><p>When you sink a whole ship, a pop-up confirmation triggers and the remaining ships count updates.</p><img src='./images/ships-instructions3.jpg' width='150px' height='125px'></div>";
+      buttonNextInstructions.classList.add("hide-element");
+      break;
+  }
+}
+
+buttonNextInstructions.addEventListener("click", handlebuttonNextInstructions);
+
+function handlebuttonNextInstructions() {
+  if (instructionsPage < 2) {
+    instructionsPage += 1;
+  }
+  switch (instructionsPage) {
+    case 0:
+      instructionsInner.innerHTML =
+        "<p><br />Welcome to the Battleships game! In this exciting challenge, you'll encounter four different types of ships: four single-cell ships, three two-cell ships, two three-cell ships, and one formidable four-cell ship. Your mission is to strategically sink all of these ships. <br /><br /> Click a cell on the board to shoot - it's either a hit or a miss. When you sink a ship, you'll get a pop-up notification. Keep an eye on the remaining ships next to the board.</p>";
+      buttonBackInstructions.classList.add("hide-element");
+      buttonNextInstructions.classList.remove("hide-element");
+      break;
+
+    case 1:
+      instructionsInner.innerHTML =
+        "<p>In this game, longer ships may extend horizontally and wrap around the edges of the board, similar to how the Earth appears spherical. This means that when a ship is longer than the available space in a row, the remaining part of the ship will continue from the opposite side of the board.</p> <img src='./images/ships-instructions.jpg' alt='' width='280' height='150px'>";
+      buttonBackInstructions.classList.remove("hide-element");
+      break;
+
+    case 2:
+      instructionsInner.innerHTML =
+        "<div><p>Ships cannot appear in cells directly adjacent to the sides of other ships (either on the left or right) or in cells above or below them. However, ships are allowed to spawn in corner cells.</p><img src='./images/ships-instructions2.jpg' width='150px' height='170px'></div><div><p>When you sink a whole ship, a pop-up confirmation triggers and the remaining ships count updates.</p><img src='./images/ships-instructions3.jpg' width='150px' height='125px'></div>";
+      buttonNextInstructions.classList.add("hide-element");
+      break;
+  }
+}
+
+buttonCloseInstructions.addEventListener("click", () => {
+  instructionsBlock.classList.toggle("hide-element");
 });
 
 buttonWaves.addEventListener("click", handleWavesButtonClick);
-
-// Funkcja do zapisywania stanu przycisku w localStorage
-function saveThemeState(themeState) {
-  localStorage.setItem("themeState", themeState);
-}
-
-// Funkcja do wczytywania stanu przycisku z localStorage
-function loadThemeState() {
-  return localStorage.getItem("themeState") || "light"; // Domyślnie ustaw "dark"
-}
-
-// Inicjalizacja stanu przycisku na podstawie localStorage
-const initialThemeState = loadThemeState();
-if (initialThemeState === "light") {
-  body.style.backgroundColor = "#fff";
-  body.style.color = "#000";
-  buttonTheme.innerHTML = "Dark";
-} else {
-  body.style.backgroundColor = "#000";
-  body.style.color = "#fff";
-  buttonTheme.innerHTML = "Light";
-}
 
 // Obsługa kliknięcia przycisku
 buttonTheme.addEventListener("click", () => {
@@ -697,6 +768,29 @@ updateWavesButton();
 const savedWavesState = localStorage.getItem("wavesState");
 if (savedWavesState === "Off") {
   handleWavesButtonClick();
+}
+
+// Zapisywanie Theme
+// Funkcja do zapisywania stanu przycisku w localStorage
+function saveThemeState(themeState) {
+  localStorage.setItem("themeState", themeState);
+}
+
+// Funkcja do wczytywania stanu przycisku z localStorage
+function loadThemeState() {
+  return localStorage.getItem("themeState") || "light"; // Domyślnie ustaw "dark"
+}
+
+// Inicjalizacja stanu przycisku na podstawie localStorage
+const initialThemeState = loadThemeState();
+if (initialThemeState === "light") {
+  body.style.backgroundColor = "#fff";
+  body.style.color = "#000";
+  buttonTheme.innerHTML = "Dark";
+} else {
+  body.style.backgroundColor = "#000";
+  body.style.color = "#fff";
+  buttonTheme.innerHTML = "Light";
 }
 
 // Zapisywanie dźwięków //

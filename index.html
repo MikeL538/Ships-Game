@@ -16,6 +16,7 @@
   </head>
   <body>
     <div id="board">
+      <!-- Menu Główne -->
       <div class="main-menu">
         <div class="main-menu__container">
           <button id="main-menu__new-game" type="button">New Game</button>
@@ -23,8 +24,13 @@
           <button id="main-menu__restart" type="button">Restart</button>
           <button id="main-menu__options" type="button">Options</button>
           <button id="main-menu__ranking" type="button">Ranking</button>
+          <button id="main-menu__instructions" type="button">
+            Instructions
+          </button>
         </div>
-        <div class="main-menu-options hide-element-options">
+
+        <!-- Blok Opcji -->
+        <div class="main-menu-options hide-element">
           <div class="main-menu-options__div">
             <div>
               Waves:
@@ -67,12 +73,12 @@
               <span id="miss-volume-percentage"></span>
             </div>
 
-            <!-- <div class="main-menu-options__div-difficulty">
+            <div class="main-menu-options__div-difficulty">
               <p>Difficulty:</p>
               <button class="main-menu-options__div__buttons">Easy</button>
               <button class="main-menu-options__div__buttons">Normal</button>
               <button class="main-menu-options__div__buttons">Hardcore</button>
-            </div> -->
+            </div>
           </div>
 
           <button
@@ -82,6 +88,36 @@
             Close Options
           </button>
         </div>
+
+        <!-- Blok Instrukcji -->
+        <div class="main-menu-instructions hide-element">
+          <div class="main-menu-instructions__inner">
+            <p>
+              <br />
+              Welcome to the Battleships game! In this exciting challenge,
+              you'll encounter four different types of ships: four single-cell
+              ships, three two-cell ships, two three-cell ships, and one
+              formidable four-cell ship. Your mission is to strategically sink
+              all of these ships. <br /><br />
+              Click a cell on the board to shoot - it's either a hit or a miss.
+              When you sink a ship, you'll get a pop-up notification. Keep an
+              eye on the remaining ships next to the board.
+            </p>
+          </div>
+          <div class="main-menu-instructions__buttons">
+            <button class="main-menu-instructions__buttons__back-button">
+              Back
+            </button>
+            <button class="main-menu-instructions__buttons__close-button">
+              Close
+            </button>
+            <button class="main-menu-instructions__buttons__next-button">
+              Next
+            </button>
+          </div>
+        </div>
+
+        <!-- Konie Menu Głównego -->
       </div>
 
       <table id="table">
@@ -441,7 +477,7 @@
       </table>
 
       <div class="message-container">
-        <button class="message-container__main-menu hide hide-element">
+        <button class="message-container__main-menu hide-element">
           Main Menu
         </button>
         <div class="message-container__main"></div>
