@@ -16,6 +16,11 @@
   </head>
   <body>
     <div id="board">
+      <!-- Blok Rankingu -->
+      <div class="main-menu-ranking hide-element">
+        <ol class="main-menu-ranking__list"></ol>
+        <button class="main-menu-ranking__close-button">Close</button>
+      </div>
       <!-- Menu Główne -->
       <div class="main-menu">
         <div class="main-menu__container">
@@ -73,12 +78,19 @@
               <span id="miss-volume-percentage"></span>
             </div>
 
-            <!-- <div class="main-menu-options__div-difficulty">
-              <p>Difficulty:</p>
-              <button class="main-menu-options__div__buttons">Easy</button>
-              <button class="main-menu-options__div__buttons">Normal</button>
-              <button class="main-menu-options__div__buttons">Hardcore</button>
-            </div> -->
+            <div class="main-menu-options__div__nick">
+              <label
+                >Nick:
+                <input
+                  class="main-menu-options__div__nick-input"
+                  type="text"
+                  maxlength="8"
+                  placeholder="Your Nick"
+                  required;
+                  value="Player"
+                />
+              </label>
+            </div>
           </div>
 
           <button
@@ -117,7 +129,7 @@
           </div>
         </div>
 
-        <!-- Konie Menu Głównego -->
+        <!-- Koniec Menu Głównego -->
       </div>
 
       <table id="table">
@@ -481,8 +493,17 @@
           Main Menu
         </button>
         <div class="message-container__main"></div>
-        <button type="button" class="message-container__victory-button">
+        <button
+          type="button"
+          class="message-container__victory-button hide-element"
+        >
           New Game
+        </button>
+        <button
+          type="button"
+          class="message-container__victory-ranking hide-element"
+        >
+          Ranking
         </button>
         <div class="message-container__additional"></div>
         <div class="message-container__timer"></div>

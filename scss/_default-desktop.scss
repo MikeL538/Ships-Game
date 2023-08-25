@@ -118,6 +118,68 @@ body {
           margin-left: 25px;
         }
       }
+
+      &__nick {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &-input {
+          font-size: 16px;
+          text-align: center;
+          width: 100px;
+        }
+      }
+    }
+  }
+
+  &-ranking {
+    background: rgb(52, 88, 155);
+    border-radius: 15px;
+    border: 5px solid #fff;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    font-size: 17.5px;
+    height: 370px;
+    justify-content: space-between;
+    left: 36%;
+    overflow: hidden;
+    position: absolute;
+    text-align: justify;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.5s;
+    width: 340px;
+    z-index: 100;
+
+    &__list {
+      font-size: 21px;
+      margin-left: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &-item {
+        margin-bottom: 5px;
+      }
+    }
+
+    &__close-button {
+      background-color: rgb(221, 252, 150);
+      border-radius: 20px;
+      border: 2px solid rgb(32, 68, 125);
+      color: rgb(0, 0, 0);
+      cursor: pointer;
+      height: 20px;
+      width: 65px;
+      margin-top: 5px;
+      &:hover {
+        background-color: rgb(130, 170, 70);
+        scale: 1.1;
+      }
     }
   }
 
@@ -129,7 +191,7 @@ body {
     display: flex;
     flex-direction: column;
     font-size: 17.5px;
-    height: 350px;
+    height: 370px;
     justify-content: space-between;
     left: 50%;
     overflow: hidden;
@@ -193,7 +255,6 @@ body {
         color: rgb(0, 0, 0);
         cursor: pointer;
         height: 20px;
-
         width: 65px;
 
         &:hover {
@@ -346,10 +407,10 @@ body {
   &__victory {
     color: rgb(205, 252, 94);
     font-size: 36px;
-    left: 56%;
+    left: 54.5%;
     position: absolute;
     text-align: center;
-    top: 70%;
+    top: 72%;
     transform: translate(-80%, -120%);
     width: 600px;
     z-index: 10;
@@ -360,10 +421,23 @@ body {
       color: rgb(205, 252, 94);
       cursor: pointer;
       font-size: 24px;
-      height: 50px;
+      height: 40px;
       position: absolute;
-      left: 29%;
-      top: 65%;
+      left: 28%;
+      top: 64%;
+      width: 150px;
+    }
+
+    &-ranking {
+      background-color: rgb(21, 44, 116);
+      border-radius: 10%;
+      color: rgb(205, 252, 94);
+      cursor: pointer;
+      font-size: 24px;
+      height: 40px;
+      position: absolute;
+      left: 28%;
+      top: 71%;
       width: 150px;
     }
   }

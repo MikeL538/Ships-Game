@@ -1,59 +1,16 @@
-// Menu block
-const mainMenuBlock = document.querySelector(".main-menu");
-const mainMenuOptionsBlock = document.querySelector(".main-menu-options");
-//Menu/Victory Buttons
-const buttonNewGame = document.getElementById("main-menu__new-game");
-const buttonContinueGame = document.getElementById("main-menu__continue");
-const buttonRestartGame = document.querySelector("#main-menu__restart");
-const buttonOptions = document.querySelector("#main-menu__options");
-const buttonInstructions = document.getElementById("main-menu__instructions");
-const buttonVictoryNewGame = document.querySelector(
-  ".message-container__victory-button"
-);
-const buttonBackToMainMenu = document.querySelector(
-  ".message-container__main-menu"
-);
-// Options
-const buttonWaves = document.querySelector(".main-menu-options__div__waves");
-const buttonTheme = document.querySelector(".main-menu-options__div__theme");
-const body = document.querySelector("body");
-const computedStyle = getComputedStyle(body);
-const alphabethsCoordWaveCells = document.querySelectorAll(".coordinates");
-const boardWaveCells = document.querySelectorAll(".numbers");
-const hitVolume = document.querySelector(".hit-volume");
-const missVolume = document.querySelector(".miss-volume");
-const buttonOptionsClose = document.querySelector(
-  "#main-menu__options-close-button"
-);
-// Instructions
-const instructionsBlock = document.querySelector(".main-menu-instructions");
-const instructionsInner = document.querySelector(
-  ".main-menu-instructions__inner"
-);
-const buttonBackInstructions = document.querySelector(
-  ".main-menu-instructions__buttons__back-button"
-);
-const buttonCloseInstructions = document.querySelector(
-  ".main-menu-instructions__buttons__close-button"
-);
-const buttonNextInstructions = document.querySelector(
-  ".main-menu-instructions__buttons__next-button"
-);
-/////////////////////////////////////////
+// Plansza
 const board = document.getElementById("board");
+const body = document.querySelector("body"); // Body dla Theme
+const computedStyle = getComputedStyle(body); // Dla Theme
 const table = document.getElementById("table");
 const cells = document.querySelectorAll(".numbers td div");
-const msgContainer = document.querySelector(".message-container");
-const msgMain = document.querySelector(".message-container__main"); // Hit/Miss/Victory
-const msgAdditional = document.querySelector(".message-container__additional"); // Pozostałe statki
-const msgTimer = document.querySelector(".message-container__timer");
-const msgSunken = document.querySelector(".message-container__sunken-pop-up"); // Statek zatopiony info
 /////////////////////////////////////////
 // Liczba statków
 const oneShipCount = 4;
 const twoShipsCount = 3;
 const threeShipsCount = 2;
 const fourShipsCount = 1;
+/////////////////////////////////////////
 // Długość statków
 const oneShipsLength = 1;
 const twoShipsLength = 2;
@@ -75,30 +32,107 @@ let fourShipsHit = 0;
 /////////////////////////////////////////
 let shots = 0; // Licznik ogólnych strzałów
 let hits = 0; // Licznik trafionych pól statków
-let timeSeconds = 0; // Mierzenie czasu rozgrywki sekundy
+/////////////////////////////////////////
 // Mierzenie czasu rozgrywki minuty
+let timeSeconds = 0;
 let timeMinutes = 0;
 let timerInterval;
-// Dźwięki
+/////////////////////////////////////////
+// Main Menu Zmienne
+const mainMenuBlock = document.querySelector(".main-menu");
+const mainMenuOptionsBlock = document.querySelector(".main-menu-options");
+/////////////////////////////////////////
+// Main Menu Przyciski
+const buttonNewGame = document.getElementById("main-menu__new-game");
+const buttonContinueGame = document.getElementById("main-menu__continue");
+const buttonRestartGame = document.getElementById("main-menu__restart");
+const buttonOptions = document.getElementById("main-menu__options");
+const buttonRanking = document.getElementById("main-menu__ranking");
+const buttonInstructions = document.getElementById("main-menu__instructions");
+/////////////////////////////////////////
+// Main Menu Opcje
+const buttonWaves = document.querySelector(".main-menu-options__div__waves");
+const buttonTheme = document.querySelector(".main-menu-options__div__theme");
+const alphabethsCoordWaveCells = document.querySelectorAll(".coordinates");
+const boardWaveCells = document.querySelectorAll(".numbers");
+const hitVolume = document.querySelector(".hit-volume");
+const missVolume = document.querySelector(".miss-volume");
+const buttonOptionsClose = document.querySelector(
+  "#main-menu__options-close-button"
+);
 let hitVolumePercentage = document.getElementById("hit-volume-percentage");
 let missVolumePercentage = document.getElementById("miss-volume-percentage");
 let hitSoundVolume = parseFloat(localStorage.getItem("hitSoundVolume")) || 0.5;
 let missSoundVolume =
   parseFloat(localStorage.getItem("missSoundVolume")) || 0.5;
-// Instrukcje
+/////////////////////////////////////////
+// Main Menu Instrukcje
+const instructionsBlock = document.querySelector(".main-menu-instructions");
+const instructionsInner = document.querySelector(
+  ".main-menu-instructions__inner"
+);
+const buttonBackInstructions = document.querySelector(
+  ".main-menu-instructions__buttons__back-button"
+);
+const buttonCloseInstructions = document.querySelector(
+  ".main-menu-instructions__buttons__close-button"
+);
+const buttonNextInstructions = document.querySelector(
+  ".main-menu-instructions__buttons__next-button"
+);
 let instructionsPage = 0;
 /////////////////////////////////////////
+// Main Menu Ranking
+const rankingBlock = document.querySelector(".main-menu-ranking");
+const buttonRankingClose = document.querySelector(
+  ".main-menu-ranking__close-button"
+);
+let ranking = {
+  nick: [],
+  shots: [],
+};
+let PlayerNickInput = document.querySelector(
+  ".main-menu-options__div__nick-input"
+);
+let newPlayer = PlayerNickInput.value || "Player";
+/////////////////////////////////////////
+// Messages
+const msgContainer = document.querySelector(".message-container");
+const msgMain = document.querySelector(".message-container__main"); // Hit/Miss/Victory
+const msgAdditional = document.querySelector(".message-container__additional"); // Pozostałe statki
+const msgTimer = document.querySelector(".message-container__timer");
+const msgSunken = document.querySelector(".message-container__sunken-pop-up"); // Statek zatopiony info
+/////////////////////////////////////////
+// Victory
+const buttonVictoryNewGame = document.querySelector(
+  ".message-container__victory-button"
+);
+const buttonVictoryRanking = document.querySelector(
+  ".message-container__victory-ranking"
+);
+const buttonBackToMainMenu = document.querySelector(
+  ".message-container__main-menu"
+);
+/////////////////////////////////////////
+// Lokalne Pamięć
+const savedWavesState = localStorage.getItem("wavesState");
+const initialThemeState = loadThemeState();
 
+/////////////////////////////////////////
+/////////////////////////////////////////
+/////////////////////////////////////////
 window.onload = function onPageLoad() {
   table.style.pointerEvents = "none";
   buttonContinueGame.style.display = "none";
   buttonRestartGame.style.display = "none";
-  buttonVictoryNewGame.style.display = "none";
   updateSoundVolume();
+  updateRanking();
+  loadRanking();
+  updateRanking();
+  updateWavesButton();
 };
 
-/////////////////////////////////////////
-// Przyciski //
+// Main Menu Przyciski
 buttonNewGame.addEventListener("click", () => {
   buttonNewGame.style.pointerEvents = "none";
   buttonBackToMainMenu.classList.remove("hide-element");
@@ -111,14 +145,6 @@ buttonNewGame.addEventListener("click", () => {
 
   firstStart();
   initGame();
-});
-
-buttonBackToMainMenu.addEventListener("click", () => {
-  table.style.pointerEvents = "none";
-  buttonBackToMainMenu.style.pointerEvents = "none";
-  clearInterval(timerInterval);
-
-  mainMenuBlock.classList.toggle("hide-element-menu");
 });
 
 buttonContinueGame.addEventListener("click", () => {
@@ -153,8 +179,8 @@ buttonOptions.addEventListener("click", () => {
   hitVolume.value = hitSoundVolume;
 });
 
-buttonOptionsClose.addEventListener("click", () => {
-  mainMenuOptionsBlock.classList.toggle("hide-element");
+buttonRanking.addEventListener("click", () => {
+  rankingBlock.classList.remove("hide-element");
 });
 
 buttonInstructions.addEventListener("click", () => {
@@ -172,6 +198,122 @@ buttonInstructions.addEventListener("click", () => {
   }
 });
 
+/////////////////////////////////////////
+// Main Menu Opcje - przyciski i funkcje
+
+buttonWaves.addEventListener("click", handleWavesButtonClick);
+function handleWavesButtonClick() {
+  let isWavesOn = false; //  Zmienna do śledzenia stanu przycisku
+
+  alphabethsCoordWaveCells.forEach((alphCell) => {
+    if (alphCell.classList.contains("coordinates-waves")) {
+      // Wyłączanie fal dla zielonych
+      alphCell.classList.remove("coordinates-waves");
+      // Wyłączanie fal dla niebieskich
+      boardWaveCells.forEach((numCells) => {
+        numCells.classList.remove("numbers-waves");
+      });
+    } else {
+      // Włączanie fal dla zielonych
+      alphCell.classList.add("coordinates-waves");
+      // Włączanie fal dla niebieskich
+      boardWaveCells.forEach((numCells) => {
+        numCells.classList.add("numbers-waves");
+      });
+      isWavesOn = true; // Ustaw stan na "On"
+    }
+  });
+
+  saveWavesState(isWavesOn); // Zapisz stan w localStorage
+  updateWavesButton(); // Zaktualizuj przycisk
+}
+
+buttonTheme.addEventListener("click", () => {
+  if (computedStyle.backgroundColor === "rgb(0, 0, 0)") {
+    body.style.backgroundColor = "#fff";
+    body.style.color = "#000";
+    buttonTheme.innerHTML = "Dark";
+    saveThemeState("light"); // Zapisz stan w localStorage
+  } else {
+    body.style.backgroundColor = "#000";
+    body.style.color = "#fff";
+    buttonTheme.innerHTML = "Light";
+    saveThemeState("dark"); // Zapisz stan w localStorage
+  }
+});
+
+hitVolume.addEventListener("input", () => {
+  hitSoundVolume = parseFloat(hitVolume.value); // Konwertuj na liczbę zmiennoprzecinkową
+  hitVolumePercentage.innerHTML = `${parseInt(hitSoundVolume * 100)}%`;
+});
+
+missVolume.addEventListener("input", () => {
+  missSoundVolume = parseFloat(missVolume.value); // Konwertuj na liczbę zmiennoprzecinkową
+  missVolumePercentage.innerHTML = `${parseInt(missSoundVolume * 100)}%`;
+});
+
+buttonOptionsClose.addEventListener("click", () => {
+  if (PlayerNickInput.value.length === 0) {
+    newPlayer = "Player";
+  } else {
+    newPlayer = PlayerNickInput.value;
+  }
+
+  mainMenuOptionsBlock.classList.toggle("hide-element");
+});
+
+/////////////////////////////////////////
+// Main Menu Ranking - przyciski i funkcje
+buttonRankingClose.addEventListener("click", () => {
+  rankingBlock.classList.add("hide-element");
+});
+
+function rankingAddPlayer(nazwaGracza, shots) {
+  // Dodaj gracza do rankingu
+  ranking.nick.push(nazwaGracza);
+  ranking.shots.push(shots);
+
+  // Sortuj ranking względem liczby strzałów
+  const rankingLength = ranking.nick.length;
+  for (let i = 0; i < rankingLength - 1; i++) {
+    for (let j = 0; j < rankingLength - i - 1; j++) {
+      if (ranking.shots[j] > ranking.shots[j + 1]) {
+        // Zamień pozycje graczy
+        const tempNick = ranking.nick[j];
+        ranking.nick[j] = ranking.nick[j + 1];
+        ranking.nick[j + 1] = tempNick;
+
+        const tempScore = ranking.shots[j];
+        ranking.shots[j] = ranking.shots[j + 1];
+        ranking.shots[j + 1] = tempScore;
+      }
+    }
+  }
+
+  // Jeśli ranking ma więcej niż 10 graczy, usuń ostatniego gracza
+  if (rankingLength > 10) {
+    ranking.nick.pop();
+    ranking.shots.pop();
+  }
+  saveRanking();
+  updateRanking();
+}
+
+function updateRanking() {
+  const rankingList = document.querySelector(".main-menu-ranking__list");
+  rankingList.innerHTML = ""; // Wyczyść istniejącą listę
+
+  for (let i = 0; i < ranking.nick.length; i++) {
+    const listItem = document.createElement("li");
+
+    listItem.textContent = `${ranking.nick[i]} - ${ranking.shots[i]}`;
+    listItem.classList.add("main-menu-ranking__list-item");
+    rankingList.appendChild(listItem);
+  }
+}
+
+/////////////////////////////////////////
+// Main Menu Instructions - przyciski i funkcje
 buttonBackInstructions.addEventListener("click", handlebuttonBackInstructions);
 
 function handlebuttonBackInstructions() {
@@ -195,7 +337,7 @@ function handlebuttonBackInstructions() {
 
     case 2:
       instructionsInner.innerHTML =
-        "<div><p>Ships cannot appear in cells directly adjacent to the sides of other ships (either on the left or right) or in cells above or below them. However, ships are allowed to spawn in corner cells.</p><img src='./images/ships-instructions2.jpg' width='150px' height='170px'></div><div><p>When you sink a whole ship, a pop-up confirmation triggers and the remaining ships count updates.</p><img src='./images/ships-instructions3.jpg' width='150px' height='125px'></div>";
+        "<div><p>Ships cannot appear in cells directly adjacent to the sides of other ships (left and right) or in cells above or below them. However, ships are allowed to spawn in corner cells.</p><img src='./images/ships-instructions2.jpg' width='150px' height='170px'></div><div><p>When you sink a whole ship, a pop-up confirmation triggers and the remaining ships count updates.</p><img src='./images/ships-instructions3.jpg' width='150px' height='125px'></div>";
       buttonNextInstructions.classList.add("hide-element");
       break;
   }
@@ -223,7 +365,7 @@ function handlebuttonNextInstructions() {
 
     case 2:
       instructionsInner.innerHTML =
-        "<div><p>Ships cannot appear in cells directly adjacent to the sides of other ships (either on the left or right) or in cells above or below them. However, ships are allowed to spawn in corner cells.</p><img src='./images/ships-instructions2.jpg' width='150px' height='170px'></div><div><p>When you sink a whole ship, a pop-up confirmation triggers and the remaining ships count updates.</p><img src='./images/ships-instructions3.jpg' width='150px' height='125px'></div>";
+        "<div><p>Ships cannot appear in cells directly adjacent to the sides of other ships (left and right) or in cells above or below them. However, ships are allowed to spawn in corner cells.</p><img src='./images/ships-instructions2.jpg' width='150px' height='170px'></div><div><p>When you sink a whole ship, a pop-up confirmation triggers and the remaining ships count updates.</p><img src='./images/ships-instructions3.jpg' width='150px' height='125px'></div>";
       buttonNextInstructions.classList.add("hide-element");
       break;
   }
@@ -233,25 +375,11 @@ buttonCloseInstructions.addEventListener("click", () => {
   instructionsBlock.classList.toggle("hide-element");
 });
 
-buttonWaves.addEventListener("click", handleWavesButtonClick);
-
-// Obsługa kliknięcia przycisku
-buttonTheme.addEventListener("click", () => {
-  if (computedStyle.backgroundColor === "rgb(0, 0, 0)") {
-    body.style.backgroundColor = "#fff";
-    body.style.color = "#000";
-    buttonTheme.innerHTML = "Dark";
-    saveThemeState("light"); // Zapisz stan w localStorage
-  } else {
-    body.style.backgroundColor = "#000";
-    body.style.color = "#fff";
-    buttonTheme.innerHTML = "Light";
-    saveThemeState("dark"); // Zapisz stan w localStorage
-  }
-});
-
+/////////////////////////////////////////
+// Victory
 buttonVictoryNewGame.addEventListener("click", () => {
-  buttonVictoryNewGame.style.display = "none";
+  buttonVictoryRanking.classList.add("hide-element");
+  buttonVictoryNewGame.classList.add("hide-element");
   buttonBackToMainMenu.style.pointerEvents = "all";
 
   const hitSound = new Audio("./sounds/hit.mp3");
@@ -260,19 +388,12 @@ buttonVictoryNewGame.addEventListener("click", () => {
 
   initGame();
 });
-
-hitVolume.addEventListener("input", () => {
-  hitSoundVolume = parseFloat(hitVolume.value); // Konwertuj na liczbę zmiennoprzecinkową
-  hitVolumePercentage.innerHTML = `${parseInt(hitSoundVolume * 100)}%`;
-});
-
-missVolume.addEventListener("input", () => {
-  missSoundVolume = parseFloat(missVolume.value); // Konwertuj na liczbę zmiennoprzecinkową
-  missVolumePercentage.innerHTML = `${parseInt(missSoundVolume * 100)}%`;
+buttonVictoryRanking.addEventListener("click", () => {
+  rankingBlock.classList.remove("hide-element");
 });
 
 /////////////////////////////////////////
-// Inicjalizacja gry
+// Game
 function initGame() {
   timeSeconds = 0;
   timeMinutes = 0;
@@ -293,7 +414,7 @@ function initGame() {
   hits = 0; // Licznik trafionych pól
 
   msgMain.classList.remove("message-container__victory");
-  buttonVictoryNewGame.classList.remove("show");
+  buttonVictoryNewGame.classList.add("hide-element");
 
   cells.forEach((cell) => {
     cell.classList.remove("hit", "miss", "locked-cell", "test-ship");
@@ -302,13 +423,13 @@ function initGame() {
   generateAllShips();
 
   msgAdditional.innerHTML = `Shots: ${shots}<br /> 
-  Sunken: ${hits}/20<br /><br /> 
-
-  Remaining Ships:<br />
-  One square ships: ${oneShipsHit}<br />
-  Two squares ships: ${twoShipsHit}<br />
-  Three squares ships: ${threeShipsHit}<br />
-  Four squares ship: ${fourShipsHit}`;
+    Sunken: ${hits}/20<br /><br /> 
+  
+    Remaining Ships:<br />
+    One square ships: ${oneShipsHit}<br />
+    Two squares ships: ${twoShipsHit}<br />
+    Three squares ships: ${threeShipsHit}<br />
+    Four squares ship: ${fourShipsHit}`;
 
   msgTimer.innerHTML = "Time: 00:00";
   table.style.pointerEvents = "all";
@@ -336,7 +457,6 @@ function firstStart() {
   }, 400);
 }
 
-// Losowe rozmieszczenie statków na planszy
 function generateAllShips() {
   /////////////////////////////
   //Tworzenie statku 1 kratka//
@@ -606,7 +726,6 @@ function generateAllShips() {
   }
 }
 
-// Obsługa strzału
 function handleShot(cellIndex) {
   shots++;
   const cell = cells[cellIndex];
@@ -680,32 +799,41 @@ function handleShot(cellIndex) {
 
   // Aktualizacja tabeli pozostałych statków
   msgAdditional.innerHTML = `Shots: ${shots}<br /> 
-  Sunken: ${hits}/20<br /><br /> 
-
-  Remaining Ships: <br>
-  One square ships: ${oneShipsHit}<br />
-  Two squares ships: ${Math.round(twoShipsHit)}<br />
-  Three squares ships: ${Math.round(threeShipsHit)}<br />
-  Four squares ship: ${Math.round(fourShipsHit)}`;
+    Sunken: ${hits}/20<br /><br /> 
+  
+    Remaining Ships: <br>
+    One square ships: ${oneShipsHit}<br />
+    Two squares ships: ${Math.round(twoShipsHit)}<br />
+    Three squares ships: ${Math.round(threeShipsHit)}<br />
+    Four squares ship: ${Math.round(fourShipsHit)}`;
 
   if (hits === 20) {
     // Wszystkie statki zatopione, koniec gry
     buttonBackToMainMenu.style.pointerEvents = "none";
     table.style.pointerEvents = "none";
     msgMain.innerHTML = `Victory!<br /> 
-    Congratulations!<br /><br />
-    Amount of shots: ${shots}<br /><br />
-    Ships sunken in:<br /> ${timeMinutes} minutes and ${timeSeconds} seconds`;
+      Congratulations!<br /><br />
+      Amount of shots: ${shots}<br /><br />
+      Ships sunken in:<br /> ${timeMinutes} minutes and ${timeSeconds} seconds`;
     clearInterval(timerInterval);
-    buttonVictoryNewGame.classList.add("show");
     msgMain.classList.add("message-container__victory");
-    buttonVictoryNewGame.style.display = "block";
+    buttonVictoryNewGame.classList.remove("hide-element");
+    buttonVictoryRanking.classList.remove("hide-element");
+
     window.scrollTo(0, 0);
     cells.forEach((cell) => cell.removeEventListener("click", handleShot));
+    rankingAddPlayer(newPlayer, shots);
   }
 }
 
-// Mierzenie czasu gry
+buttonBackToMainMenu.addEventListener("click", () => {
+  table.style.pointerEvents = "none";
+  buttonBackToMainMenu.style.pointerEvents = "none";
+  clearInterval(timerInterval);
+
+  mainMenuBlock.classList.toggle("hide-element-menu");
+});
+
 function timerMessage() {
   const formattedSeconds = timeSeconds.toString().padStart(2, "0");
   const formattedMinutes = timeMinutes.toString().padStart(2, "0");
@@ -726,63 +854,28 @@ function startTimer() {
 }
 
 /////////////////////////////////////////
-// Zapisywanie fal //
-
-function saveWavesState(buttonWavesState) {
-  localStorage.setItem("wavesState", buttonWavesState ? "On" : "Off");
-}
-
+///////Lokalne zapisywanie ustawień//////
+/////////////////////////////////////////
+// Waves
 function updateWavesButton() {
   const savedWavesState = localStorage.getItem("wavesState");
   buttonWaves.innerHTML = savedWavesState === "Off" ? "On" : "Off";
 }
-
-function handleWavesButtonClick() {
-  let isWavesOn = false; //  Zmienna do śledzenia stanu przycisku
-
-  alphabethsCoordWaveCells.forEach((alphCell) => {
-    if (alphCell.classList.contains("coordinates-waves")) {
-      // Wyłączanie fal dla zielonych
-      alphCell.classList.remove("coordinates-waves");
-      // Wyłączanie fal dla niebieskich
-      boardWaveCells.forEach((numCells) => {
-        numCells.classList.remove("numbers-waves");
-      });
-    } else {
-      // Włączanie fal dla zielonych
-      alphCell.classList.add("coordinates-waves");
-      // Włączanie fal dla niebieskich
-      boardWaveCells.forEach((numCells) => {
-        numCells.classList.add("numbers-waves");
-      });
-      isWavesOn = true; // Ustaw stan na "On"
-    }
-  });
-
-  saveWavesState(isWavesOn); // Zapisz stan w localStorage
-  updateWavesButton(); // Zaktualizuj przycisk
+function saveWavesState(buttonWavesState) {
+  localStorage.setItem("wavesState", buttonWavesState ? "On" : "Off");
 }
 
-updateWavesButton();
-
-const savedWavesState = localStorage.getItem("wavesState");
 if (savedWavesState === "Off") {
   handleWavesButtonClick();
 }
 
-// Zapisywanie Theme
-// Funkcja do zapisywania stanu przycisku w localStorage
-function saveThemeState(themeState) {
-  localStorage.setItem("themeState", themeState);
-}
-
-// Funkcja do wczytywania stanu przycisku z localStorage
+// Theme
 function loadThemeState() {
   return localStorage.getItem("themeState") || "light"; // Domyślnie ustaw "dark"
 }
-
-// Inicjalizacja stanu przycisku na podstawie localStorage
-const initialThemeState = loadThemeState();
+function saveThemeState(themeState) {
+  localStorage.setItem("themeState", themeState);
+}
 if (initialThemeState === "light") {
   body.style.backgroundColor = "#fff";
   body.style.color = "#000";
@@ -807,4 +900,31 @@ function updateSoundVolume() {
   missSoundVolume = parseFloat(missVolume.value);
   missVolumePercentage.innerHTML = `${parseInt(missSoundVolume * 100)}%`;
   saveVolumeSettings();
+}
+
+// Ranking
+function loadRanking() {
+  const savedRanking = localStorage.getItem("ranking");
+  if (savedRanking) {
+    ranking = JSON.parse(savedRanking);
+  } else {
+    // Ustaw wartości domyślne, gdy nie ma jeszcze rankingu w localStorage
+    ranking.nick = [
+      "Davy",
+      "Blackbeard",
+      "Jack",
+      "Hermione",
+      "Gandalf",
+      "Walter",
+      "Jessy",
+      "Pam",
+      "Scott",
+      "Dwight",
+    ];
+    ranking.shots = [44, 46, 50, 54, 58, 61, 64, 69, 74, 77];
+  }
+}
+
+function saveRanking() {
+  localStorage.setItem("ranking", JSON.stringify(ranking));
 }
