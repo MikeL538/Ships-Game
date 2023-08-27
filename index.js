@@ -46,6 +46,7 @@ const mainMenuOptionsBlock = document.querySelector(".main-menu-options");
 const buttonNewGame = document.getElementById("main-menu__new-game");
 const buttonContinueGame = document.getElementById("main-menu__continue");
 const buttonRestartGame = document.getElementById("main-menu__restart");
+const buttonDifficulty = document.getElementById("main-menu__difficulty");
 const buttonOptions = document.getElementById("main-menu__options");
 const buttonRanking = document.getElementById("main-menu__ranking");
 const buttonInstructions = document.getElementById("main-menu__instructions");
@@ -132,10 +133,72 @@ window.onload = function onPageLoad() {
   updateWavesButton();
 };
 
+/////////////////////////////////////////
+const difficultyBlock = document.querySelector(".main-menu-difficulty");
+const buttonDifficultyClose = document.querySelector(
+  ".main-menu-difficulty__close-button"
+);
+
+const buttonDifficultyEasy = document.querySelector(
+  ".main-menu-difficulty__easy-button"
+);
+const infoDifficultyEasy = document.querySelector(
+  ".main-menu-difficulty__info-easy"
+);
+
+buttonDifficultyEasy.addEventListener("mouseenter", () => {
+  infoDifficultyEasy.classList.remove("hide-element");
+});
+
+buttonDifficultyEasy.addEventListener("mouseleave", () => {
+  infoDifficultyEasy.classList.add("hide-element");
+});
+
+const buttonDifficultyNormal = document.querySelector(
+  ".main-menu-difficulty__normal-button"
+);
+const infoDifficultyNormal = document.querySelector(
+  ".main-menu-difficulty__info-normal"
+);
+
+buttonDifficultyNormal.addEventListener("mouseenter", () => {
+  infoDifficultyNormal.classList.remove("hide-element");
+});
+
+buttonDifficultyNormal.addEventListener("mouseleave", () => {
+  infoDifficultyNormal.classList.add("hide-element");
+});
+
+const buttonDifficultyHardcore = document.querySelector(
+  ".main-menu-difficulty__hardcore-button"
+);
+const infoDifficultyHardcore = document.querySelector(
+  ".main-menu-difficulty__info-hardcore"
+);
+
+buttonDifficultyHardcore.addEventListener("mouseenter", () => {
+  infoDifficultyHardcore.classList.remove("hide-element");
+});
+
+buttonDifficultyHardcore.addEventListener("mouseleave", () => {
+  infoDifficultyHardcore.classList.add("hide-element");
+});
+
+buttonDifficulty.addEventListener("click", () => {
+  difficultyBlock.classList.remove("hide-element");
+});
+
+buttonDifficultyClose.addEventListener("click", () => {
+  difficultyBlock.classList.add("hide-element");
+});
+
+/////////////////////////////////////////
+
 // Main Menu Przyciski
 buttonNewGame.addEventListener("click", () => {
   buttonNewGame.style.pointerEvents = "none";
   buttonBackToMainMenu.classList.remove("hide-element");
+  buttonBackToMainMenu.style.pointerEvents = "none";
 
   mainMenuBlock.classList.toggle("hide-element-menu");
 
@@ -160,7 +223,7 @@ buttonContinueGame.addEventListener("click", () => {
 });
 
 buttonRestartGame.addEventListener("click", () => {
-  buttonBackToMainMenu.style.pointerEvents = "all";
+  buttonBackToMainMenu.style.pointerEvents = "none";
   initGame();
 
   const missSound = new Audio("./sounds/miss.mp3");
@@ -380,7 +443,6 @@ buttonCloseInstructions.addEventListener("click", () => {
 buttonVictoryNewGame.addEventListener("click", () => {
   buttonVictoryRanking.classList.add("hide-element");
   buttonVictoryNewGame.classList.add("hide-element");
-  buttonBackToMainMenu.style.pointerEvents = "all";
 
   const hitSound = new Audio("./sounds/hit.mp3");
   hitSound.volume = hitSoundVolume; // Ustaw głośność
@@ -394,7 +456,20 @@ buttonVictoryRanking.addEventListener("click", () => {
 
 /////////////////////////////////////////
 // Game
+
+function firstStart() {
+  cells.forEach((cell, index) => {
+    cell.addEventListener("click", () => handleShot(index));
+  });
+  setTimeout(() => {
+    buttonNewGame.remove();
+    buttonContinueGame.style.display = "block";
+    buttonRestartGame.style.display = "block";
+  }, 400);
+}
+
 function initGame() {
+  table.style.pointerEvents = "none";
   timeSeconds = 0;
   timeMinutes = 0;
 
@@ -414,58 +489,40 @@ function initGame() {
   hits = 0; // Licznik trafionych pól
 
   msgMain.classList.remove("message-container__victory");
-  buttonVictoryNewGame.classList.add("hide-element");
 
   cells.forEach((cell) => {
     cell.classList.remove("hit", "miss", "locked-cell", "test-ship");
   });
 
   generateAllShips();
-
-  msgAdditional.innerHTML = `Shots: ${shots}<br /> 
-    Sunken: ${hits}/20<br /><br /> 
-  
-    Remaining Ships:<br />
-    One square ships: ${oneShipsHit}<br />
-    Two squares ships: ${twoShipsHit}<br />
-    Three squares ships: ${threeShipsHit}<br />
-    Four squares ship: ${fourShipsHit}`;
-
-  msgTimer.innerHTML = "Time: 00:00";
-  table.style.pointerEvents = "all";
-
-  startTimer();
 }
 
-function firstStart() {
-  cells.forEach((cell, index) => {
-    cell.addEventListener("click", () => handleShot(index));
-    if (
-      cell.classList.contains(
-        "locked-cell-forever" || "locked-cell-forever--hidden"
-      )
-    ) {
-      // Dodaj nawiasy klamrowe tu
-      cell.removeEventListener("click", () => handleShot(index));
-      cell.style.pointerEvents = "none";
-    }
-  });
-  setTimeout(() => {
-    buttonNewGame.remove();
-    buttonContinueGame.style.display = "block";
-    buttonRestartGame.style.display = "block";
-  }, 400);
+async function generateAllShips() {
+  msgAdditional.innerHTML = "Generating ships...";
+  table.style.pointerEvents = "none";
+  try {
+    await generateOneShips();
+    await generateTwoShips();
+    await generateThreeShips();
+    await generateFourShips();
+    await generateAllShipsMessages();
+  } catch (error) {
+    initGame();
+  }
 }
 
-function generateAllShips() {
+async function generateOneShips() {
   /////////////////////////////
   //Tworzenie statku 1 kratka//
   /////////////////////////////
   oneShips = [];
+
   for (let i = 0; i < oneShipCount; i++) {
+    await new Promise((resolve) => setTimeout(resolve, 1));
     let ship = [];
     let startCell = null;
     let direction = null;
+
     // Losowy wybór kierunku (pionowy lub poziomy)
     if (Math.random() < 0.5) {
       // Pionowy
@@ -496,53 +553,62 @@ function generateAllShips() {
       if (overlap) break;
     }
     // Jeśli jest kolizja, powtórzenie losowania
-    if (overlap) {
-      i--;
-    } else {
-      oneShips.push(ship);
-      oneShipsHit += 1;
-      for (const cell of ship) {
-        cells[cell].classList.add("test-ship");
-        // Komórki poniżej i powyżej
-        if (cell + 10 < 100) {
-          cells[cell + 10].classList.add("locked-cell");
+    try {
+      if (overlap) {
+        i--;
+      } else {
+        oneShips.push(ship);
+        oneShipsHit += 1;
+
+        for (const cell of ship) {
+          cells[cell].classList.add("test-ship");
+          // Komórki poniżej i powyżej
+          if (cell + 10 < 100) {
+            cells[cell + 10].classList.add("locked-cell");
+          }
+          if (cell - 10 >= 0) {
+            cells[cell - 10].classList.add("locked-cell");
+          }
+          // // Komórki po lewej i prawej
+          if (cell % 10 !== 0) {
+            cells[cell - 1].classList.add("locked-cell");
+          }
+          if ((cell + 1) % 10 !== 0) {
+            cells[cell + 1].classList.add("locked-cell");
+          }
+          // // // Ukos lewo
+          if (cell + 10 < 100) {
+            cells[cell + 9].classList.add("locked-cell");
+          }
+          if (cell - 10 >= 0) {
+            cells[cell - 11].classList.add("locked-cell");
+          }
+          // // Ukos prawo
+          if (cell - 10 >= 0) {
+            cells[cell - 9].classList.add("locked-cell");
+          }
+          if (cell + 10 < 100) {
+            cells[cell + 11].classList.add("locked-cell");
+          }
         }
-        if (cell - 10 >= 0) {
-          cells[cell - 10].classList.add("locked-cell");
-        }
-        // // Komórki po lewej i prawej
-        if (cell % 10 !== 0) {
-          cells[cell - 1].classList.add("locked-cell");
-        }
-        if ((cell + 1) % 10 !== 0) {
-          cells[cell + 1].classList.add("locked-cell");
-        }
-        // // // Ukos lewo
-        // if (cell + 10 < 100) {
-        //   cells[cell + 9].classList.add("locked-cell");
-        // }
-        // if (cell - 10 >= 0) {
-        //   cells[cell - 11].classList.add("locked-cell");
-        // }
-        // // Ukos prawo
-        // if (cell - 10 >= 0) {
-        //   cells[cell - 9].classList.add("locked-cell");
-        // }
-        // if (cell + 10 < 100) {
-        //   cells[cell + 11].classList.add("locked-cell");
-        // }
       }
+    } catch (error) {
+      throw error;
     }
     allShips.push(...oneShips);
   }
+}
+
+async function generateTwoShips() {
   /////////////////////////////
   //Tworzenie statku 2 kratki//
   /////////////////////////////
   twoShips = [];
   for (let i = 0; i < twoShipsCount; i++) {
-    ship = [];
-    startCell = null;
-    direction = null;
+    await new Promise((resolve) => setTimeout(resolve, 1));
+    let ship = [];
+    let startCell = null;
+    let direction = null;
     // Losowy wybór kierunku (pionowy lub poziomy)
     if (Math.random() < 0.5) {
       // Pionowy
@@ -573,39 +639,62 @@ function generateAllShips() {
       if (overlap) break;
     }
     // Jeśli jest kolizja, powtórzenie losowania
-    if (overlap) {
-      i--;
-    } else {
-      twoShips.push(ship);
-      twoShipsHit += 1;
-      for (const cell of ship) {
-        // Komórki poniżej i powyżej
-        cells[cell].classList.add("test-ship");
-        if (cell + 10 < 100) {
-          cells[cell + 10].classList.add("locked-cell");
-        }
-        if (cell - 10 >= 0) {
-          cells[cell - 10].classList.add("locked-cell");
-        }
-        // Komórki po lewej i prawej
-        if (cell % 10 !== 0) {
-          cells[cell - 1].classList.add("locked-cell");
-        }
-        if ((cell + 1) % 10 !== 0) {
-          cells[cell + 1].classList.add("locked-cell");
+    try {
+      if (overlap) {
+        i--;
+      } else {
+        twoShips.push(ship);
+        twoShipsHit += 1;
+
+        for (const cell of ship) {
+          cells[cell].classList.add("test-ship");
+          // Komórki poniżej i powyżej
+          if (cell + 10 < 100) {
+            cells[cell + 10].classList.add("locked-cell");
+          }
+          if (cell - 10 >= 0) {
+            cells[cell - 10].classList.add("locked-cell");
+          }
+          // // Komórki po lewej i prawej
+          if (cell % 10 !== 0) {
+            cells[cell - 1].classList.add("locked-cell");
+          }
+          if ((cell + 1) % 10 !== 0) {
+            cells[cell + 1].classList.add("locked-cell");
+          }
+          // // // Ukos lewo
+          if (cell + 10 < 100) {
+            cells[cell + 9].classList.add("locked-cell");
+          }
+          if (cell - 10 >= 0) {
+            cells[cell - 11].classList.add("locked-cell");
+          }
+          // // Ukos prawo
+          if (cell - 10 >= 0) {
+            cells[cell - 9].classList.add("locked-cell");
+          }
+          if (cell + 10 < 100) {
+            cells[cell + 11].classList.add("locked-cell");
+          }
         }
       }
+    } catch (error) {
+      throw error;
     }
     allShips.push(...twoShips);
   }
+}
+
+async function generateThreeShips() {
   /////////////////////////////
   //Tworzenie statku 3 kratki//
   /////////////////////////////
   threeShips = [];
   for (let i = 0; i < threeShipsCount; i++) {
-    ship = [];
-    startCell = null;
-    direction = null;
+    await new Promise((resolve) => setTimeout(resolve, 1));
+    let ship = [];
+    let startCell = null;
+    let direction = null;
     // Losowy wybór kierunku (pionowy lub poziomy)
     if (Math.random() < 0.5) {
       // Pionowy
@@ -636,39 +725,62 @@ function generateAllShips() {
       if (overlap) break;
     }
     // Jeśli jest kolizja, powtórzenie losowania
-    if (overlap) {
-      i--;
-    } else {
-      threeShips.push(ship);
-      threeShipsHit += 1;
-      for (const cell of ship) {
-        // Komórki poniżej i powyżej
-        cells[cell].classList.add("test-ship");
-        if (cell + 10 < 100) {
-          cells[cell + 10].classList.add("locked-cell");
-        }
-        if (cell - 10 >= 0) {
-          cells[cell - 10].classList.add("locked-cell");
-        }
-        // Komórki po lewej i prawej
-        if (cell % 10 !== 0) {
-          cells[cell - 1].classList.add("locked-cell");
-        }
-        if ((cell + 1) % 10 !== 0) {
-          cells[cell + 1].classList.add("locked-cell");
+    try {
+      if (overlap) {
+        i--;
+      } else {
+        threeShips.push(ship);
+        threeShipsHit += 1;
+
+        for (const cell of ship) {
+          cells[cell].classList.add("test-ship");
+          // Komórki poniżej i powyżej
+          if (cell + 10 < 100) {
+            cells[cell + 10].classList.add("locked-cell");
+          }
+          if (cell - 10 >= 0) {
+            cells[cell - 10].classList.add("locked-cell");
+          }
+          // // Komórki po lewej i prawej
+          if (cell % 10 !== 0) {
+            cells[cell - 1].classList.add("locked-cell");
+          }
+          if ((cell + 1) % 10 !== 0) {
+            cells[cell + 1].classList.add("locked-cell");
+          }
+          // // // Ukos lewo
+          if (cell + 10 < 100) {
+            cells[cell + 9].classList.add("locked-cell");
+          }
+          if (cell - 10 >= 0) {
+            cells[cell - 11].classList.add("locked-cell");
+          }
+          // // Ukos prawo
+          if (cell - 10 >= 0) {
+            cells[cell - 9].classList.add("locked-cell");
+          }
+          if (cell + 10 < 100) {
+            cells[cell + 11].classList.add("locked-cell");
+          }
         }
       }
+    } catch (error) {
+      throw error;
     }
     allShips.push(...threeShips);
   }
+}
+
+async function generateFourShips() {
   ///////////////////////////
   // Tworzenie statku 4 kratki//
   ///////////////////////////
   fourShips = [];
   for (let i = 0; i < fourShipsCount; i++) {
-    const ship = [];
-    startCell = null;
-    direction = null;
+    await new Promise((resolve) => setTimeout(resolve, 1));
+    let ship = [];
+    let startCell = null;
+    let direction = null;
     // Losowy wybór kierunku (pionowy lub poziomy)
     if (Math.random() < 0.5) {
       // Pionowy
@@ -699,31 +811,66 @@ function generateAllShips() {
       if (overlap) break;
     }
     // Jeśli jest kolizja, powtórzenie losowania
-    if (overlap) {
-      i--;
-    } else {
-      fourShips.push(ship);
-      fourShipsHit += 1;
-      for (const cell of ship) {
-        // Komórki poniżej i powyżej
-        cells[cell].classList.add("test-ship");
-        if (cell + 10 < 100) {
-          cells[cell + 10].classList.add("locked-cell");
-        }
-        if (cell - 10 >= 0) {
-          cells[cell - 10].classList.add("locked-cell");
-        }
-        // Komórki po lewej i prawej
-        if (cell % 10 !== 0) {
-          cells[cell - 1].classList.add("locked-cell");
-        }
-        if ((cell + 1) % 10 !== 0) {
-          cells[cell + 1].classList.add("locked-cell");
+    try {
+      if (overlap) {
+        i--;
+      } else {
+        fourShips.push(ship);
+        fourShipsHit += 1;
+
+        for (const cell of ship) {
+          cells[cell].classList.add("test-ship");
+          // Komórki poniżej i powyżej
+          if (cell + 10 < 100) {
+            cells[cell + 10].classList.add("locked-cell");
+          }
+          if (cell - 10 >= 0) {
+            cells[cell - 10].classList.add("locked-cell");
+          }
+          // // Komórki po lewej i prawej
+          if (cell % 10 !== 0) {
+            cells[cell - 1].classList.add("locked-cell");
+          }
+          if ((cell + 1) % 10 !== 0) {
+            cells[cell + 1].classList.add("locked-cell");
+          }
+          // // // Ukos lewo
+          if (cell + 10 < 100) {
+            cells[cell + 9].classList.add("locked-cell");
+          }
+          if (cell - 10 >= 0) {
+            cells[cell - 11].classList.add("locked-cell");
+          }
+          // // Ukos prawo
+          if (cell - 10 >= 0) {
+            cells[cell - 9].classList.add("locked-cell");
+          }
+          if (cell + 10 < 100) {
+            cells[cell + 11].classList.add("locked-cell");
+          }
         }
       }
+    } catch (error) {
+      throw error;
     }
     allShips.push(...fourShips);
   }
+}
+
+async function generateAllShipsMessages() {
+  await new Promise((resolve) => setTimeout(resolve, 0));
+
+  msgAdditional.innerHTML = `Shots: ${shots}<br /> 
+  Sunken: ${hits}/20<br /><br /> 
+
+  Remaining Ships:<br />
+  One square ships: ${oneShipsHit}<br />
+  Two squares ships: ${twoShipsHit}<br />
+  Three squares ships: ${threeShipsHit}<br />
+  Four squares ship: ${fourShipsHit}`;
+  msgTimer.innerHTML = "Time: 00:00";
+  table.style.pointerEvents = "all";
+  buttonBackToMainMenu.style.pointerEvents = "all";
 }
 
 function handleShot(cellIndex) {
@@ -765,7 +912,7 @@ function handleShot(cellIndex) {
         const sinking = new Audio("./sounds/sinking.mp3");
         setTimeout(() => {
           sinking.play();
-        }, 200);
+        }, 100);
         msgSunken.textContent = "You sunk a ship!";
         setTimeout(() => {
           msgSunken.textContent = "";
@@ -807,7 +954,7 @@ function handleShot(cellIndex) {
     Three squares ships: ${Math.round(threeShipsHit)}<br />
     Four squares ship: ${Math.round(fourShipsHit)}`;
 
-  if (hits === 20) {
+  if (hits === 1) {
     // Wszystkie statki zatopione, koniec gry
     buttonBackToMainMenu.style.pointerEvents = "none";
     table.style.pointerEvents = "none";
@@ -820,7 +967,6 @@ function handleShot(cellIndex) {
     buttonVictoryNewGame.classList.remove("hide-element");
     buttonVictoryRanking.classList.remove("hide-element");
 
-    window.scrollTo(0, 0);
     cells.forEach((cell) => cell.removeEventListener("click", handleShot));
     rankingAddPlayer(newPlayer, shots);
   }

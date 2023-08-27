@@ -27,10 +27,74 @@
           <button id="main-menu__new-game" type="button">New Game</button>
           <button id="main-menu__continue" type="button">Continue</button>
           <button id="main-menu__restart" type="button">Restart</button>
+          <button id="main-menu__difficulty" type="button">Difficulty</button>
           <button id="main-menu__options" type="button">Options</button>
           <button id="main-menu__ranking" type="button">Ranking</button>
           <button id="main-menu__instructions" type="button">
             Instructions
+          </button>
+        </div>
+
+        <!-- Blok Difficulty -->
+        <div class="main-menu-difficulty hide-element">
+          <!-- Easy -->
+          <div>
+            <button
+              class="main-menu-difficulty__easy-button main-menu-difficulty-buttons"
+            >
+              Easy
+            </button>
+            <div
+              class="main-menu-difficulty__info main-menu-difficulty__info-easy hide-element"
+            >
+              <p>
+                This is traditional type of battleships game. In this mode ships
+                cannot spawn next to each other even in corner cells. It has
+                it's own ranking.
+              </p>
+            </div>
+          </div>
+
+          <!-- Normal -->
+          <div>
+            <button
+              class="main-menu-difficulty__normal-button main-menu-difficulty-buttons"
+            >
+              Normal
+            </button>
+            <div
+              class="main-menu-difficulty__info main-menu-difficulty__info-normal hide-element"
+            >
+              <p>
+                This is normal mode of battleships game. In this mode ships
+                cannot spawn next to each other but they can spawn in corner
+                cells next to other ship. It shares ranking with hardcore mode.
+              </p>
+            </div>
+          </div>
+
+          <!-- Hardcore -->
+          <div>
+            <button
+              class="main-menu-difficulty__hardcore-button main-menu-difficulty-buttons"
+            >
+              Hardcore
+            </button>
+            <div
+              class="main-menu-difficulty__info main-menu-difficulty__info-hardcore hide-element"
+            >
+              <p>
+                This is hardcore mode of battleships game. This mode works the
+                same as normal mode but Player is limited by 55 shots and 2
+                minutes or it's lose. It shares ranking with normal mode.
+              </p>
+            </div>
+          </div>
+
+          <button
+            class="main-menu-difficulty__close-button main-menu-difficulty-buttons"
+          >
+            Close
           </button>
         </div>
 
