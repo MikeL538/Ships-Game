@@ -1,6 +1,7 @@
 // Plansza
 const board = document.getElementById("board");
 const body = document.querySelector("body"); // Body dla Theme
+const table = document.getElementById("table");
 const computedStyle = getComputedStyle(body); // Dla Theme
 const cells = document.querySelectorAll(".numbers td div");
 /////////////////////////////////////////
@@ -39,7 +40,7 @@ let timerInterval;
 /////////////////////////////////////////
 // Main Menu
 const mainMenuBlock = document.querySelector(".main-menu");
-const buttonEasyNewGame = document.getElementById("main-menu__new-game");
+const buttonNewGame = document.getElementById("main-menu__new-game");
 const buttonContinueGame = document.getElementById("main-menu__continue");
 const buttonEasyRestartGame = document.getElementById("main-menu__restart");
 const buttonDifficulty = document.getElementById("main-menu__difficulty");
@@ -124,7 +125,7 @@ const initialThemeState = loadThemeState();
 /////////////////////////////////////////
 /////////////////////////////////////////
 window.onload = function onPageLoad() {
-  cells.forEach((cell) => (cell.style.pointerEvents = "none"));
+  table.style.pointerEvents = "none";
   buttonContinueGame.style.display = "none";
   buttonEasyRestartGame.style.display = "none";
   updateSoundVolume();
@@ -164,6 +165,11 @@ buttonDifficultyEasy.addEventListener("click", () => {
   buttonDifficultyHardcore.classList.remove(
     "main-menu-difficulty-buttons--picked"
   );
+  if (buttonNewGame.classList.contains("new-game-used")) {
+    initGame();
+    difficultyBlock.classList.add("hide-element");
+    mainMenuBlock.classList.add("hide-element-menu");
+  }
 });
 
 // Normal
@@ -188,6 +194,11 @@ buttonDifficultyNormal.addEventListener("click", () => {
   buttonDifficultyHardcore.classList.remove(
     "main-menu-difficulty-buttons--picked"
   );
+  if (buttonNewGame.classList.contains("new-game-used")) {
+    initGame();
+    difficultyBlock.classList.add("hide-element");
+    mainMenuBlock.classList.add("hide-element-menu");
+  }
 });
 
 // Hardcore
@@ -214,6 +225,11 @@ buttonDifficultyHardcore.addEventListener("click", () => {
   buttonDifficultyNormal.classList.remove(
     "main-menu-difficulty-buttons--picked"
   );
+  if (buttonNewGame.classList.contains("new-game-used")) {
+    initGame();
+    difficultyBlock.classList.add("hide-element");
+    mainMenuBlock.classList.add("hide-element-menu");
+  }
 });
 //
 
@@ -228,8 +244,8 @@ buttonDifficultyClose.addEventListener("click", () => {
 /////////////////////////////////////////
 
 // Main Menu Przyciski
-buttonEasyNewGame.addEventListener("click", () => {
-  buttonEasyNewGame.style.pointerEvents = "none";
+buttonNewGame.addEventListener("click", () => {
+  buttonNewGame.style.pointerEvents = "none";
   buttonBackToMainMenu.classList.remove("hide-element");
   buttonBackToMainMenu.style.pointerEvents = "none";
 
@@ -245,7 +261,7 @@ buttonEasyNewGame.addEventListener("click", () => {
 
 buttonContinueGame.addEventListener("click", () => {
   buttonBackToMainMenu.style.pointerEvents = "all";
-  cells.forEach((cell) => (cell.style.pointerEvents = "all"));
+  table.style.pointerEvents = "all";
   startTimer();
 
   const hitSound = new Audio("./sounds/hit.mp3");
@@ -496,7 +512,7 @@ function firstStart() {
     cell.addEventListener("click", () => handleShot(index));
   });
   setTimeout(() => {
-    buttonEasyNewGame.remove();
+    buttonNewGame.classList.add("new-game-used");
     buttonContinueGame.style.display = "block";
     buttonEasyRestartGame.style.display = "block";
   }, 400);
@@ -504,7 +520,7 @@ function firstStart() {
 
 function initGame() {
   buttonForceReload.classList.remove("hide-element");
-  cells.forEach((cell) => (cell.style.pointerEvents = "none"));
+  table.style.pointerEvents = "none";
   timeSeconds = 0;
   timeMinutes = 0;
 
@@ -545,8 +561,9 @@ function initGame() {
 // Easy generation
 async function generateEasyAllShips() {
   msgAdditional.innerHTML = "Generating ships...";
-  cells.forEach((cell) => (cell.style.pointerEvents = "none"));
+  table.style.pointerEvents = "none";
   try {
+    clearInterval(timerInterval);
     await generateEasyOneShips();
 
     await generateEasyTwoShips();
@@ -556,10 +573,10 @@ async function generateEasyAllShips() {
     await generateEasyFourShips();
 
     await generateAllShipsMessages();
+    startTimer();
   } catch (error) {
     initGame();
   }
-  startTimer();
 }
 
 async function generateEasyOneShips() {
@@ -914,8 +931,9 @@ async function generateEasyFourShips() {
 
 async function generateNormalAllShips() {
   msgAdditional.innerHTML = "Generating ships...";
-  cells.forEach((cell) => (cell.style.pointerEvents = "none"));
+  table.style.pointerEvents = "none";
   try {
+    clearInterval(timerInterval);
     await generateNormalOneShips();
 
     await generateNormalTwoShips();
@@ -925,10 +943,10 @@ async function generateNormalAllShips() {
     await generateNormalFourShips();
 
     await generateAllShipsMessages();
+    startTimer();
   } catch (error) {
     initGame();
   }
-  startTimer();
 }
 
 async function generateNormalOneShips() {
@@ -1235,7 +1253,7 @@ async function generateAllShipsMessages() {
   Three squares ships: ${threeShipsHit}<br />
   Four squares ship: ${fourShipsHit}`;
   msgTimer.innerHTML = "Time: 00:00";
-  cells.forEach((cell) => (cell.style.pointerEvents = "all"));
+  table.style.pointerEvents = "all";
   buttonBackToMainMenu.style.pointerEvents = "all";
 }
 
@@ -1282,12 +1300,12 @@ function handleShot(cellIndex) {
         msgSunken.textContent = "You sunk a ship!";
         setTimeout(() => {
           msgSunken.textContent = "";
-        }, 900);
+        }, 700);
 
-        cells.forEach((cell) => (cell.style.pointerEvents = "none"));
+        table.style.pointerEvents = "none";
         setTimeout(() => {
-          cells.forEach((cell) => (cell.style.pointerEvents = "all"));
-        }, 600);
+          table.style.pointerEvents = "all";
+        }, 500);
       } else {
         msgMain.textContent = "Hit!";
       }
@@ -1334,7 +1352,7 @@ function handleShot(cellIndex) {
     buttonVictoryRanking.classList.remove("hide-element");
 
     rankingAddPlayer(newPlayer, shots);
-    cells.forEach((cell) => (cell.style.pointerEvents = "none"));
+    table.style.pointerEvents = "none";
   }
 
   if (
@@ -1350,18 +1368,18 @@ function handleShot(cellIndex) {
     clearInterval(timerInterval);
     msgMain.classList.add("message-container__lost");
 
-    cells.forEach((cell) => (cell.style.pointerEvents = "none"));
+    table.style.pointerEvents = "none";
     buttonVictoryEasyNewGame.classList.remove("hide-element");
     buttonVictoryRanking.classList.remove("hide-element");
   }
 }
 
 buttonBackToMainMenu.addEventListener("click", () => {
-  cells.forEach((cell) => (cell.style.pointerEvents = "none"));
+  table.style.pointerEvents = "none";
   buttonBackToMainMenu.style.pointerEvents = "none";
   clearInterval(timerInterval);
 
-  mainMenuBlock.classList.toggle("hide-element-menu");
+  mainMenuBlock.classList.remove("hide-element-menu");
 });
 
 async function forceReload() {
