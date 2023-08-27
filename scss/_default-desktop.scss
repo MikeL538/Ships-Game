@@ -579,6 +579,22 @@ body {
       scale: 1 1;
     }
   }
+
+  &__force-reload {
+    background-color: red;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    display: block;
+    font-size: 16px;
+    height: 30px;
+    isolation: isolate;
+    margin-bottom: 62px;
+    overflow: hidden;
+    position: absolute;
+    width: 120px;
+    left: 84%;
+  }
 }
 
 @keyframes gradient {
@@ -647,11 +663,11 @@ body {
 
 .locked-cell {
   color: none;
-  // background: red;
-  // z-index: 9;
+  background: red;
+  z-index: 9;
 }
 
-// .test-ship {
-//   background: pink !important;
-//   z-index: 9;
-// }
+.test-ship {
+  background: pink !important;
+  z-index: 9;
+}

@@ -38,20 +38,18 @@ let timeSeconds = 0;
 let timeMinutes = 0;
 let timerInterval;
 /////////////////////////////////////////
-// Main Menu Zmienne
+// Main Menu
 const mainMenuBlock = document.querySelector(".main-menu");
-const mainMenuOptionsBlock = document.querySelector(".main-menu-options");
-/////////////////////////////////////////
-// Main Menu Przyciski
-const buttonNewGame = document.getElementById("main-menu__new-game");
+const buttonEasyNewGame = document.getElementById("main-menu__new-game");
 const buttonContinueGame = document.getElementById("main-menu__continue");
-const buttonRestartGame = document.getElementById("main-menu__restart");
+const buttonEasyRestartGame = document.getElementById("main-menu__restart");
 const buttonDifficulty = document.getElementById("main-menu__difficulty");
 const buttonOptions = document.getElementById("main-menu__options");
 const buttonRanking = document.getElementById("main-menu__ranking");
 const buttonInstructions = document.getElementById("main-menu__instructions");
 /////////////////////////////////////////
 // Main Menu Opcje
+const mainMenuOptionsBlock = document.querySelector(".main-menu-options");
 const buttonWaves = document.querySelector(".main-menu-options__div__waves");
 const buttonTheme = document.querySelector(".main-menu-options__div__theme");
 const alphabethsCoordWaveCells = document.querySelectorAll(".coordinates");
@@ -97,7 +95,13 @@ let PlayerNickInput = document.querySelector(
 );
 let newPlayer = PlayerNickInput.value || "Player";
 /////////////////////////////////////////
-// Messages
+// Messages Container
+const buttonBackToMainMenu = document.querySelector(
+  ".message-container__main-menu"
+);
+const buttonForceReload = document.querySelector(
+  ".message-container__force-reload"
+);
 const msgContainer = document.querySelector(".message-container");
 const msgMain = document.querySelector(".message-container__main"); // Hit/Miss/Victory
 const msgAdditional = document.querySelector(".message-container__additional"); // Pozostałe statki
@@ -105,15 +109,13 @@ const msgTimer = document.querySelector(".message-container__timer");
 const msgSunken = document.querySelector(".message-container__sunken-pop-up"); // Statek zatopiony info
 /////////////////////////////////////////
 // Victory
-const buttonVictoryNewGame = document.querySelector(
+const buttonVictoryEasyNewGame = document.querySelector(
   ".message-container__victory-button"
 );
 const buttonVictoryRanking = document.querySelector(
   ".message-container__victory-ranking"
 );
-const buttonBackToMainMenu = document.querySelector(
-  ".message-container__main-menu"
-);
+
 /////////////////////////////////////////
 // Lokalne Pamięć
 const savedWavesState = localStorage.getItem("wavesState");
@@ -125,7 +127,7 @@ const initialThemeState = loadThemeState();
 window.onload = function onPageLoad() {
   table.style.pointerEvents = "none";
   buttonContinueGame.style.display = "none";
-  buttonRestartGame.style.display = "none";
+  buttonEasyRestartGame.style.display = "none";
   updateSoundVolume();
   updateRanking();
   loadRanking();
@@ -195,8 +197,8 @@ buttonDifficultyClose.addEventListener("click", () => {
 /////////////////////////////////////////
 
 // Main Menu Przyciski
-buttonNewGame.addEventListener("click", () => {
-  buttonNewGame.style.pointerEvents = "none";
+buttonEasyNewGame.addEventListener("click", () => {
+  buttonEasyNewGame.style.pointerEvents = "none";
   buttonBackToMainMenu.classList.remove("hide-element");
   buttonBackToMainMenu.style.pointerEvents = "none";
 
@@ -222,7 +224,7 @@ buttonContinueGame.addEventListener("click", () => {
   mainMenuBlock.classList.toggle("hide-element-menu");
 });
 
-buttonRestartGame.addEventListener("click", () => {
+buttonEasyRestartGame.addEventListener("click", () => {
   buttonBackToMainMenu.style.pointerEvents = "none";
   initGame();
 
@@ -440,9 +442,9 @@ buttonCloseInstructions.addEventListener("click", () => {
 
 /////////////////////////////////////////
 // Victory
-buttonVictoryNewGame.addEventListener("click", () => {
+buttonVictoryEasyNewGame.addEventListener("click", () => {
   buttonVictoryRanking.classList.add("hide-element");
-  buttonVictoryNewGame.classList.add("hide-element");
+  buttonVictoryEasyNewGame.classList.add("hide-element");
 
   const hitSound = new Audio("./sounds/hit.mp3");
   hitSound.volume = hitSoundVolume; // Ustaw głośność
@@ -462,13 +464,15 @@ function firstStart() {
     cell.addEventListener("click", () => handleShot(index));
   });
   setTimeout(() => {
-    buttonNewGame.remove();
+    buttonEasyNewGame.remove();
     buttonContinueGame.style.display = "block";
-    buttonRestartGame.style.display = "block";
+    buttonEasyRestartGame.style.display = "block";
   }, 400);
 }
 
 function initGame() {
+  buttonForceReload.classList.remove("hide-element");
+
   table.style.pointerEvents = "none";
   timeSeconds = 0;
   timeMinutes = 0;
@@ -494,24 +498,28 @@ function initGame() {
     cell.classList.remove("hit", "miss", "locked-cell", "test-ship");
   });
 
-  generateAllShips();
+  generateEasyAllShips();
 }
 
-async function generateAllShips() {
+async function generateEasyAllShips() {
   msgAdditional.innerHTML = "Generating ships...";
   table.style.pointerEvents = "none";
   try {
-    await generateOneShips();
-    await generateTwoShips();
-    await generateThreeShips();
-    await generateFourShips();
+    await generateEasyOneShips();
+
+    await generateEasyTwoShips();
+
+    await generateEasyThreeShips();
+
+    await generateEasyFourShips();
+
     await generateAllShipsMessages();
   } catch (error) {
     initGame();
   }
 }
 
-async function generateOneShips() {
+async function generateEasyOneShips() {
   /////////////////////////////
   //Tworzenie statku 1 kratka//
   /////////////////////////////
@@ -599,7 +607,7 @@ async function generateOneShips() {
   }
 }
 
-async function generateTwoShips() {
+async function generateEasyTwoShips() {
   /////////////////////////////
   //Tworzenie statku 2 kratki//
   /////////////////////////////
@@ -685,7 +693,7 @@ async function generateTwoShips() {
   }
 }
 
-async function generateThreeShips() {
+async function generateEasyThreeShips() {
   /////////////////////////////
   //Tworzenie statku 3 kratki//
   /////////////////////////////
@@ -771,7 +779,7 @@ async function generateThreeShips() {
   }
 }
 
-async function generateFourShips() {
+async function generateEasyFourShips() {
   ///////////////////////////
   // Tworzenie statku 4 kratki//
   ///////////////////////////
@@ -855,6 +863,7 @@ async function generateFourShips() {
     }
     allShips.push(...fourShips);
   }
+  buttonForceReload.classList.add("hide-element");
 }
 
 async function generateAllShipsMessages() {
@@ -957,18 +966,18 @@ function handleShot(cellIndex) {
   if (hits === 1) {
     // Wszystkie statki zatopione, koniec gry
     buttonBackToMainMenu.style.pointerEvents = "none";
-    table.style.pointerEvents = "none";
+
     msgMain.innerHTML = `Victory!<br /> 
       Congratulations!<br /><br />
       Amount of shots: ${shots}<br /><br />
       Ships sunken in:<br /> ${timeMinutes} minutes and ${timeSeconds} seconds`;
     clearInterval(timerInterval);
     msgMain.classList.add("message-container__victory");
-    buttonVictoryNewGame.classList.remove("hide-element");
+    buttonVictoryEasyNewGame.classList.remove("hide-element");
     buttonVictoryRanking.classList.remove("hide-element");
 
-    cells.forEach((cell) => cell.removeEventListener("click", handleShot));
     rankingAddPlayer(newPlayer, shots);
+    table.style.pointerEvents = "none";
   }
 }
 
@@ -978,6 +987,16 @@ buttonBackToMainMenu.addEventListener("click", () => {
   clearInterval(timerInterval);
 
   mainMenuBlock.classList.toggle("hide-element-menu");
+});
+
+async function forceReload() {
+  await new Promise((resolve) => setTimeout(resolve, 1));
+  initGame();
+}
+
+buttonForceReload.addEventListener("click", () => {
+  forceReload();
+  buttonForceReload.classList.add("hide-element");
 });
 
 function timerMessage() {
