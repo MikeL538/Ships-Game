@@ -86,6 +86,10 @@ body {
       &:hover {
         scale: 1.1;
       }
+
+      &--picked {
+        background-color: #00a6c0 !important;
+      }
     }
 
     &__easy-button {
@@ -120,6 +124,8 @@ body {
       width: 250px;
       z-index: 1;
       text-align: center;
+      display: flex;
+      align-items: center;
 
       &-easy {
         background-color: rgb(0, 200, 0);
@@ -289,17 +295,17 @@ body {
     color: #fff;
     display: flex;
     flex-direction: column;
-    font-size: 17.5px;
+    font-size: 17px;
     height: 370px;
     justify-content: space-between;
-    left: 50%;
+    left: 51%;
     overflow: hidden;
     position: absolute;
     text-align: justify;
     top: 50%;
     transform: translate(-50%, -50%);
     transition: 0.5s;
-    width: 340px;
+    width: 350px;
 
     &__inner {
       > p {
@@ -308,7 +314,6 @@ body {
 
       > img {
         display: flex;
-
         margin: 0 auto;
       }
 
@@ -521,7 +526,7 @@ body {
       font-size: 24px;
       height: 40px;
       position: absolute;
-      left: 28%;
+      left: 27%;
       top: 64%;
       width: 150px;
     }
@@ -534,10 +539,23 @@ body {
       font-size: 24px;
       height: 40px;
       position: absolute;
-      left: 28%;
+      left: 27%;
       top: 71%;
       width: 150px;
     }
+  }
+
+  &__lost {
+    color: rgb(205, 252, 94);
+    font-size: 36px;
+    left: 54.5%;
+    position: absolute;
+    text-align: center;
+    top: 47%;
+    transform: translate(-80%, -120%);
+    width: 600px;
+    z-index: 10;
+    height: 0;
   }
 
   &__main-menu {
@@ -581,19 +599,20 @@ body {
   }
 
   &__force-reload {
-    background-color: red;
+    opacity: 0.2;
     border-radius: 20px;
     border: none;
     cursor: pointer;
     display: block;
-    font-size: 16px;
-    height: 30px;
+    font-size: 12px;
+    height: 20px;
     isolation: isolate;
     margin-bottom: 62px;
     overflow: hidden;
     position: absolute;
-    width: 120px;
+    width: 80px;
     left: 84%;
+    top: 7%;
   }
 }
 
@@ -663,11 +682,11 @@ body {
 
 .locked-cell {
   color: none;
-  background: red;
-  z-index: 9;
+  // background: red;
+  // z-index: 9;
 }
 
-.test-ship {
-  background: pink !important;
-  z-index: 9;
-}
+// .test-ship {
+//   background: pink !important;
+//   z-index: 9;
+// }

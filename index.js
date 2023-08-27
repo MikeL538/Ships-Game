@@ -2,7 +2,6 @@
 const board = document.getElementById("board");
 const body = document.querySelector("body"); // Body dla Theme
 const computedStyle = getComputedStyle(body); // Dla Theme
-const table = document.getElementById("table");
 const cells = document.querySelectorAll(".numbers td div");
 /////////////////////////////////////////
 // Liczba statków
@@ -125,7 +124,7 @@ const initialThemeState = loadThemeState();
 /////////////////////////////////////////
 /////////////////////////////////////////
 window.onload = function onPageLoad() {
-  table.style.pointerEvents = "none";
+  cells.forEach((cell) => (cell.style.pointerEvents = "none"));
   buttonContinueGame.style.display = "none";
   buttonEasyRestartGame.style.display = "none";
   updateSoundVolume();
@@ -141,6 +140,7 @@ const buttonDifficultyClose = document.querySelector(
   ".main-menu-difficulty__close-button"
 );
 
+// Easy
 const buttonDifficultyEasy = document.querySelector(
   ".main-menu-difficulty__easy-button"
 );
@@ -156,6 +156,17 @@ buttonDifficultyEasy.addEventListener("mouseleave", () => {
   infoDifficultyEasy.classList.add("hide-element");
 });
 
+buttonDifficultyEasy.addEventListener("click", () => {
+  buttonDifficultyEasy.classList.add("main-menu-difficulty-buttons--picked");
+  buttonDifficultyNormal.classList.remove(
+    "main-menu-difficulty-buttons--picked"
+  );
+  buttonDifficultyHardcore.classList.remove(
+    "main-menu-difficulty-buttons--picked"
+  );
+});
+
+// Normal
 const buttonDifficultyNormal = document.querySelector(
   ".main-menu-difficulty__normal-button"
 );
@@ -171,6 +182,15 @@ buttonDifficultyNormal.addEventListener("mouseleave", () => {
   infoDifficultyNormal.classList.add("hide-element");
 });
 
+buttonDifficultyNormal.addEventListener("click", () => {
+  buttonDifficultyNormal.classList.add("main-menu-difficulty-buttons--picked");
+  buttonDifficultyEasy.classList.remove("main-menu-difficulty-buttons--picked");
+  buttonDifficultyHardcore.classList.remove(
+    "main-menu-difficulty-buttons--picked"
+  );
+});
+
+// Hardcore
 const buttonDifficultyHardcore = document.querySelector(
   ".main-menu-difficulty__hardcore-button"
 );
@@ -185,6 +205,17 @@ buttonDifficultyHardcore.addEventListener("mouseenter", () => {
 buttonDifficultyHardcore.addEventListener("mouseleave", () => {
   infoDifficultyHardcore.classList.add("hide-element");
 });
+
+buttonDifficultyHardcore.addEventListener("click", () => {
+  buttonDifficultyHardcore.classList.add(
+    "main-menu-difficulty-buttons--picked"
+  );
+  buttonDifficultyEasy.classList.remove("main-menu-difficulty-buttons--picked");
+  buttonDifficultyNormal.classList.remove(
+    "main-menu-difficulty-buttons--picked"
+  );
+});
+//
 
 buttonDifficulty.addEventListener("click", () => {
   difficultyBlock.classList.remove("hide-element");
@@ -214,7 +245,7 @@ buttonEasyNewGame.addEventListener("click", () => {
 
 buttonContinueGame.addEventListener("click", () => {
   buttonBackToMainMenu.style.pointerEvents = "all";
-  table.style.pointerEvents = "all";
+  cells.forEach((cell) => (cell.style.pointerEvents = "all"));
   startTimer();
 
   const hitSound = new Audio("./sounds/hit.mp3");
@@ -402,7 +433,7 @@ function handlebuttonBackInstructions() {
 
     case 2:
       instructionsInner.innerHTML =
-        "<div><p>Ships cannot appear in cells directly adjacent to the sides of other ships (left and right) or in cells above or below them. However, ships are allowed to spawn in corner cells.</p><img src='./images/ships-instructions2.jpg' width='150px' height='170px'></div><div><p>When you sink a whole ship, a pop-up confirmation triggers and the remaining ships count updates.</p><img src='./images/ships-instructions3.jpg' width='150px' height='125px'></div>";
+        "<div><p>In normal and hardcore modes ships cannot appear in cells directly adjacent to the sides of other ships (left and right) or in cells above or below them. However, ships are allowed to spawn in corner cells.</p><img src='./images/ships-instructions2.jpg' width='150px' height='160px'></div><div><p>When you sink a whole ship, a pop-up confirmation triggers and the remaining ships count updates.</p><img src='./images/ships-instructions3.jpg' width='150px' height='125px'></div>";
       buttonNextInstructions.classList.add("hide-element");
       break;
   }
@@ -430,7 +461,7 @@ function handlebuttonNextInstructions() {
 
     case 2:
       instructionsInner.innerHTML =
-        "<div><p>Ships cannot appear in cells directly adjacent to the sides of other ships (left and right) or in cells above or below them. However, ships are allowed to spawn in corner cells.</p><img src='./images/ships-instructions2.jpg' width='150px' height='170px'></div><div><p>When you sink a whole ship, a pop-up confirmation triggers and the remaining ships count updates.</p><img src='./images/ships-instructions3.jpg' width='150px' height='125px'></div>";
+        "<div><p>In normal and hardcore modes ships cannot appear in cells directly adjacent to the sides of other ships (left and right) or in cells above or below them. However, ships are allowed to spawn in corner cells.</p><img src='./images/ships-instructions2.jpg' width='150px' height='160px'></div><div><p>When you sink a whole ship, a pop-up confirmation triggers and the remaining ships count updates.</p><img src='./images/ships-instructions3.jpg' width='150px' height='125px'></div>";
       buttonNextInstructions.classList.add("hide-element");
       break;
   }
@@ -452,6 +483,7 @@ buttonVictoryEasyNewGame.addEventListener("click", () => {
 
   initGame();
 });
+
 buttonVictoryRanking.addEventListener("click", () => {
   rankingBlock.classList.remove("hide-element");
 });
@@ -472,8 +504,7 @@ function firstStart() {
 
 function initGame() {
   buttonForceReload.classList.remove("hide-element");
-
-  table.style.pointerEvents = "none";
+  cells.forEach((cell) => (cell.style.pointerEvents = "none"));
   timeSeconds = 0;
   timeMinutes = 0;
 
@@ -493,17 +524,28 @@ function initGame() {
   hits = 0; // Licznik trafionych pól
 
   msgMain.classList.remove("message-container__victory");
+  msgMain.classList.remove("message-container__lost");
 
   cells.forEach((cell) => {
     cell.classList.remove("hit", "miss", "locked-cell", "test-ship");
   });
 
-  generateEasyAllShips();
+  if (
+    buttonDifficultyEasy.classList.contains(
+      "main-menu-difficulty-buttons--picked"
+    )
+  ) {
+    generateEasyAllShips();
+  } else {
+    generateNormalAllShips();
+  }
 }
 
+/////////////////////////////////////////
+// Easy generation
 async function generateEasyAllShips() {
   msgAdditional.innerHTML = "Generating ships...";
-  table.style.pointerEvents = "none";
+  cells.forEach((cell) => (cell.style.pointerEvents = "none"));
   try {
     await generateEasyOneShips();
 
@@ -517,6 +559,7 @@ async function generateEasyAllShips() {
   } catch (error) {
     initGame();
   }
+  startTimer();
 }
 
 async function generateEasyOneShips() {
@@ -866,6 +909,320 @@ async function generateEasyFourShips() {
   buttonForceReload.classList.add("hide-element");
 }
 
+/////////////////////////////////////////
+// Normal generation
+
+async function generateNormalAllShips() {
+  msgAdditional.innerHTML = "Generating ships...";
+  cells.forEach((cell) => (cell.style.pointerEvents = "none"));
+  try {
+    await generateNormalOneShips();
+
+    await generateNormalTwoShips();
+
+    await generateNormalThreeShips();
+
+    await generateNormalFourShips();
+
+    await generateAllShipsMessages();
+  } catch (error) {
+    initGame();
+  }
+  startTimer();
+}
+
+async function generateNormalOneShips() {
+  /////////////////////////////
+  //Tworzenie statku 1 kratka//
+  /////////////////////////////
+  oneShips = [];
+
+  for (let i = 0; i < oneShipCount; i++) {
+    await new Promise((resolve) => setTimeout(resolve, 1));
+    let ship = [];
+    let startCell = null;
+    let direction = null;
+
+    // Losowy wybór kierunku (pionowy lub poziomy)
+    if (Math.random() < 0.5) {
+      // Pionowy
+      startCell = Math.floor(Math.random() * (100 - oneShipsLength * 10));
+      direction = 10;
+    } else {
+      // Poziomy
+      startCell = Math.floor(Math.random() * (100 - oneShipsLength));
+      direction = 1;
+    }
+    // Dodawanie pól statku na planszę
+    for (let j = 0; j < oneShipsLength; j++) {
+      ship.push(startCell + j * direction);
+    }
+    // Sprawdzanie kolizji z istniejącymi statkami
+    let overlap = false;
+    for (const existingShip of allShips) {
+      for (const cell of ship) {
+        if (
+          existingShip.includes(cell) ||
+          cells[cell].classList.contains("locked-cell") ||
+          cells[cell].classList.contains("locked-cell-forever")
+        ) {
+          overlap = true;
+          break;
+        }
+      }
+      if (overlap) break;
+    }
+    // Jeśli jest kolizja, powtórzenie losowania
+    try {
+      if (overlap) {
+        i--;
+      } else {
+        oneShips.push(ship);
+        oneShipsHit += 1;
+
+        for (const cell of ship) {
+          cells[cell].classList.add("test-ship");
+          // Komórki poniżej i powyżej
+          if (cell + 10 < 100) {
+            cells[cell + 10].classList.add("locked-cell");
+          }
+          if (cell - 10 >= 0) {
+            cells[cell - 10].classList.add("locked-cell");
+          }
+          // // Komórki po lewej i prawej
+          if (cell % 10 !== 0) {
+            cells[cell - 1].classList.add("locked-cell");
+          }
+          if ((cell + 1) % 10 !== 0) {
+            cells[cell + 1].classList.add("locked-cell");
+          }
+        }
+      }
+    } catch (error) {
+      throw error;
+    }
+    allShips.push(...oneShips);
+  }
+}
+
+async function generateNormalTwoShips() {
+  /////////////////////////////
+  //Tworzenie statku 2 kratki//
+  /////////////////////////////
+  twoShips = [];
+  for (let i = 0; i < twoShipsCount; i++) {
+    await new Promise((resolve) => setTimeout(resolve, 1));
+    let ship = [];
+    let startCell = null;
+    let direction = null;
+    // Losowy wybór kierunku (pionowy lub poziomy)
+    if (Math.random() < 0.5) {
+      // Pionowy
+      startCell = Math.floor(Math.random() * (100 - twoShipsLength * 10));
+      direction = 10;
+    } else {
+      // Poziomy
+      startCell = Math.floor(Math.random() * (100 - twoShipsLength));
+      direction = 1;
+    }
+    // Dodawanie pól statku na planszę
+    for (let j = 0; j < twoShipsLength; j++) {
+      ship.push(startCell + j * direction);
+    }
+    // Sprawdzanie kolizji z istniejącymi statkami
+    let overlap = false;
+    for (const existingShip of allShips) {
+      for (const cell of ship) {
+        if (
+          existingShip.includes(cell) ||
+          cells[cell].classList.contains("locked-cell") ||
+          cells[cell].classList.contains("locked-cell-forever")
+        ) {
+          overlap = true;
+          break;
+        }
+      }
+      if (overlap) break;
+    }
+    // Jeśli jest kolizja, powtórzenie losowania
+    try {
+      if (overlap) {
+        i--;
+      } else {
+        twoShips.push(ship);
+        twoShipsHit += 1;
+
+        for (const cell of ship) {
+          cells[cell].classList.add("test-ship");
+          // Komórki poniżej i powyżej
+          if (cell + 10 < 100) {
+            cells[cell + 10].classList.add("locked-cell");
+          }
+          if (cell - 10 >= 0) {
+            cells[cell - 10].classList.add("locked-cell");
+          }
+          // // Komórki po lewej i prawej
+          if (cell % 10 !== 0) {
+            cells[cell - 1].classList.add("locked-cell");
+          }
+          if ((cell + 1) % 10 !== 0) {
+            cells[cell + 1].classList.add("locked-cell");
+          }
+        }
+      }
+    } catch (error) {
+      throw error;
+    }
+    allShips.push(...twoShips);
+  }
+}
+
+async function generateNormalThreeShips() {
+  /////////////////////////////
+  //Tworzenie statku 3 kratki//
+  /////////////////////////////
+  threeShips = [];
+  for (let i = 0; i < threeShipsCount; i++) {
+    await new Promise((resolve) => setTimeout(resolve, 1));
+    let ship = [];
+    let startCell = null;
+    let direction = null;
+    // Losowy wybór kierunku (pionowy lub poziomy)
+    if (Math.random() < 0.5) {
+      // Pionowy
+      startCell = Math.floor(Math.random() * (100 - threeShipsLength * 10));
+      direction = 10;
+    } else {
+      // Poziomy
+      startCell = Math.floor(Math.random() * (100 - threeShipsLength));
+      direction = 1;
+    }
+    // Dodawanie pól statku na planszę
+    for (let j = 0; j < threeShipsLength; j++) {
+      ship.push(startCell + j * direction);
+    }
+    // Sprawdzanie kolizji z istniejącymi statkami
+    let overlap = false;
+    for (const existingShip of allShips) {
+      for (const cell of ship) {
+        if (
+          existingShip.includes(cell) ||
+          cells[cell].classList.contains("locked-cell") ||
+          cells[cell].classList.contains("locked-cell-forever")
+        ) {
+          overlap = true;
+          break;
+        }
+      }
+      if (overlap) break;
+    }
+    // Jeśli jest kolizja, powtórzenie losowania
+    try {
+      if (overlap) {
+        i--;
+      } else {
+        threeShips.push(ship);
+        threeShipsHit += 1;
+
+        for (const cell of ship) {
+          cells[cell].classList.add("test-ship");
+          // Komórki poniżej i powyżej
+          if (cell + 10 < 100) {
+            cells[cell + 10].classList.add("locked-cell");
+          }
+          if (cell - 10 >= 0) {
+            cells[cell - 10].classList.add("locked-cell");
+          }
+          // // Komórki po lewej i prawej
+          if (cell % 10 !== 0) {
+            cells[cell - 1].classList.add("locked-cell");
+          }
+          if ((cell + 1) % 10 !== 0) {
+            cells[cell + 1].classList.add("locked-cell");
+          }
+        }
+      }
+    } catch (error) {
+      throw error;
+    }
+    allShips.push(...threeShips);
+  }
+}
+
+async function generateNormalFourShips() {
+  ///////////////////////////
+  // Tworzenie statku 4 kratki//
+  ///////////////////////////
+  fourShips = [];
+  for (let i = 0; i < fourShipsCount; i++) {
+    await new Promise((resolve) => setTimeout(resolve, 1));
+    let ship = [];
+    let startCell = null;
+    let direction = null;
+    // Losowy wybór kierunku (pionowy lub poziomy)
+    if (Math.random() < 0.5) {
+      // Pionowy
+      startCell = Math.floor(Math.random() * (100 - fourShipsLength * 10));
+      direction = 10;
+    } else {
+      // Poziomy
+      startCell = Math.floor(Math.random() * (100 - fourShipsLength));
+      direction = 1;
+    }
+    // Dodawanie pól statku na planszę
+    for (let j = 0; j < fourShipsLength; j++) {
+      ship.push(startCell + j * direction);
+    }
+    // Sprawdzanie kolizji z istniejącymi statkami
+    let overlap = false;
+    for (const existingShip of allShips) {
+      for (const cell of ship) {
+        if (
+          existingShip.includes(cell) ||
+          cells[cell].classList.contains("locked-cell") ||
+          cells[cell].classList.contains("locked-cell-forever")
+        ) {
+          overlap = true;
+          break;
+        }
+      }
+      if (overlap) break;
+    }
+    // Jeśli jest kolizja, powtórzenie losowania
+    try {
+      if (overlap) {
+        i--;
+      } else {
+        fourShips.push(ship);
+        fourShipsHit += 1;
+
+        for (const cell of ship) {
+          cells[cell].classList.add("test-ship");
+          // Komórki poniżej i powyżej
+          if (cell + 10 < 100) {
+            cells[cell + 10].classList.add("locked-cell");
+          }
+          if (cell - 10 >= 0) {
+            cells[cell - 10].classList.add("locked-cell");
+          }
+          // // Komórki po lewej i prawej
+          if (cell % 10 !== 0) {
+            cells[cell - 1].classList.add("locked-cell");
+          }
+          if ((cell + 1) % 10 !== 0) {
+            cells[cell + 1].classList.add("locked-cell");
+          }
+        }
+      }
+    } catch (error) {
+      throw error;
+    }
+    allShips.push(...fourShips);
+  }
+  buttonForceReload.classList.add("hide-element");
+}
+/////////////////////////////////////////
+
 async function generateAllShipsMessages() {
   await new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -878,7 +1235,7 @@ async function generateAllShipsMessages() {
   Three squares ships: ${threeShipsHit}<br />
   Four squares ship: ${fourShipsHit}`;
   msgTimer.innerHTML = "Time: 00:00";
-  table.style.pointerEvents = "all";
+  cells.forEach((cell) => (cell.style.pointerEvents = "all"));
   buttonBackToMainMenu.style.pointerEvents = "all";
 }
 
@@ -927,9 +1284,9 @@ function handleShot(cellIndex) {
           msgSunken.textContent = "";
         }, 900);
 
-        table.style.pointerEvents = "none";
+        cells.forEach((cell) => (cell.style.pointerEvents = "none"));
         setTimeout(() => {
-          table.style.pointerEvents = "all";
+          cells.forEach((cell) => (cell.style.pointerEvents = "all"));
         }, 600);
       } else {
         msgMain.textContent = "Hit!";
@@ -963,7 +1320,7 @@ function handleShot(cellIndex) {
     Three squares ships: ${Math.round(threeShipsHit)}<br />
     Four squares ship: ${Math.round(fourShipsHit)}`;
 
-  if (hits === 1) {
+  if (hits === 20) {
     // Wszystkie statki zatopione, koniec gry
     buttonBackToMainMenu.style.pointerEvents = "none";
 
@@ -977,12 +1334,30 @@ function handleShot(cellIndex) {
     buttonVictoryRanking.classList.remove("hide-element");
 
     rankingAddPlayer(newPlayer, shots);
-    table.style.pointerEvents = "none";
+    cells.forEach((cell) => (cell.style.pointerEvents = "none"));
+  }
+
+  if (
+    buttonDifficultyHardcore.classList.contains(
+      "main-menu-difficulty-buttons--picked"
+    ) &&
+    shots === 55
+  ) {
+    buttonBackToMainMenu.style.pointerEvents = "none";
+
+    msgMain.innerHTML = `Defeat!<br /> 
+      Amount of shots: ${shots}<br /><br /><br /><br />`;
+    clearInterval(timerInterval);
+    msgMain.classList.add("message-container__lost");
+
+    cells.forEach((cell) => (cell.style.pointerEvents = "none"));
+    buttonVictoryEasyNewGame.classList.remove("hide-element");
+    buttonVictoryRanking.classList.remove("hide-element");
   }
 }
 
 buttonBackToMainMenu.addEventListener("click", () => {
-  table.style.pointerEvents = "none";
+  cells.forEach((cell) => (cell.style.pointerEvents = "none"));
   buttonBackToMainMenu.style.pointerEvents = "none";
   clearInterval(timerInterval);
 
