@@ -245,7 +245,6 @@ body {
     color: #fff;
     display: flex;
     flex-direction: column;
-    font-size: 17.5px;
     height: 370px;
     justify-content: space-between;
     left: 36%;
@@ -259,6 +258,40 @@ body {
     transition: 0.5s;
     width: 340px;
     z-index: 100;
+
+    > button {
+      background-color: rgb(221, 252, 150);
+      border-radius: 20px;
+      border: 2px solid rgb(32, 68, 125);
+      color: rgb(0, 0, 0);
+      cursor: pointer;
+      height: 50px;
+      width: 150px;
+      margin: 25px 0;
+      font-size: 18px;
+      &:hover {
+        background-color: rgb(130, 170, 70);
+        scale: 1.1;
+      }
+
+      &:last-child {
+        width: 110px;
+        height: 30px;
+      }
+    }
+
+    &__easy-button {
+      background-image: linear-gradient(
+        to right,
+        green 0%,
+        lime 50%,
+        green 100%
+      );
+    }
+
+    &__normal-button {
+      background-image: linear-gradient(to right, yellow 44%, red 50%);
+    }
 
     &__easy {
       align-items: center;
@@ -343,21 +376,6 @@ body {
           background-color: rgb(130, 170, 70);
           scale: 1.1;
         }
-      }
-    }
-
-    &__close-button {
-      background-color: rgb(221, 252, 150);
-      border-radius: 20px;
-      border: 2px solid rgb(32, 68, 125);
-      color: rgb(0, 0, 0);
-      cursor: pointer;
-      height: 20px;
-      width: 65px;
-      margin-top: 5px;
-      &:hover {
-        background-color: rgb(130, 170, 70);
-        scale: 1.1;
       }
     }
   }
@@ -764,7 +782,7 @@ body {
   color: none;
 }
 
-.test-ship {
-  background: pink !important;
-  z-index: 0;
-}
+// .test-ship {
+//   background: pink !important;
+//   z-index: 0;
+// }

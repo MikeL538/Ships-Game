@@ -1434,7 +1434,15 @@ function handleShot(cellIndex) {
     buttonVictoryEasyNewGame.classList.remove("hide-element");
     buttonVictoryRanking.classList.remove("hide-element");
 
-    easyRankingAddPlayer(newPlayer, shots);
+    if (
+      buttonDifficultyEasy.classList.contains(
+        "main-menu-difficulty-buttons--picked"
+      )
+    ) {
+      easyRankingAddPlayer(newPlayer, shots);
+    } else {
+      normalRankingAddPlayer(newPlayer, shots);
+    }
     table.style.pointerEvents = "none";
   }
 
