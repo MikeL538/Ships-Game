@@ -519,7 +519,6 @@ function firstStart() {
 }
 
 function initGame() {
-  buttonForceReload.classList.remove("hide-element");
   table.style.pointerEvents = "none";
   timeSeconds = 0;
   timeMinutes = 0;
@@ -565,16 +564,15 @@ async function generateEasyAllShips() {
   try {
     clearInterval(timerInterval);
     await generateEasyOneShips();
-
     await generateEasyTwoShips();
-
     await generateEasyThreeShips();
-
     await generateEasyFourShips();
-
     await generateAllShipsMessages();
-    startTimer();
+    setTimeout(() => {
+      startTimer();
+    }, 500);
   } catch (error) {
+    buttonForceReload.classList.remove("hide-element");
     initGame();
   }
 }
@@ -935,16 +933,16 @@ async function generateNormalAllShips() {
   try {
     clearInterval(timerInterval);
     await generateNormalOneShips();
-
     await generateNormalTwoShips();
-
     await generateNormalThreeShips();
-
     await generateNormalFourShips();
-
     await generateAllShipsMessages();
-    startTimer();
+
+    setTimeout(() => {
+      startTimer();
+    }, 500);
   } catch (error) {
+    buttonForceReload.classList.remove("hide-element");
     initGame();
   }
 }
@@ -1338,7 +1336,7 @@ function handleShot(cellIndex) {
     Three squares ships: ${Math.round(threeShipsHit)}<br />
     Four squares ship: ${Math.round(fourShipsHit)}`;
 
-  if (hits === 20) {
+  if (hits === 1) {
     // Wszystkie statki zatopione, koniec gry
     buttonBackToMainMenu.style.pointerEvents = "none";
 
@@ -1359,7 +1357,7 @@ function handleShot(cellIndex) {
     buttonDifficultyHardcore.classList.contains(
       "main-menu-difficulty-buttons--picked"
     ) &&
-    shots === 55
+    shots === 2
   ) {
     buttonBackToMainMenu.style.pointerEvents = "none";
 

@@ -1,7 +1,13 @@
-@media (max-width: 450px) {
+@media (max-width: 1000px) {
+  body {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+  }
+
   #board {
     flex-direction: column;
-    margin: 0 5px;
+    margin: 1svh 5px;
     width: 330px;
     height: 665px;
   }
@@ -20,6 +26,47 @@
       display: flex;
     }
 
+    &-difficulty {
+      align-items: flex-start;
+
+      &-buttons {
+        width: 80px;
+        height: 32px;
+        font-size: 18px;
+      }
+
+      &__info {
+        font-size: 12px;
+        opacity: 1;
+        z-index: 0;
+        pointer-events: all;
+        height: 75px;
+
+        &-easy {
+          top: 1%;
+          left: 65%;
+          width: 200px;
+          padding: 10px;
+        }
+
+        &-normal {
+          top: 27%;
+          left: 65%;
+          width: 200px;
+          height: 100px;
+          padding: 10px;
+        }
+
+        &-hardcore {
+          top: 62%;
+          left: 65%;
+          width: 200px;
+          height: 100px;
+          padding: 10px;
+        }
+      }
+    }
+
     &-options {
       width: 340px;
 
@@ -34,6 +81,10 @@
       top: 30%;
       left: 52.5%;
     }
+
+    &-instructions {
+      font-size: 16px;
+    }
   }
 
   #alphabet {
@@ -47,7 +98,7 @@
       }
 
       &:last-child {
-        width: 32.5px;
+        width: 33px;
       }
     }
   }
@@ -105,7 +156,7 @@
 
     &__victory {
       left: 48%;
-      top: 55%;
+      top: 48%;
       font-size: 24px;
       transform: translate(-45%, -150%);
       width: 300px;
@@ -114,17 +165,28 @@
         width: 110px;
         height: 35px;
         font-size: 20px;
-        top: 43%;
-        left: 35%;
+        top: 35%;
+        left: 38%;
       }
 
       &-ranking {
         width: 110px;
         height: 35px;
         font-size: 20px;
-        top: 49%;
-        left: 35%;
+        top: 41%;
+        left: 38%;
       }
+    }
+    &__lost {
+      left: 45%;
+      top: 22%;
+      font-size: 24px;
+      transform: translate(-45%, -150%);
+    }
+
+    &__force-reload {
+      top: 63.65%;
+      left: 0;
     }
   }
 

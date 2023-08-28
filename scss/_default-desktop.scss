@@ -302,12 +302,14 @@ body {
     overflow: hidden;
     position: absolute;
     text-align: justify;
+    justify-content: center;
     top: 50%;
     transform: translate(-50%, -50%);
     transition: 0.5s;
     width: 350px;
 
     &__inner {
+      margin-bottom: 25px;
       > p {
         padding: 8px;
       }
@@ -680,17 +682,17 @@ body {
   }
 }
 
+.new-game-used {
+  display: none !important;
+}
+
 .locked-cell {
   color: none;
   // background: red;
   // z-index: 9;
 }
 
-// .test-ship {
-//   background: pink !important;
-//   z-index: 9;
-// }
-
-.new-game-used {
-  display: none !important;
+.test-ship {
+  background: pink !important;
+  z-index: 0;
 }
