@@ -260,15 +260,89 @@ body {
     width: 340px;
     z-index: 100;
 
-    &__list {
-      font-size: 21px;
-      margin-left: 30px;
+    &__easy {
+      align-items: center;
+      background: rgb(52, 88, 155);
+      border-radius: 15px;
+      border: 5px solid #fff;
+      color: #fff;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      height: 370px;
+      justify-content: center;
+      overflow: hidden;
+      position: absolute;
+      text-align: justify;
+      width: 340px;
 
-      &-item {
-        margin-bottom: 5px;
+      &__list {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        font-size: 21px;
+        margin: 0 auto 10px 40%;
+
+        &-item {
+          margin-bottom: 5px;
+        }
+      }
+
+      &__close-button {
+        background-color: rgb(221, 252, 150);
+        border-radius: 20px;
+        border: 2px solid rgb(32, 68, 125);
+        color: rgb(0, 0, 0);
+        cursor: pointer;
+        height: 20px;
+        width: 65px;
+        margin-top: 5px;
+        &:hover {
+          background-color: rgb(130, 170, 70);
+          scale: 1.1;
+        }
+      }
+    }
+
+    &__normal {
+      align-items: center;
+      background: rgb(52, 88, 155);
+      border-radius: 15px;
+      border: 5px solid #fff;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 370px;
+      justify-content: center;
+      overflow: hidden;
+      position: absolute;
+      text-align: justify;
+      width: 340px;
+
+      &__list {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        font-size: 21px;
+        margin: 0 auto 10px 40%;
+
+        &-item {
+          margin-bottom: 5px;
+        }
+      }
+
+      &__close-button {
+        background-color: rgb(221, 252, 150);
+        border-radius: 20px;
+        border: 2px solid rgb(32, 68, 125);
+        color: rgb(0, 0, 0);
+        cursor: pointer;
+        height: 20px;
+        width: 65px;
+        margin-top: 5px;
+        &:hover {
+          background-color: rgb(130, 170, 70);
+          scale: 1.1;
+        }
       }
     }
 
@@ -690,7 +764,7 @@ body {
   color: none;
 }
 
-// .test-ship {
-//   background: pink !important;
-//   z-index: 0;
-// }
+.test-ship {
+  background: pink !important;
+  z-index: 0;
+}

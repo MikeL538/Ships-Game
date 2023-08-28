@@ -18,7 +18,20 @@
     <div id="board">
       <!-- Blok Rankingu -->
       <div class="main-menu-ranking hide-element">
-        <ol class="main-menu-ranking__list"></ol>
+        <button class="main-menu-ranking__easy-button">Easy</button>
+        <button class="main-menu-ranking__normal-button">
+          Normal/Hardcore
+        </button>
+
+        <div class="main-menu-ranking__easy hide-element">
+          <ol class="main-menu-ranking__easy__list"></ol>
+          <button class="main-menu-ranking__easy__close-button">Close</button>
+        </div>
+
+        <div class="main-menu-ranking__normal hide-element">
+          <ol class="main-menu-ranking__normal__list"></ol>
+          <button class="main-menu-ranking__normal__close-button">Close</button>
+        </div>
         <button class="main-menu-ranking__close-button">Close</button>
       </div>
       <!-- Menu Główne -->
@@ -150,8 +163,6 @@
                   type="text"
                   maxlength="8"
                   placeholder="Your Nick"
-                  required;
-                  value="Player"
                 />
               </label>
             </div>

@@ -86,7 +86,27 @@ const rankingBlock = document.querySelector(".main-menu-ranking");
 const buttonRankingClose = document.querySelector(
   ".main-menu-ranking__close-button"
 );
-let ranking = {
+const rankingEasyBlock = document.querySelector(".main-menu-ranking__easy");
+const buttonRankingEasy = document.querySelector(
+  ".main-menu-ranking__easy-button"
+);
+const buttonRankingEasyClose = document.querySelector(
+  ".main-menu-ranking__easy__close-button"
+);
+const rankingNormalBlock = document.querySelector(".main-menu-ranking__normal");
+const buttonRankingNormal = document.querySelector(
+  ".main-menu-ranking__normal-button"
+);
+const buttonRankingNormalClose = document.querySelector(
+  ".main-menu-ranking__normal__close-button"
+);
+
+let easyRanking = {
+  nick: [],
+  shots: [],
+};
+
+let normalRanking = {
   nick: [],
   shots: [],
 };
@@ -129,9 +149,10 @@ window.onload = function onPageLoad() {
   buttonContinueGame.style.display = "none";
   buttonEasyRestartGame.style.display = "none";
   updateSoundVolume();
-  updateRanking();
+
   loadRanking();
-  updateRanking();
+  updateEasyRanking();
+  updateNormalRanking();
   updateWavesButton();
 };
 
@@ -380,47 +401,111 @@ buttonRankingClose.addEventListener("click", () => {
   rankingBlock.classList.add("hide-element");
 });
 
-function rankingAddPlayer(nazwaGracza, shots) {
+buttonRankingEasy.addEventListener("click", () => {
+  rankingEasyBlock.classList.remove("hide-element");
+});
+
+buttonRankingEasyClose.addEventListener("click", () => {
+  rankingEasyBlock.classList.add("hide-element");
+});
+
+buttonRankingNormal.addEventListener("click", () => {
+  rankingNormalBlock.classList.remove("hide-element");
+});
+
+buttonRankingNormalClose.addEventListener("click", () => {
+  rankingNormalBlock.classList.add("hide-element");
+});
+
+function easyRankingAddPlayer(nazwaGracza, shots) {
   // Dodaj gracza do rankingu
-  ranking.nick.push(nazwaGracza);
-  ranking.shots.push(shots);
+  easyRanking.nick.push(nazwaGracza);
+  easyRanking.shots.push(shots);
 
   // Sortuj ranking względem liczby strzałów
-  const rankingLength = ranking.nick.length;
+  const rankingLength = easyRanking.nick.length;
   for (let i = 0; i < rankingLength - 1; i++) {
     for (let j = 0; j < rankingLength - i - 1; j++) {
-      if (ranking.shots[j] > ranking.shots[j + 1]) {
+      if (easyRanking.shots[j] > easyRanking.shots[j + 1]) {
         // Zamień pozycje graczy
-        const tempNick = ranking.nick[j];
-        ranking.nick[j] = ranking.nick[j + 1];
-        ranking.nick[j + 1] = tempNick;
+        const tempNick = easyRanking.nick[j];
+        easyRanking.nick[j] = easyRanking.nick[j + 1];
+        easyRanking.nick[j + 1] = tempNick;
 
-        const tempScore = ranking.shots[j];
-        ranking.shots[j] = ranking.shots[j + 1];
-        ranking.shots[j + 1] = tempScore;
+        const tempScore = easyRanking.shots[j];
+        easyRanking.shots[j] = easyRanking.shots[j + 1];
+        easyRanking.shots[j + 1] = tempScore;
       }
     }
   }
 
   // Jeśli ranking ma więcej niż 10 graczy, usuń ostatniego gracza
   if (rankingLength > 10) {
-    ranking.nick.pop();
-    ranking.shots.pop();
+    easyRanking.nick.pop();
+    easyRanking.shots.pop();
   }
   saveRanking();
-  updateRanking();
+  updateEasyRanking();
 }
 
-function updateRanking() {
-  const rankingList = document.querySelector(".main-menu-ranking__list");
-  rankingList.innerHTML = ""; // Wyczyść istniejącą listę
+function updateEasyRanking() {
+  const rankingEasyList = document.querySelector(
+    ".main-menu-ranking__easy__list"
+  );
+  rankingEasyList.innerHTML = ""; // Wyczyść istniejącą listę
 
-  for (let i = 0; i < ranking.nick.length; i++) {
+  for (let i = 0; i < easyRanking.nick.length; i++) {
     const listItem = document.createElement("li");
 
-    listItem.textContent = `${ranking.nick[i]} - ${ranking.shots[i]}`;
-    listItem.classList.add("main-menu-ranking__list-item");
-    rankingList.appendChild(listItem);
+    listItem.textContent = `${easyRanking.nick[i]} - ${easyRanking.shots[i]}`;
+    listItem.classList.add("main-menu-ranking__easy__list-item");
+    rankingEasyList.appendChild(listItem);
+  }
+}
+
+function normalRankingAddPlayer(nazwaGracza, shots) {
+  // Dodaj gracza do rankingu
+  normalRanking.nick.push(nazwaGracza);
+  normalRanking.shots.push(shots);
+
+  // Sortuj ranking względem liczby strzałów
+  const rankingLength = normalRanking.nick.length;
+  for (let i = 0; i < rankingLength - 1; i++) {
+    for (let j = 0; j < rankingLength - i - 1; j++) {
+      if (normalRanking.shots[j] > normalRanking.shots[j + 1]) {
+        // Zamień pozycje graczy
+        const tempNick = normalRanking.nick[j];
+        normalRanking.nick[j] = normalRanking.nick[j + 1];
+        normalRanking.nick[j + 1] = tempNick;
+
+        const tempScore = normalRanking.shots[j];
+        normalRanking.shots[j] = normalRanking.shots[j + 1];
+        normalRanking.shots[j + 1] = tempScore;
+      }
+    }
+  }
+
+  // Jeśli ranking ma więcej niż 10 graczy, usuń ostatniego gracza
+  if (rankingLength > 10) {
+    normalRanking.nick.pop();
+    normalRanking.shots.pop();
+  }
+  saveRanking();
+  updateNormalRanking();
+}
+
+function updateNormalRanking() {
+  const rankingNormalList = document.querySelector(
+    ".main-menu-ranking__normal__list"
+  );
+  rankingNormalList.innerHTML = ""; // Wyczyść istniejącą listę
+
+  for (let i = 0; i < normalRanking.nick.length; i++) {
+    const listItem = document.createElement("li");
+
+    listItem.textContent = `${normalRanking.nick[i]} - ${normalRanking.shots[i]}`;
+    listItem.classList.add("main-menu-ranking__normal__list-item");
+    rankingNormalList.appendChild(listItem);
   }
 }
 
@@ -1349,7 +1434,7 @@ function handleShot(cellIndex) {
     buttonVictoryEasyNewGame.classList.remove("hide-element");
     buttonVictoryRanking.classList.remove("hide-element");
 
-    rankingAddPlayer(newPlayer, shots);
+    easyRankingAddPlayer(newPlayer, shots);
     table.style.pointerEvents = "none";
   }
 
@@ -1427,15 +1512,15 @@ if (savedWavesState === "Off") {
 
 // Theme
 function loadThemeState() {
-  return localStorage.getItem("themeState") || "light"; // Domyślnie ustaw "dark"
+  return localStorage.getItem("themeState") || "dark"; // Domyślnie ustaw "dark"
 }
 function saveThemeState(themeState) {
   localStorage.setItem("themeState", themeState);
 }
-if (initialThemeState === "light") {
-  body.style.backgroundColor = "#fff";
-  body.style.color = "#000";
-  buttonTheme.innerHTML = "Dark";
+if (initialThemeState === "dark") {
+  body.style.backgroundColor = "#000";
+  body.style.color = "#fff";
+  buttonTheme.innerHTML = "Light";
 } else {
   body.style.backgroundColor = "#000";
   body.style.color = "#fff";
@@ -1460,12 +1545,33 @@ function updateSoundVolume() {
 
 // Ranking
 function loadRanking() {
-  const savedRanking = localStorage.getItem("ranking");
-  if (savedRanking) {
-    ranking = JSON.parse(savedRanking);
+  const savedEasyRanking = localStorage.getItem("easyRanking");
+  const savedNormalRanking = localStorage.getItem("normalRanking");
+
+  if (savedEasyRanking) {
+    easyRanking = JSON.parse(savedEasyRanking);
   } else {
-    // Ustaw wartości domyślne, gdy nie ma jeszcze rankingu w localStorage
-    ranking.nick = [
+    // Ustaw wartości domyślne dla "easy" rankingu
+    easyRanking.nick = [
+      "Bob",
+      "Frodo",
+      "Bux",
+      "Simba",
+      "Saruman",
+      "Geralt",
+      "Lola",
+      "Pete",
+      "Glock",
+      "Sauron",
+    ];
+    easyRanking.shots = [35, 36, 38, 39, 41, 44, 46, 49, 50, 51];
+  }
+
+  if (savedNormalRanking) {
+    normalRanking = JSON.parse(savedNormalRanking);
+  } else {
+    // Ustaw wartości domyślne dla "normal" rankingu
+    normalRanking.nick = [
       "Davy",
       "Blackbeard",
       "Jack",
@@ -1477,10 +1583,11 @@ function loadRanking() {
       "Scott",
       "Dwight",
     ];
-    ranking.shots = [44, 46, 50, 54, 58, 61, 64, 69, 74, 77];
+    normalRanking.shots = [44, 46, 50, 54, 58, 61, 64, 69, 74, 77];
   }
 }
 
 function saveRanking() {
-  localStorage.setItem("ranking", JSON.stringify(ranking));
+  localStorage.setItem("easyRanking", JSON.stringify(easyRanking));
+  localStorage.setItem("normalRanking", JSON.stringify(normalRanking));
 }
