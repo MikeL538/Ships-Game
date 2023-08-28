@@ -1336,7 +1336,7 @@ function handleShot(cellIndex) {
     Three squares ships: ${Math.round(threeShipsHit)}<br />
     Four squares ship: ${Math.round(fourShipsHit)}`;
 
-  if (hits === 1) {
+  if (hits === 20) {
     // Wszystkie statki zatopione, koniec gry
     buttonBackToMainMenu.style.pointerEvents = "none";
 
@@ -1357,7 +1357,7 @@ function handleShot(cellIndex) {
     buttonDifficultyHardcore.classList.contains(
       "main-menu-difficulty-buttons--picked"
     ) &&
-    shots === 2
+    shots === 55
   ) {
     buttonBackToMainMenu.style.pointerEvents = "none";
 
