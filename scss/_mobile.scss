@@ -1,8 +1,9 @@
+@import "./vars";
+
 @media (max-width: 1000px) {
   body {
     display: flex;
     justify-content: center;
-    overflow: hidden;
   }
 
   #board {
@@ -28,11 +29,26 @@
 
     &-difficulty {
       align-items: flex-start;
+      width: size("mobile-menu-box-width");
+      height: size("mobile-menu-box-height");
+
+      > div {
+        margin-top: 20px;
+      }
 
       &-buttons {
-        width: 80px;
+        width: 85px;
         height: 32px;
         font-size: 18px;
+        margin-left: 20px;
+      }
+
+      &__close-button {
+        font-size: 12px;
+        width: 50px;
+        height: 20px;
+        margin-left: 40px;
+        margin-top: 25px;
       }
 
       &__info {
@@ -43,14 +59,14 @@
         height: 80px;
 
         &-easy {
-          top: -1%;
+          top: 0;
           left: 65%;
           width: 200px;
           padding: 10px;
         }
 
         &-normal {
-          top: 25%;
+          top: 27%;
           left: 65%;
           width: 200px;
           height: 110px;
@@ -58,7 +74,7 @@
         }
 
         &-hardcore {
-          top: 62%;
+          top: 63%;
           left: 65%;
           width: 200px;
           height: 110px;
@@ -68,7 +84,9 @@
     }
 
     &-options {
-      width: 340px;
+      font-size: 18px;
+      height: size("mobile-menu-box-height");
+      width: size("mobile-menu-box-width");
 
       &__div {
         > span {
@@ -78,6 +96,8 @@
     }
 
     &-ranking {
+      width: size("mobile-menu-box-width");
+      height: size("mobile-menu-box-height");
       top: 30%;
       left: 52.5%;
     }

@@ -1,0 +1,10 @@
+$size: (
+  "menu-box-height": 330px,
+  "menu-box-width": 360px,
+  "mobile-menu-box-height": 315px,
+  "mobile-menu-box-width": 340px,
+);
+
+@function size($key) {
+  @return map-get($size, $key);
+}

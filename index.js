@@ -48,6 +48,115 @@ const buttonOptions = document.getElementById("main-menu__options");
 const buttonRanking = document.getElementById("main-menu__ranking");
 const buttonInstructions = document.getElementById("main-menu__instructions");
 /////////////////////////////////////////
+// Main Menu Difficulty
+const difficultyBlock = document.querySelector(".main-menu-difficulty");
+const buttonDifficultyClose = document.querySelector(
+  ".main-menu-difficulty__close-button"
+);
+
+// Easy
+const buttonDifficultyEasy = document.querySelector(
+  ".main-menu-difficulty__easy-button"
+);
+const infoDifficultyEasy = document.querySelector(
+  ".main-menu-difficulty__info-easy"
+);
+
+buttonDifficultyEasy.addEventListener("mouseenter", () => {
+  infoDifficultyEasy.classList.remove("hide-element");
+});
+
+buttonDifficultyEasy.addEventListener("mouseleave", () => {
+  infoDifficultyEasy.classList.add("hide-element");
+});
+
+// Wybór
+buttonDifficultyEasy.addEventListener("click", () => {
+  buttonDifficultyEasy.classList.add("main-menu-difficulty-buttons--picked");
+  buttonDifficultyNormal.classList.remove(
+    "main-menu-difficulty-buttons--picked"
+  );
+  buttonDifficultyHardcore.classList.remove(
+    "main-menu-difficulty-buttons--picked"
+  );
+  if (buttonNewGame.classList.contains("new-game-used")) {
+    initGame();
+    difficultyBlock.classList.add("hide-element");
+    mainMenuBlock.classList.add("hide-element-menu");
+  }
+});
+
+// Normal
+const buttonDifficultyNormal = document.querySelector(
+  ".main-menu-difficulty__normal-button"
+);
+const infoDifficultyNormal = document.querySelector(
+  ".main-menu-difficulty__info-normal"
+);
+
+buttonDifficultyNormal.addEventListener("mouseenter", () => {
+  infoDifficultyNormal.classList.remove("hide-element");
+});
+
+buttonDifficultyNormal.addEventListener("mouseleave", () => {
+  infoDifficultyNormal.classList.add("hide-element");
+});
+
+// Wybór
+buttonDifficultyNormal.addEventListener("click", () => {
+  buttonDifficultyNormal.classList.add("main-menu-difficulty-buttons--picked");
+  buttonDifficultyEasy.classList.remove("main-menu-difficulty-buttons--picked");
+  buttonDifficultyHardcore.classList.remove(
+    "main-menu-difficulty-buttons--picked"
+  );
+  if (buttonNewGame.classList.contains("new-game-used")) {
+    initGame();
+    difficultyBlock.classList.add("hide-element");
+    mainMenuBlock.classList.add("hide-element-menu");
+  }
+});
+
+// Hardcore
+const buttonDifficultyHardcore = document.querySelector(
+  ".main-menu-difficulty__hardcore-button"
+);
+const infoDifficultyHardcore = document.querySelector(
+  ".main-menu-difficulty__info-hardcore"
+);
+
+buttonDifficultyHardcore.addEventListener("mouseenter", () => {
+  infoDifficultyHardcore.classList.remove("hide-element");
+});
+
+buttonDifficultyHardcore.addEventListener("mouseleave", () => {
+  infoDifficultyHardcore.classList.add("hide-element");
+});
+
+// Wybór
+buttonDifficultyHardcore.addEventListener("click", () => {
+  buttonDifficultyHardcore.classList.add(
+    "main-menu-difficulty-buttons--picked"
+  );
+  buttonDifficultyEasy.classList.remove("main-menu-difficulty-buttons--picked");
+  buttonDifficultyNormal.classList.remove(
+    "main-menu-difficulty-buttons--picked"
+  );
+  if (buttonNewGame.classList.contains("new-game-used")) {
+    initGame();
+    difficultyBlock.classList.add("hide-element");
+    mainMenuBlock.classList.add("hide-element-menu");
+  }
+});
+//
+
+buttonDifficulty.addEventListener("click", () => {
+  difficultyBlock.classList.remove("hide-element");
+});
+
+buttonDifficultyClose.addEventListener("click", () => {
+  difficultyBlock.classList.add("hide-element");
+});
+/////////////////////////////////////////
 // Main Menu Opcje
 const mainMenuOptionsBlock = document.querySelector(".main-menu-options");
 const buttonWaves = document.querySelector(".main-menu-options__div__waves");
@@ -64,22 +173,6 @@ let missVolumePercentage = document.getElementById("miss-volume-percentage");
 let hitSoundVolume = parseFloat(localStorage.getItem("hitSoundVolume")) || 0.5;
 let missSoundVolume =
   parseFloat(localStorage.getItem("missSoundVolume")) || 0.5;
-/////////////////////////////////////////
-// Main Menu Instrukcje
-const instructionsBlock = document.querySelector(".main-menu-instructions");
-const instructionsInner = document.querySelector(
-  ".main-menu-instructions__inner"
-);
-const buttonBackInstructions = document.querySelector(
-  ".main-menu-instructions__buttons__back-button"
-);
-const buttonCloseInstructions = document.querySelector(
-  ".main-menu-instructions__buttons__close-button"
-);
-const buttonNextInstructions = document.querySelector(
-  ".main-menu-instructions__buttons__next-button"
-);
-let instructionsPage = 0;
 /////////////////////////////////////////
 // Main Menu Ranking
 const rankingBlock = document.querySelector(".main-menu-ranking");
@@ -114,6 +207,23 @@ let PlayerNickInput = document.querySelector(
   ".main-menu-options__div__nick-input"
 );
 let newPlayer = PlayerNickInput.value || "Player";
+/////////////////////////////////////////
+// Main Menu Instrukcje
+const instructionsBlock = document.querySelector(".main-menu-instructions");
+const instructionsInner = document.querySelector(
+  ".main-menu-instructions__inner"
+);
+const buttonBackInstructions = document.querySelector(
+  ".main-menu-instructions__buttons__back-button"
+);
+const buttonCloseInstructions = document.querySelector(
+  ".main-menu-instructions__buttons__close-button"
+);
+const buttonNextInstructions = document.querySelector(
+  ".main-menu-instructions__buttons__next-button"
+);
+let instructionsPage = 0;
+
 /////////////////////////////////////////
 // Messages Container
 const buttonBackToMainMenu = document.querySelector(
@@ -157,110 +267,6 @@ window.onload = function onPageLoad() {
 };
 
 /////////////////////////////////////////
-const difficultyBlock = document.querySelector(".main-menu-difficulty");
-const buttonDifficultyClose = document.querySelector(
-  ".main-menu-difficulty__close-button"
-);
-
-// Easy
-const buttonDifficultyEasy = document.querySelector(
-  ".main-menu-difficulty__easy-button"
-);
-const infoDifficultyEasy = document.querySelector(
-  ".main-menu-difficulty__info-easy"
-);
-
-buttonDifficultyEasy.addEventListener("mouseenter", () => {
-  infoDifficultyEasy.classList.remove("hide-element");
-});
-
-buttonDifficultyEasy.addEventListener("mouseleave", () => {
-  infoDifficultyEasy.classList.add("hide-element");
-});
-
-buttonDifficultyEasy.addEventListener("click", () => {
-  buttonDifficultyEasy.classList.add("main-menu-difficulty-buttons--picked");
-  buttonDifficultyNormal.classList.remove(
-    "main-menu-difficulty-buttons--picked"
-  );
-  buttonDifficultyHardcore.classList.remove(
-    "main-menu-difficulty-buttons--picked"
-  );
-  if (buttonNewGame.classList.contains("new-game-used")) {
-    initGame();
-    difficultyBlock.classList.add("hide-element");
-    mainMenuBlock.classList.add("hide-element-menu");
-  }
-});
-
-// Normal
-const buttonDifficultyNormal = document.querySelector(
-  ".main-menu-difficulty__normal-button"
-);
-const infoDifficultyNormal = document.querySelector(
-  ".main-menu-difficulty__info-normal"
-);
-
-buttonDifficultyNormal.addEventListener("mouseenter", () => {
-  infoDifficultyNormal.classList.remove("hide-element");
-});
-
-buttonDifficultyNormal.addEventListener("mouseleave", () => {
-  infoDifficultyNormal.classList.add("hide-element");
-});
-
-buttonDifficultyNormal.addEventListener("click", () => {
-  buttonDifficultyNormal.classList.add("main-menu-difficulty-buttons--picked");
-  buttonDifficultyEasy.classList.remove("main-menu-difficulty-buttons--picked");
-  buttonDifficultyHardcore.classList.remove(
-    "main-menu-difficulty-buttons--picked"
-  );
-  if (buttonNewGame.classList.contains("new-game-used")) {
-    initGame();
-    difficultyBlock.classList.add("hide-element");
-    mainMenuBlock.classList.add("hide-element-menu");
-  }
-});
-
-// Hardcore
-const buttonDifficultyHardcore = document.querySelector(
-  ".main-menu-difficulty__hardcore-button"
-);
-const infoDifficultyHardcore = document.querySelector(
-  ".main-menu-difficulty__info-hardcore"
-);
-
-buttonDifficultyHardcore.addEventListener("mouseenter", () => {
-  infoDifficultyHardcore.classList.remove("hide-element");
-});
-
-buttonDifficultyHardcore.addEventListener("mouseleave", () => {
-  infoDifficultyHardcore.classList.add("hide-element");
-});
-
-buttonDifficultyHardcore.addEventListener("click", () => {
-  buttonDifficultyHardcore.classList.add(
-    "main-menu-difficulty-buttons--picked"
-  );
-  buttonDifficultyEasy.classList.remove("main-menu-difficulty-buttons--picked");
-  buttonDifficultyNormal.classList.remove(
-    "main-menu-difficulty-buttons--picked"
-  );
-  if (buttonNewGame.classList.contains("new-game-used")) {
-    initGame();
-    difficultyBlock.classList.add("hide-element");
-    mainMenuBlock.classList.add("hide-element-menu");
-  }
-});
-//
-
-buttonDifficulty.addEventListener("click", () => {
-  difficultyBlock.classList.remove("hide-element");
-});
-
-buttonDifficultyClose.addEventListener("click", () => {
-  difficultyBlock.classList.add("hide-element");
-});
 
 /////////////////////////////////////////
 
@@ -591,7 +597,6 @@ buttonVictoryRanking.addEventListener("click", () => {
 
 /////////////////////////////////////////
 // Game
-
 function firstStart() {
   cells.forEach((cell, index) => {
     cell.addEventListener("click", () => handleShot(index));
@@ -672,22 +677,13 @@ async function generateEasyOneShips() {
     await new Promise((resolve) => setTimeout(resolve, 1));
     let ship = [];
     let startCell = null;
-    let direction = null;
 
-    // Losowy wybór kierunku (pionowy lub poziomy)
-    if (Math.random() < 0.5) {
-      // Pionowy
-      startCell = Math.floor(Math.random() * (100 - oneShipsLength * 10));
-      direction = 10;
-    } else {
-      // Poziomy
-      startCell = Math.floor(Math.random() * (100 - oneShipsLength));
-      direction = 1;
-    }
+    // Rozmieszczenie statku
+    startCell = Math.floor(Math.random() * (100 - oneShipsLength));
+
     // Dodawanie pól statku na planszę
-    for (let j = 0; j < oneShipsLength; j++) {
-      ship.push(startCell + j * direction);
-    }
+    ship.push(startCell);
+
     // Sprawdzanie kolizji z istniejącymi statkami
     let overlap = false;
     for (const existingShip of allShips) {
@@ -1042,22 +1038,13 @@ async function generateNormalOneShips() {
     await new Promise((resolve) => setTimeout(resolve, 1));
     let ship = [];
     let startCell = null;
-    let direction = null;
 
-    // Losowy wybór kierunku (pionowy lub poziomy)
-    if (Math.random() < 0.5) {
-      // Pionowy
-      startCell = Math.floor(Math.random() * (100 - oneShipsLength * 10));
-      direction = 10;
-    } else {
-      // Poziomy
-      startCell = Math.floor(Math.random() * (100 - oneShipsLength));
-      direction = 1;
-    }
+    // Rozmieszczenie statku
+    startCell = Math.floor(Math.random() * (100 - oneShipsLength));
+
     // Dodawanie pól statku na planszę
-    for (let j = 0; j < oneShipsLength; j++) {
-      ship.push(startCell + j * direction);
-    }
+    ship.push(startCell);
+
     // Sprawdzanie kolizji z istniejącymi statkami
     let overlap = false;
     for (const existingShip of allShips) {
@@ -1096,6 +1083,20 @@ async function generateNormalOneShips() {
           }
           if ((cell + 1) % 10 !== 0) {
             cells[cell + 1].classList.add("locked-cell");
+          }
+          // // // Ukos lewo
+          if (cell + 10 < 100) {
+            cells[cell + 9].classList.add("locked-cell");
+          }
+          if (cell - 10 >= 0) {
+            cells[cell - 11].classList.add("locked-cell");
+          }
+          // // Ukos prawo
+          if (cell - 10 >= 0) {
+            cells[cell - 9].classList.add("locked-cell");
+          }
+          if (cell + 10 < 100) {
+            cells[cell + 11].classList.add("locked-cell");
           }
         }
       }
@@ -1325,7 +1326,7 @@ async function generateNormalFourShips() {
 /////////////////////////////////////////
 
 async function generateAllShipsMessages() {
-  await new Promise((resolve) => setTimeout(resolve, 0));
+  await new Promise((resolve) => setTimeout(resolve, 1));
 
   msgAdditional.innerHTML = `Shots: ${shots}<br /> 
   Sunken: ${hits}/20<br /><br /> 
