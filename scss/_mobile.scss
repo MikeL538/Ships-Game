@@ -40,14 +40,14 @@
         width: 85px;
         height: 32px;
         font-size: 18px;
-        margin-left: 20px;
+        margin-left: 10px;
       }
 
       &__close-button {
         font-size: 12px;
         width: 50px;
         height: 20px;
-        margin-left: 40px;
+        margin-left: 30px;
         margin-top: 25px;
       }
 
@@ -57,18 +57,17 @@
         z-index: 0;
         pointer-events: all;
         height: 80px;
+        width: 220px;
 
         &-easy {
           top: 0;
           left: 65%;
-          width: 200px;
           padding: 10px;
         }
 
         &-normal {
           top: 27%;
           left: 65%;
-          width: 200px;
           height: 110px;
           padding: 10px;
         }
@@ -76,7 +75,6 @@
         &-hardcore {
           top: 63%;
           left: 65%;
-          width: 200px;
           height: 110px;
           padding: 10px;
         }
@@ -100,6 +98,18 @@
       height: size("mobile-menu-box-height");
       top: 30%;
       left: 52.5%;
+
+      &__easy {
+        &__list {
+          font-size: 16px;
+        }
+      }
+
+      &__normal {
+        &__list {
+          font-size: 16px;
+        }
+      }
     }
 
     &-instructions {

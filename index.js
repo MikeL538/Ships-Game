@@ -1573,7 +1573,7 @@ function loadRanking() {
       "Glock",
       "Sauron",
     ];
-    easyRanking.shots = [35, 36, 38, 39, 41, 44, 46, 49, 50, 51];
+    easyRanking.shots = [38, 41, 42, 44, 45, 47, 48, 49, 50, 51];
   }
 
   if (savedNormalRanking) {
@@ -1592,7 +1592,7 @@ function loadRanking() {
       "Scott",
       "Dwight",
     ];
-    normalRanking.shots = [44, 46, 50, 54, 58, 61, 64, 69, 74, 77];
+    normalRanking.shots = [45, 47, 51, 55, 59, 61, 64, 69, 74, 75];
   }
 }
 
