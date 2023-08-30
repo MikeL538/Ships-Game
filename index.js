@@ -1532,9 +1532,9 @@ if (initialThemeState === "dark") {
   body.style.color = "#fff";
   buttonTheme.innerHTML = "Light";
 } else {
-  body.style.backgroundColor = "#000";
-  body.style.color = "#fff";
-  buttonTheme.innerHTML = "Light";
+  body.style.backgroundColor = "#fff";
+  body.style.color = "#000";
+  buttonTheme.innerHTML = "Dark";
 }
 
 // Zapisywanie dźwięków //
