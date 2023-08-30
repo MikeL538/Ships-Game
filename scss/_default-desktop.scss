@@ -213,7 +213,7 @@ body {
       }
 
       &__volume {
-        width: 110px;
+        width: 90px;
         margin: 0 5px;
         margin-left: 10px;
 
@@ -462,6 +462,14 @@ body {
   }
 }
 
+#hit-volume-percentage {
+  width: 52px;
+}
+
+#miss-volume-percentage {
+  width: 52px;
+}
+
 #alphabet {
   display: flex;
 
@@ -580,8 +588,7 @@ body {
   &__timer {
     font-size: 12px;
     font-weight: 400;
-    margin: 0 auto;
-    margin-top: auto;
+    margin: auto auto 0;
   }
 
   &__sunken-pop-up {

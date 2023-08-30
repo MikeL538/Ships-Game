@@ -3,7 +3,10 @@
 @media (max-width: 1000px) {
   body {
     display: flex;
-    justify-content: center;
+
+    overflow: hidden;
+    height: 700px;
+    overflow: hidden;
   }
 
   #board {
@@ -117,6 +120,14 @@
     }
   }
 
+  #hit-volume-percentage {
+    width: 42px;
+  }
+
+  #miss-volume-percentage {
+    width: 42px;
+  }
+
   #alphabet {
     > td {
       font-size: 30px;
@@ -166,10 +177,6 @@
     &__additional {
       font-size: 18px;
       font-weight: 400;
-    }
-
-    &__timer {
-      margin: 0;
     }
 
     &__sunken-pop-up {

@@ -311,6 +311,7 @@ buttonEasyRestartGame.addEventListener("click", () => {
 
 buttonOptions.addEventListener("click", () => {
   mainMenuOptionsBlock.classList.toggle("hide-element");
+
   missVolumePercentage.innerHTML = `${parseInt(missSoundVolume * 100)}%`;
   missVolume.value = missSoundVolume;
 
@@ -1336,7 +1337,7 @@ async function generateAllShipsMessages() {
   Two squares ships: ${twoShipsHit}<br />
   Three squares ships: ${threeShipsHit}<br />
   Four squares ship: ${fourShipsHit}`;
-  msgTimer.innerHTML = "Time: 00:00";
+
   table.style.pointerEvents = "all";
   buttonBackToMainMenu.style.pointerEvents = "all";
 }
