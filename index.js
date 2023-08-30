@@ -1330,13 +1330,28 @@ async function generateAllShipsMessages() {
   await new Promise((resolve) => setTimeout(resolve, 1));
 
   msgAdditional.innerHTML = `Shots: ${shots}<br /> 
-  Sunken: ${hits}/20<br /><br /> 
+    Sunken: ${hits}/20<br /><br /> 
+  
+    Remaining Ships: <br>
+    One square ships: ${oneShipsHit}<br />
+    Two squares ships: ${Math.round(twoShipsHit)}<br />
+    Three squares ships: ${Math.round(threeShipsHit)}<br />
+    Four squares ship: ${Math.round(fourShipsHit)}`;
 
-  Remaining Ships:<br />
-  One square ships: ${oneShipsHit}<br />
-  Two squares ships: ${twoShipsHit}<br />
-  Three squares ships: ${threeShipsHit}<br />
-  Four squares ship: ${fourShipsHit}`;
+  if (
+    buttonDifficultyHardcore.classList.contains(
+      "main-menu-difficulty-buttons--picked"
+    )
+  ) {
+    msgAdditional.innerHTML = `Shots: ${shots}/55<br /> 
+      Sunken: ${hits}/20<br /><br /> 
+    
+      Remaining Ships: <br>
+      One square ships: ${oneShipsHit}<br />
+      Two squares ships: ${Math.round(twoShipsHit)}<br />
+      Three squares ships: ${Math.round(threeShipsHit)}<br />
+      Four squares ship: ${Math.round(fourShipsHit)}`;
+  }
 
   table.style.pointerEvents = "all";
   buttonBackToMainMenu.style.pointerEvents = "all";
@@ -1422,6 +1437,21 @@ function handleShot(cellIndex) {
     Two squares ships: ${Math.round(twoShipsHit)}<br />
     Three squares ships: ${Math.round(threeShipsHit)}<br />
     Four squares ship: ${Math.round(fourShipsHit)}`;
+
+  if (
+    buttonDifficultyHardcore.classList.contains(
+      "main-menu-difficulty-buttons--picked"
+    )
+  ) {
+    msgAdditional.innerHTML = `Shots: ${shots}/55<br /> 
+      Sunken: ${hits}/20<br /><br /> 
+    
+      Remaining Ships: <br>
+      One square ships: ${oneShipsHit}<br />
+      Two squares ships: ${Math.round(twoShipsHit)}<br />
+      Three squares ships: ${Math.round(threeShipsHit)}<br />
+      Four squares ship: ${Math.round(fourShipsHit)}`;
+  }
 
   if (hits === 20) {
     // Wszystkie statki zatopione, koniec gry
