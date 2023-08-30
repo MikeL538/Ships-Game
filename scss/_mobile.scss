@@ -3,17 +3,15 @@
 @media (max-width: 1000px) {
   body {
     display: flex;
-
-    overflow: hidden;
-    height: 700px;
+    max-height: 850px;
     overflow: hidden;
   }
 
   #board {
     flex-direction: column;
+    height: 665px;
     margin: 1svh 5px;
     width: 330px;
-    height: 665px;
   }
 
   .main-menu {
