@@ -1482,12 +1482,12 @@ function handleShot(cellIndex) {
     buttonDifficultyHardcore.classList.contains(
       "main-menu-difficulty-buttons--picked"
     ) &&
-    shots === 55
+    shots === 1
   ) {
     buttonBackToMainMenu.style.pointerEvents = "none";
 
-    msgMain.innerHTML = `Defeat!<br /> 
-      Amount of shots: ${shots}<br /><br /><br /><br />`;
+    msgMain.innerHTML = `Defeat!<br /> <br /> 
+      Amount of shots: ${shots}`;
     clearInterval(timerInterval);
     msgMain.classList.add("message-container__lost");
 
