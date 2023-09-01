@@ -646,7 +646,7 @@ body {
     left: 54.5%;
     position: absolute;
     text-align: center;
-    top: 47%;
+    top: 40%;
     transform: translate(-80%, -120%);
     width: 600px;
     z-index: 10;
@@ -781,6 +781,7 @@ body {
 
 .locked-cell {
   color: none;
+  // background: red !important;
 }
 
 // .test-ship {

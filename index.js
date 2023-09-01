@@ -1085,20 +1085,6 @@ async function generateNormalOneShips() {
           if ((cell + 1) % 10 !== 0) {
             cells[cell + 1].classList.add("locked-cell");
           }
-          // // // Ukos lewo
-          if (cell + 10 < 100) {
-            cells[cell + 9].classList.add("locked-cell");
-          }
-          if (cell - 10 >= 0) {
-            cells[cell - 11].classList.add("locked-cell");
-          }
-          // // Ukos prawo
-          if (cell - 10 >= 0) {
-            cells[cell - 9].classList.add("locked-cell");
-          }
-          if (cell + 10 < 100) {
-            cells[cell + 11].classList.add("locked-cell");
-          }
         }
       }
     } catch (error) {
