@@ -1468,7 +1468,7 @@ function handleShot(cellIndex) {
     buttonDifficultyHardcore.classList.contains(
       "main-menu-difficulty-buttons--picked"
     ) &&
-    shots === 1
+    shots === 55
   ) {
     buttonBackToMainMenu.style.pointerEvents = "none";
 
