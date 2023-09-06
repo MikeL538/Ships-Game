@@ -53,7 +53,6 @@ const difficultyBlock = document.querySelector(".main-menu-difficulty");
 const buttonDifficultyClose = document.querySelector(
   ".main-menu-difficulty__close-button"
 );
-
 // Easy
 const buttonDifficultyEasy = document.querySelector(
   ".main-menu-difficulty__easy-button"
@@ -61,31 +60,6 @@ const buttonDifficultyEasy = document.querySelector(
 const infoDifficultyEasy = document.querySelector(
   ".main-menu-difficulty__info-easy"
 );
-
-buttonDifficultyEasy.addEventListener("mouseenter", () => {
-  infoDifficultyEasy.classList.remove("hide-element");
-});
-
-buttonDifficultyEasy.addEventListener("mouseleave", () => {
-  infoDifficultyEasy.classList.add("hide-element");
-});
-
-// Wybór
-buttonDifficultyEasy.addEventListener("click", () => {
-  buttonDifficultyEasy.classList.add("main-menu-difficulty-buttons--picked");
-  buttonDifficultyNormal.classList.remove(
-    "main-menu-difficulty-buttons--picked"
-  );
-  buttonDifficultyHardcore.classList.remove(
-    "main-menu-difficulty-buttons--picked"
-  );
-  if (buttonNewGame.classList.contains("new-game-used")) {
-    initGame();
-    difficultyBlock.classList.add("hide-element");
-    mainMenuBlock.classList.add("hide-element-menu");
-  }
-});
-
 // Normal
 const buttonDifficultyNormal = document.querySelector(
   ".main-menu-difficulty__normal-button"
@@ -93,29 +67,6 @@ const buttonDifficultyNormal = document.querySelector(
 const infoDifficultyNormal = document.querySelector(
   ".main-menu-difficulty__info-normal"
 );
-
-buttonDifficultyNormal.addEventListener("mouseenter", () => {
-  infoDifficultyNormal.classList.remove("hide-element");
-});
-
-buttonDifficultyNormal.addEventListener("mouseleave", () => {
-  infoDifficultyNormal.classList.add("hide-element");
-});
-
-// Wybór
-buttonDifficultyNormal.addEventListener("click", () => {
-  buttonDifficultyNormal.classList.add("main-menu-difficulty-buttons--picked");
-  buttonDifficultyEasy.classList.remove("main-menu-difficulty-buttons--picked");
-  buttonDifficultyHardcore.classList.remove(
-    "main-menu-difficulty-buttons--picked"
-  );
-  if (buttonNewGame.classList.contains("new-game-used")) {
-    initGame();
-    difficultyBlock.classList.add("hide-element");
-    mainMenuBlock.classList.add("hide-element-menu");
-  }
-});
-
 // Hardcore
 const buttonDifficultyHardcore = document.querySelector(
   ".main-menu-difficulty__hardcore-button"
@@ -124,38 +75,6 @@ const infoDifficultyHardcore = document.querySelector(
   ".main-menu-difficulty__info-hardcore"
 );
 
-buttonDifficultyHardcore.addEventListener("mouseenter", () => {
-  infoDifficultyHardcore.classList.remove("hide-element");
-});
-
-buttonDifficultyHardcore.addEventListener("mouseleave", () => {
-  infoDifficultyHardcore.classList.add("hide-element");
-});
-
-// Wybór
-buttonDifficultyHardcore.addEventListener("click", () => {
-  buttonDifficultyHardcore.classList.add(
-    "main-menu-difficulty-buttons--picked"
-  );
-  buttonDifficultyEasy.classList.remove("main-menu-difficulty-buttons--picked");
-  buttonDifficultyNormal.classList.remove(
-    "main-menu-difficulty-buttons--picked"
-  );
-  if (buttonNewGame.classList.contains("new-game-used")) {
-    initGame();
-    difficultyBlock.classList.add("hide-element");
-    mainMenuBlock.classList.add("hide-element-menu");
-  }
-});
-//
-
-buttonDifficulty.addEventListener("click", () => {
-  difficultyBlock.classList.remove("hide-element");
-});
-
-buttonDifficultyClose.addEventListener("click", () => {
-  difficultyBlock.classList.add("hide-element");
-});
 /////////////////////////////////////////
 // Main Menu Opcje
 const mainMenuOptionsBlock = document.querySelector(".main-menu-options");
@@ -250,6 +169,7 @@ const buttonVictoryRanking = document.querySelector(
 // Lokalne Pamięć
 const savedWavesState = localStorage.getItem("wavesState");
 const initialThemeState = loadThemeState();
+const selectedDifficulty = loadDifficulty();
 
 /////////////////////////////////////////
 /////////////////////////////////////////
@@ -265,6 +185,7 @@ window.onload = function onPageLoad() {
   updateNormalRanking();
   updateWavesButton();
   loadNick();
+  loadDifficulty();
 };
 
 /////////////////////////////////////////
@@ -310,6 +231,10 @@ buttonEasyRestartGame.addEventListener("click", () => {
   mainMenuBlock.classList.toggle("hide-element-menu");
 });
 
+buttonDifficulty.addEventListener("click", () => {
+  difficultyBlock.classList.remove("hide-element");
+});
+
 buttonOptions.addEventListener("click", () => {
   mainMenuOptionsBlock.classList.toggle("hide-element");
 
@@ -337,6 +262,95 @@ buttonInstructions.addEventListener("click", () => {
       buttonBackInstructions.classList.add("hide-element");
       break;
   }
+});
+
+/////////////////////////////////////////
+// Difficulty funkcje
+// Wybór easy
+buttonDifficultyEasy.addEventListener("click", () => {
+  buttonDifficultyEasy.classList.add("main-menu-difficulty-buttons--picked");
+  buttonDifficultyNormal.classList.remove(
+    "main-menu-difficulty-buttons--picked"
+  );
+  buttonDifficultyHardcore.classList.remove(
+    "main-menu-difficulty-buttons--picked"
+  );
+
+  saveDifficulty("easy");
+
+  if (buttonNewGame.classList.contains("new-game-used")) {
+    initGame();
+    difficultyBlock.classList.add("hide-element");
+    mainMenuBlock.classList.add("hide-element-menu");
+  }
+});
+
+// Hover easy
+buttonDifficultyEasy.addEventListener("mouseenter", () => {
+  infoDifficultyEasy.classList.remove("hide-element");
+});
+
+buttonDifficultyEasy.addEventListener("mouseleave", () => {
+  infoDifficultyEasy.classList.add("hide-element");
+});
+
+// Wybór normal
+buttonDifficultyNormal.addEventListener("click", () => {
+  buttonDifficultyNormal.classList.add("main-menu-difficulty-buttons--picked");
+  buttonDifficultyEasy.classList.remove("main-menu-difficulty-buttons--picked");
+  buttonDifficultyHardcore.classList.remove(
+    "main-menu-difficulty-buttons--picked"
+  );
+
+  saveDifficulty("normal");
+
+  if (buttonNewGame.classList.contains("new-game-used")) {
+    initGame();
+    difficultyBlock.classList.add("hide-element");
+    mainMenuBlock.classList.add("hide-element-menu");
+  }
+});
+
+// Hover normal
+buttonDifficultyNormal.addEventListener("mouseenter", () => {
+  infoDifficultyNormal.classList.remove("hide-element");
+});
+
+buttonDifficultyNormal.addEventListener("mouseleave", () => {
+  infoDifficultyNormal.classList.add("hide-element");
+});
+
+// Wybór hardcore
+buttonDifficultyHardcore.addEventListener("click", () => {
+  buttonDifficultyHardcore.classList.add(
+    "main-menu-difficulty-buttons--picked"
+  );
+  buttonDifficultyEasy.classList.remove("main-menu-difficulty-buttons--picked");
+  buttonDifficultyNormal.classList.remove(
+    "main-menu-difficulty-buttons--picked"
+  );
+
+  saveDifficulty("hardcore");
+
+  if (buttonNewGame.classList.contains("new-game-used")) {
+    initGame();
+    difficultyBlock.classList.add("hide-element");
+    mainMenuBlock.classList.add("hide-element-menu");
+  }
+});
+
+// Hover hardcore
+buttonDifficultyHardcore.addEventListener("mouseenter", () => {
+  infoDifficultyHardcore.classList.remove("hide-element");
+});
+
+buttonDifficultyHardcore.addEventListener("mouseleave", () => {
+  infoDifficultyHardcore.classList.add("hide-element");
+});
+
+// Close button
+buttonDifficultyClose.addEventListener("click", () => {
+  difficultyBlock.classList.add("hide-element");
 });
 
 /////////////////////////////////////////
@@ -1635,4 +1649,21 @@ function saveNick() {
 function loadNick() {
   newPlayer = localStorage.getItem("nick") || "Player";
   PlayerNickInput.value = newPlayer;
+}
+
+// Difficulty
+function saveDifficulty(difficulty) {
+  localStorage.setItem("selectedDifficulty", difficulty);
+}
+
+function loadDifficulty() {
+  const difficultyStorage = localStorage.getItem("selectedDifficulty");
+
+  if (difficultyStorage === "easy") {
+    buttonDifficultyEasy.click();
+  } else if (difficultyStorage === "normal") {
+    buttonDifficultyNormal.click();
+  } else if (difficultyStorage === "hardcore") {
+    buttonDifficultyHardcore.click();
+  }
 }
