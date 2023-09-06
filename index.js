@@ -206,7 +206,7 @@ let normalRanking = {
 let PlayerNickInput = document.querySelector(
   ".main-menu-options__div__nick-input"
 );
-let newPlayer = PlayerNickInput.value || "Player";
+let newPlayer = "";
 /////////////////////////////////////////
 // Main Menu Instrukcje
 const instructionsBlock = document.querySelector(".main-menu-instructions");
@@ -264,6 +264,7 @@ window.onload = function onPageLoad() {
   updateEasyRanking();
   updateNormalRanking();
   updateWavesButton();
+  loadNick();
 };
 
 /////////////////////////////////////////
@@ -397,6 +398,7 @@ buttonOptionsClose.addEventListener("click", () => {
     newPlayer = "Player";
   } else {
     newPlayer = PlayerNickInput.value;
+    saveNick();
   }
 
   mainMenuOptionsBlock.classList.toggle("hide-element");
@@ -633,7 +635,7 @@ function initGame() {
   msgMain.classList.remove("message-container__lost");
 
   cells.forEach((cell) => {
-    cell.classList.remove("hit", "miss", "locked-cell", "test-ship");
+    cell.classList.remove("hit", "miss", "locked-cell", "unravel", "test-ship");
   });
 
   if (
@@ -1468,9 +1470,16 @@ function handleShot(cellIndex) {
     buttonDifficultyHardcore.classList.contains(
       "main-menu-difficulty-buttons--picked"
     ) &&
+    hits !== 20 &&
     shots === 55
   ) {
     buttonBackToMainMenu.style.pointerEvents = "none";
+
+    for (const ship of allShips) {
+      for (const cello of ship) {
+        cells[cello].classList.add("unravel");
+      }
+    }
 
     msgMain.innerHTML = `Defeat!<br /> <br /> 
       Amount of shots: ${shots}`;
@@ -1616,4 +1625,14 @@ function loadRanking() {
 function saveRanking() {
   localStorage.setItem("easyRanking", JSON.stringify(easyRanking));
   localStorage.setItem("normalRanking", JSON.stringify(normalRanking));
+}
+
+// Nick
+function saveNick() {
+  localStorage.setItem("nick", PlayerNickInput.value);
+}
+
+function loadNick() {
+  newPlayer = localStorage.getItem("nick") || "Player";
+  PlayerNickInput.value = newPlayer;
 }

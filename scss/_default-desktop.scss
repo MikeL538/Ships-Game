@@ -132,21 +132,21 @@ body {
       &-easy {
         background-color: rgb(0, 200, 0);
         left: 50%;
-        top: 25%;
+        top: 26%;
         transform: translateX(-50%);
       }
 
       &-normal {
         background-color: rgb(200, 200, 0);
         left: 50%;
-        top: 49%;
+        top: 51%;
         transform: translateX(-50%);
       }
 
       &-hardcore {
         background-color: rgb(200, 0, 0);
         left: 50%;
-        top: 4%;
+        top: 11%;
         transform: translateX(-50%);
       }
     }
@@ -781,7 +781,10 @@ body {
 
 .locked-cell {
   color: none;
-  // background: red !important;
+}
+
+.unravel {
+  background: red;
 }
 
 // .test-ship {
