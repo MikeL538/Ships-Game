@@ -33,6 +33,14 @@ In normal and hardcore modes, ships cannot appear in cells directly adjacent to 
 
 ### Ship Sinking
 
+When you sink a whole ship, a pop-up confirmation triggers, and the remaining ships count updates.
+
+![Ship Sinking](./images/ships-instructions3.jpg)
+
+## Play the Game
+
+You can play the game by following this link: [Battleships Game](https://mikel538.github.io/Ships-Game/)
+
 ## Project Goals
 - practice JavaScript game logic
 - working with arrays and conditions
@@ -43,13 +51,3 @@ In normal and hardcore modes, ships cannot appear in cells directly adjacent to 
 - implementing turn-based logic
 - validating user input
 - basic game architecture in vanilla JavaScript
-
-
-When you sink a whole ship, a pop-up confirmation triggers, and the remaining ships count updates.
-
-![Ship Sinking](./images/ships-instructions3.jpg)
-
-## Play the Game
-
-You can play the game by following this link: [Battleships Game](https://mikel538.github.io/Ships-Game/)
-
